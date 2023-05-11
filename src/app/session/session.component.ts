@@ -64,12 +64,6 @@ export class SessionComponent {
     this.session.next(session);
   }
 
-  sessionLink(sessionId: string): string {
-    if (window.location.href.includes(sessionId))
-      return window.location.href;
-    return window.location.href + '/' + sessionId;
-  }
-
   sendMessage(session: ControlSession | Session): void {
     if (!this.isSessionHost(session))
       return;

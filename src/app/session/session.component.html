@@ -6,16 +6,7 @@
 <div>
     <h1>Current Session</h1>
     <div *ngIf="currentSession$ | async as session;else noSession">
-        <ul>
-            <li>ID: {{session.id}}</li>
-            <li>Name: {{session.name}}</li>
-            <li>Status: {{session.status}}</li>
-            <li>Expiration Time: {{session.expirationTime}}</li>
-        </ul>
-
-        <p>
-            <a [href]="sessionLink(session.id)" target="_blank">{{sessionLink(session.id)}}</a>
-        </p>
+        <app-session-info [session]="session"></app-session-info>
 
         <div>
             <span *ngIf="isSessionHost(session)">
