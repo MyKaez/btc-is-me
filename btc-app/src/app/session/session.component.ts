@@ -12,9 +12,8 @@ import { ActivatedRoute } from '@angular/router';
   styleUrls: ['./session.component.sass']
 })
 export class SessionComponent {
-
-  // private baseUrl = 'http://api.btcis.me';
-  private _baseUrl = 'https://localhost:5001';
+  private _baseUrl = 'http://api.btcis.me';
+  //private _baseUrl = 'https://localhost:5001';
   private _hubConnection?: HubConnection;
 
   constructor(private _httpClient: HttpClient, private _route: ActivatedRoute) {
@@ -66,23 +65,30 @@ export class SessionComponent {
   }
 
   sessionLink(sessionId: string): string {
+    if (window.location.href.includes(sessionId))
+      return window.location.href;
     return window.location.href + '/' + sessionId;
   }
 
-  public sendMessage(session: ControlSession | Session): void {
-    if ('controlId' in session) {
-      const message = {
-        id: session.id,
-        controlId: session.controlId,
-        action: 'notify',
-        data: {
-          message: this.messageControl.value,
-          origin: 'kenny',
-          date: new Date()
-        }
-      };
-      this.message.next(message);
-    }
+  sendMessage(session: ControlSession | Session): void {
+    if (!this.isSessionHost(session))
+      return;
+
+    const message = {
+      id: session.id,
+      controlId: (<ControlSession>session).controlId,
+      action: 'notify',
+      data: {
+        message: this.messageControl.value,
+        origin: 'kenny',
+        date: new Date()
+      }
+    };
+    this.message.next(message);
+  }
+
+  isSessionHost(session: ControlSession | Session): boolean {
+    return 'controlId' in session;
   }
 
   private connect(sessionId: string): HubConnection {
