@@ -19,7 +19,6 @@ export class SessionComponent {
   constructor(private _httpClient: HttpClient, private _route: ActivatedRoute) {
   }
 
-  nameControl = new FormControl('', [Validators.required, Validators.minLength(5)]);
   messageControl = new FormControl('', [Validators.required]);
   session = new Subject<{ name: string }>();
   message = new Subject<{ id: string, controlId: string, action: string, data?: any }>();
@@ -59,8 +58,10 @@ export class SessionComponent {
     )
   );
 
-  registerSession(): void {
-    const session = { name: this.nameControl.value! };
+  registerSession(sessionName: string): void {
+    console.log(sessionName)
+    console.log(this.session)
+    const session = { name: sessionName };
     this.session.next(session);
   }
 
