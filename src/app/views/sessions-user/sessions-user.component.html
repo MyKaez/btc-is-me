@@ -1,3 +1,10 @@
 <h2>User Actions</h2>
 
-You're a user :)
+<div *ngIf="user$ | async as user;else noUser">
+    <p>Hello {{user.name}}!</p>
+    <p>Your ID is {{user.id}}</p>
+</div>
+<ng-template #noUser>
+    <input type="text" [formControl]="userNameControl" [disabled]="userNameControl.invalid">
+    <button (click)="registerUser()">Register User!</button>
+</ng-template>
