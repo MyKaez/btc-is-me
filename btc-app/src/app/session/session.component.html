@@ -1,0 +1,34 @@
+<p>
+    Session Name <input type="text" [formControl]="nameControl">
+    <button (click)="registerSession()" [disabled]="nameControl.invalid || isConnected">Register Session!</button>
+</p>
+
+<div>
+    <h1>Current Session</h1>
+    <div *ngIf="currentSession$ | async as session;else noSession">
+        <ul>
+            <li>ID: {{session.id}}</li>
+            <li>Name: {{session.name}}</li>
+            <li>Status: {{session.status}}</li>
+            <li>Expiration Time: {{session.expirationTime}}</li>
+        </ul>
+
+        <p>
+            <button (click)="shareSession(session.id)">Share session!</button>
+        </p>
+
+        <div>
+            <input type="text" [formControl]="messageControl">
+            <button (click)="sendMessage(session)">Click!</button>
+            <span *ngIf="currentMessage$ | async as message"> </span>
+            <ul>
+                <li *ngFor="let msg of messages| async">
+                    {{msg}}
+                </li>
+            </ul>
+        </div>
+    </div>
+    <ng-template #noSession>
+        No session was created so far...
+    </ng-template>
+</div>
