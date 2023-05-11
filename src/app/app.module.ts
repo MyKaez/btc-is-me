@@ -11,6 +11,7 @@ import { SessionInfoComponent } from './views/session-info/session-info.componen
 import { SessionCreatorComponent } from './views/session-creator/session-creator.component';
 import { SessionsHostComponent } from './views/sessions-host/sessions-host.component';
 import { SessionsUserComponent } from './views/sessions-user/sessions-user.component';
+import { SendMessageComponent } from './views/sessions-user/send-message/send-message.component';
 
 @NgModule({
   declarations: [
@@ -19,7 +20,8 @@ import { SessionsUserComponent } from './views/sessions-user/sessions-user.compo
     SessionInfoComponent,
     SessionCreatorComponent,
     SessionsHostComponent,
-    SessionsUserComponent
+    SessionsUserComponent,
+    SendMessageComponent
   ],
   imports: [
     BrowserModule,

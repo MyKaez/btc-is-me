@@ -1,5 +1,5 @@
 import { Component, Input } from '@angular/core';
-import { FormControl } from '@angular/forms';
+import { FormControl, Validators } from '@angular/forms';
 import { Subject, switchMap } from 'rxjs';
 import { Session } from 'src/app/models/types';
 import { SessionService } from 'src/app/services/session.service';
@@ -16,7 +16,7 @@ export class SessionsUserComponent {
   constructor(private _sessionService: SessionService) {
   }
 
-  userNameControl = new FormControl('');
+  userNameControl = new FormControl('', [Validators.required, Validators.minLength(5)]);
   userName = new Subject<string>();
 
   user$ = this.userName.pipe(

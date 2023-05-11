@@ -10,8 +10,8 @@ import { User } from '../models/user';
   providedIn: 'root'
 })
 export class SessionService {
-  private _baseUrl = 'https://api.btcis.me';
-  //private _baseUrl = 'https://localhost:5001';
+  //private _baseUrl = 'https://api.btcis.me';
+  private _baseUrl = 'https://localhost:5001';
 
   constructor(private _httpClient: HttpClient) { }
 
@@ -27,9 +27,28 @@ export class SessionService {
     )
   }
 
+  sendSessionMessage(session: ControlSession, data: string): Observable<Session> {
+    const message = {
+      controlId: session.controlId,
+      action: 'notify',
+      data: {
+        message: data
+      }
+    };
+    return this._httpClient.post(`${this._baseUrl}/v1/sessions/${session.id}/actions`, message).pipe(
+      map(value => <Session>value)
+    )
+  }
+
   registerUser(sessionId: string, userName: string): Observable<User> {
     const user = { name: userName };
     return this._httpClient.post(`${this._baseUrl}/v1/sessions/${sessionId}/users`, user).pipe(
+      map(value => <User>value)
+    )
+  }
+
+  sendUserMessage(sessionId: string, userId: string, message: any): Observable<User> {
+    return this._httpClient.post(`${this._baseUrl}/v1/sessions/${sessionId}/users/${userId}/actions`, message).pipe(
       map(value => <User>value)
     )
   }
