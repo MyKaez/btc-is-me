@@ -20,7 +20,7 @@ export class SessionComponent {
   }
 
   nameControl = new FormControl('', [Validators.required, Validators.minLength(5)]);
-  messageControl = new FormControl('');
+  messageControl = new FormControl('', [Validators.required]);
   session = new Subject<{ name: string }>();
   message = new Subject<{ id: string, controlId: string, action: string, data?: any }>();
   messages = new BehaviorSubject<string[]>([]);
