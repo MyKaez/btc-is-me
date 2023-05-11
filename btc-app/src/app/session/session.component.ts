@@ -2,7 +2,7 @@ import { Component } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { HubConnection, HubConnectionBuilder } from '@microsoft/signalr';
 import { FormControl, Validators } from '@angular/forms';
-import { BehaviorSubject, Subject, filter, map, switchMap, tap } from 'rxjs';
+import { BehaviorSubject, Subject, map, switchMap, tap } from 'rxjs';
 import { ControlSession } from './types';
 
 
@@ -22,7 +22,8 @@ export class SessionComponent {
   message = new Subject<{ id: string, controlId: string, action: string, data?: any }>();
   messages = new BehaviorSubject<string[]>([]);
 
-  constructor(private _httpClient: HttpClient) { }
+  constructor(private _httpClient: HttpClient) {
+  }
 
   get isConnected(): boolean {
     return this._hubConnection !== undefined;
@@ -48,8 +49,8 @@ export class SessionComponent {
     this.session.next(session);
   }
 
-  shareSession(sessionId: string) {
-    console.log(sessionId);
+  sessionLink(sessionId: string): string {
+    return window.location.href + '/' + sessionId;
   }
 
   public sendMessage(session: ControlSession): void {
