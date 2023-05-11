@@ -12,7 +12,7 @@ import { ActivatedRoute } from '@angular/router';
   styleUrls: ['./session.component.sass']
 })
 export class SessionComponent {
-  private _baseUrl = 'http://api.btcis.me';
+  private _baseUrl = 'https://api.btcis.me';
   //private _baseUrl = 'https://localhost:5001';
   private _hubConnection?: HubConnection;
 
