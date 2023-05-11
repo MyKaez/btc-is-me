@@ -2,9 +2,9 @@ import { Component } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { HubConnection, HubConnectionBuilder } from '@microsoft/signalr';
 import { FormControl, Validators } from '@angular/forms';
-import { BehaviorSubject, Subject, map, switchMap, tap } from 'rxjs';
-import { ControlSession } from './types';
-
+import { BehaviorSubject, Subject, filter, map, merge, switchMap, tap } from 'rxjs';
+import { ControlSession, Session } from './types';
+import { ActivatedRoute } from '@angular/router';
 
 @Component({
   selector: 'app-session',
@@ -12,9 +12,13 @@ import { ControlSession } from './types';
   styleUrls: ['./session.component.sass']
 })
 export class SessionComponent {
-  private baseUrl = 'https://localhost:5001';// http://api.btcis.me
 
-  private _hubConnection: HubConnection | undefined;
+  // private baseUrl = 'http://api.btcis.me';
+  private _baseUrl = 'https://localhost:5001';
+  private _hubConnection?: HubConnection;
+
+  constructor(private _httpClient: HttpClient, private _route: ActivatedRoute) {
+  }
 
   nameControl = new FormControl('', [Validators.required, Validators.minLength(5)]);
   messageControl = new FormControl('');
@@ -22,25 +26,37 @@ export class SessionComponent {
   message = new Subject<{ id: string, controlId: string, action: string, data?: any }>();
   messages = new BehaviorSubject<string[]>([]);
 
-  constructor(private _httpClient: HttpClient) {
-  }
-
   get isConnected(): boolean {
     return this._hubConnection !== undefined;
   }
 
-  currentSession$ = this.session.pipe(
+  getSessionById$ = this._route.params.pipe(
+    map(p => p['sessionId']),
+    filter(sessionId => sessionId !== undefined),
+    switchMap(p =>
+      this._httpClient.get(`${this._baseUrl}/v1/sessions/${p}`).pipe(
+        map(value => <Session>value)
+      )
+    )
+  );
+
+  createSession$ = this.session.pipe(
+    filter(session => session !== undefined),
     switchMap(session =>
-      this._httpClient.post(`${this.baseUrl}/v1/sessions`, session).pipe(
+      this._httpClient.post(`${this._baseUrl}/v1/sessions`, session).pipe(
         map(value => <ControlSession>value)
       )
-    ),
+    )
+  );
+
+  currentSession$ = merge(this.createSession$, this.getSessionById$).pipe(
+    filter(session => session !== undefined),
     tap(session => this._hubConnection = this.connect(session.id))
   );
 
   currentMessage$ = this.message.pipe(
     switchMap(message =>
-      this._httpClient.post(`${this.baseUrl}/v1/sessions/${message.id}/actions`, message)
+      this._httpClient.post(`${this._baseUrl}/v1/sessions/${message.id}/actions`, message)
     )
   );
 
@@ -53,23 +69,25 @@ export class SessionComponent {
     return window.location.href + '/' + sessionId;
   }
 
-  public sendMessage(session: ControlSession): void {
-    const message = {
-      id: session.id,
-      controlId: session.controlId,
-      action: 'notify',
-      data: {
-        message: this.messageControl.value,
-        origin: 'kenny',
-        date: new Date()
-      }
-    };
-    this.message.next(message);
+  public sendMessage(session: ControlSession | Session): void {
+    if ('controlId' in session) {
+      const message = {
+        id: session.id,
+        controlId: session.controlId,
+        action: 'notify',
+        data: {
+          message: this.messageControl.value,
+          origin: 'kenny',
+          date: new Date()
+        }
+      };
+      this.message.next(message);
+    }
   }
 
   private connect(sessionId: string): HubConnection {
     const connection = new HubConnectionBuilder()
-      .withUrl(`${this.baseUrl}/v1/sessions`)
+      .withUrl(`${this._baseUrl}/v1/sessions`)
       .build();
 
     connection.on(sessionId, message => {
