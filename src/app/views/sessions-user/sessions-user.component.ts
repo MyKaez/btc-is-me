@@ -1,4 +1,5 @@
-import { Component } from '@angular/core';
+import { Component, Input } from '@angular/core';
+import { Session } from 'src/app/session/types';
 
 @Component({
   selector: 'app-sessions-user',
@@ -6,5 +7,7 @@ import { Component } from '@angular/core';
   styleUrls: ['./sessions-user.component.sass']
 })
 export class SessionsUserComponent {
+  @Input("session") session!: Session;
+
 
 }

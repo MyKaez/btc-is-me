@@ -2,7 +2,7 @@ import { HttpClient } from '@angular/common/http';
 import { Component, Input } from '@angular/core';
 import { FormControl, Validators } from '@angular/forms';
 import { Subject, switchMap } from 'rxjs';
-import { ControlSession } from 'src/app/session/types';
+import { ControlSession, Session } from 'src/app/session/types';
 
 @Component({
   selector: 'app-sessions-host',
@@ -13,7 +13,7 @@ export class SessionsHostComponent {
   private _baseUrl = 'https://api.btcis.me';
   //private _baseUrl = 'https://localhost:5001';
 
-  @Input("session") session!: ControlSession;
+  @Input("session") session!: Session;
 
   constructor(private _httpClient: HttpClient) {
   }
@@ -28,9 +28,10 @@ export class SessionsHostComponent {
   );
 
   sendMessage(): void {
+    const session = <ControlSession>this.session;
     const message = {
-      id: this.session.id,
-      controlId: this.session.controlId,
+      id: session.id,
+      controlId: session.controlId,
       action: 'notify',
       data: {
         message: this.messageControl.value,
