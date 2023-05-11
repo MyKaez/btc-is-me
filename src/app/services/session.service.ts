@@ -10,8 +10,8 @@ import { User } from '../models/user';
   providedIn: 'root'
 })
 export class SessionService {
-  //private _baseUrl = 'https://api.btcis.me';
-  private _baseUrl = 'https://localhost:5001';
+  private _baseUrl = 'https://api.btcis.me';
+  //private _baseUrl = 'https://localhost:5001';
 
   constructor(private _httpClient: HttpClient) { }
 
