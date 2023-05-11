@@ -1,4 +1,5 @@
 <div>
     <input type="text" [formControl]="messageControl">
     <button (click)="sendMessage()" [disabled]="messageControl.invalid">Send Message</button>
+    <span *ngIf="message$ | async"></span>
 </div>

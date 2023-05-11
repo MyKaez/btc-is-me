@@ -27,12 +27,12 @@ export class SessionService {
     )
   }
 
-  sendSessionMessage(session: ControlSession, data: string): Observable<Session> {
+  sendSessionMessage(session: ControlSession, text: string): Observable<Session> {
     const message = {
       controlId: session.controlId,
       action: 'notify',
       data: {
-        message: data
+        message: text
       }
     };
     return this._httpClient.post(`${this._baseUrl}/v1/sessions/${session.id}/actions`, message).pipe(
@@ -47,7 +47,10 @@ export class SessionService {
     )
   }
 
-  sendUserMessage(sessionId: string, userId: string, message: any): Observable<User> {
+  sendUserMessage(sessionId: string, userId: string, text: string): Observable<User> {
+    const message = {
+      message: text
+    };
     return this._httpClient.post(`${this._baseUrl}/v1/sessions/${sessionId}/users/${userId}/actions`, message).pipe(
       map(value => <User>value)
     )

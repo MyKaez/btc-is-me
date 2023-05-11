@@ -16,7 +16,6 @@ export class SendMessageComponent {
   @Input("user") user!: User;
 
   constructor(private _sessionService: SessionService) {
-
   }
 
   messageControl = new FormControl('', [Validators.required]);
