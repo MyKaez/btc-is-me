@@ -4,16 +4,10 @@
     <app-session-info [session]="session"></app-session-info>
 
     <div *ngIf="isSessionHost(session);else user">
-        <h2>Host Actions</h2>
-        <span *ngIf="isSessionHost(session)">
-            <input type="text" [formControl]="messageControl">
-            <button (click)="sendMessage(session)" [disabled]="messageControl.invalid">Click!</button>
-        </span>
-        <span *ngIf="currentMessage$ | async as message"> </span>
+        <app-sessions-host [session]="session"></app-sessions-host>
     </div>
     <ng-template #user>
-        <h2>User Actions</h2>
-        You're a user :)
+        <app-sessions-user></app-sessions-user>
     </ng-template>
 
     <h2>Shared Messages</h2>

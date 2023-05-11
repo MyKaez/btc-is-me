@@ -19,9 +19,7 @@ export class SessionComponent {
   constructor(private _httpClient: HttpClient, private _route: ActivatedRoute) {
   }
 
-  messageControl = new FormControl('', [Validators.required]);
   session = new Subject<{ name: string }>();
-  message = new Subject<{ id: string, controlId: string, action: string, data?: any }>();
   messages = new BehaviorSubject<string[]>([]);
 
   get isConnected(): boolean {
@@ -52,34 +50,11 @@ export class SessionComponent {
     tap(session => this._hubConnection = this.connect(session.id))
   );
 
-  currentMessage$ = this.message.pipe(
-    switchMap(message =>
-      this._httpClient.post(`${this._baseUrl}/v1/sessions/${message.id}/actions`, message)
-    )
-  );
-
   registerSession(sessionName: string): void {
     console.log(sessionName)
     console.log(this.session)
     const session = { name: sessionName };
     this.session.next(session);
-  }
-
-  sendMessage(session: ControlSession | Session): void {
-    if (!this.isSessionHost(session))
-      return;
-
-    const message = {
-      id: session.id,
-      controlId: (<ControlSession>session).controlId,
-      action: 'notify',
-      data: {
-        message: this.messageControl.value,
-        origin: 'kenny',
-        date: new Date()
-      }
-    };
-    this.message.next(message);
   }
 
   isSessionHost(session: ControlSession | Session): boolean {
