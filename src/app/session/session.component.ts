@@ -1,10 +1,10 @@
 import { Component } from '@angular/core';
-import { HttpClient } from '@angular/common/http';
 import { HubConnection, HubConnectionBuilder } from '@microsoft/signalr';
-import { FormControl, Validators } from '@angular/forms';
 import { BehaviorSubject, Subject, filter, map, merge, switchMap, tap } from 'rxjs';
-import { ControlSession, Session } from './types';
+import { ControlSession, Session } from '../models/types';
 import { ActivatedRoute } from '@angular/router';
+import { SessionService } from '../services/session.service';
+import { CreateSession } from '../models/create-session';
 
 @Component({
   selector: 'app-session',
@@ -12,14 +12,12 @@ import { ActivatedRoute } from '@angular/router';
   styleUrls: ['./session.component.sass']
 })
 export class SessionComponent {
-  private _baseUrl = 'https://api.btcis.me';
-  //private _baseUrl = 'https://localhost:5001';
   private _hubConnection?: HubConnection;
 
-  constructor(private _httpClient: HttpClient, private _route: ActivatedRoute) {
+  constructor(private _sessionService: SessionService, private _route: ActivatedRoute) {
   }
 
-  session = new Subject<{ name: string }>();
+  session = new Subject<CreateSession>();
   messages = new BehaviorSubject<string[]>([]);
 
   get isConnected(): boolean {
@@ -29,20 +27,12 @@ export class SessionComponent {
   getSessionById$ = this._route.params.pipe(
     map(p => p['sessionId']),
     filter(sessionId => sessionId !== undefined),
-    switchMap(p =>
-      this._httpClient.get(`${this._baseUrl}/v1/sessions/${p}`).pipe(
-        map(value => <Session>value)
-      )
-    )
+    switchMap(p => this._sessionService.getSession(p))
   );
 
   createSession$ = this.session.pipe(
     filter(session => session !== undefined),
-    switchMap(session =>
-      this._httpClient.post(`${this._baseUrl}/v1/sessions`, session).pipe(
-        map(value => <ControlSession>value)
-      )
-    )
+    switchMap(session => this._sessionService.createSession(session))
   );
 
   currentSession$ = merge(this.createSession$, this.getSessionById$).pipe(
@@ -63,7 +53,7 @@ export class SessionComponent {
 
   private connect(sessionId: string): HubConnection {
     const connection = new HubConnectionBuilder()
-      .withUrl(`${this._baseUrl}/v1/sessions`)
+      .withUrl(`${this._sessionService._baseUrl}/v1/sessions`)
       .build();
 
     connection.on(sessionId, message => {

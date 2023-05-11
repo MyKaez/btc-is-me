@@ -2,7 +2,7 @@ import { HttpClient } from '@angular/common/http';
 import { Component, Input } from '@angular/core';
 import { FormControl, Validators } from '@angular/forms';
 import { Subject, switchMap } from 'rxjs';
-import { ControlSession, Session } from 'src/app/session/types';
+import { ControlSession, Session } from 'src/app/models/types';
 
 @Component({
   selector: 'app-sessions-host',
