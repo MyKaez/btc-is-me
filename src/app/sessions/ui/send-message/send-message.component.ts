@@ -1,7 +1,7 @@
 import { Component, Input } from '@angular/core';
 import { FormControl, Validators } from '@angular/forms';
 import { Subject, switchMap } from 'rxjs';
-import { Session } from "../../models/session";
+import { SessionInfo } from "../../models/session";
 import { User } from 'src/app/sessions/models/user';
 import { SessionService } from 'src/app/sessions/data-access/session.service';
 
@@ -12,7 +12,7 @@ import { SessionService } from 'src/app/sessions/data-access/session.service';
 })
 export class SendMessageComponent {
 
-  @Input("session") session!: Session;
+  @Input("session") session!: SessionInfo;
   @Input("user") user!: User;
 
   constructor(private _sessionService: SessionService) {

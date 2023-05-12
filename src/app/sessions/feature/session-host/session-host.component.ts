@@ -1,7 +1,7 @@
 import { Component, Input } from '@angular/core';
 import { FormControl, Validators } from '@angular/forms';
 import { Subject, switchMap } from 'rxjs';
-import { ControlSession, Session } from "../../models/session";
+import { SessionHostInfo, SessionInfo } from "../../models/session";
 import { SessionService } from 'src/app/sessions/data-access/session.service';
 
 @Component({
@@ -11,10 +11,10 @@ import { SessionService } from 'src/app/sessions/data-access/session.service';
 })
 export class SessionsHostComponent {
 
-  @Input("session") session!: Session;
+  @Input("session") session!: SessionInfo;
 
-  get controlSession(): ControlSession {
-    return <ControlSession>this.session;
+  get controlSession(): SessionHostInfo {
+    return <SessionHostInfo>this.session;
   }
 
   constructor(private _sessionService: SessionService) {

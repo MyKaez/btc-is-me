@@ -3,7 +3,7 @@ import { Injectable } from '@angular/core';
 import { Observable, map } from 'rxjs';
 import { HubConnection, HubConnectionBuilder } from '@microsoft/signalr';
 import { User } from '../models/user';
-import { ControlSession, CreateSession, Session } from '../models/session';
+import { SessionHostInfo, Session, SessionInfo } from '../models/session';
 
 @Injectable({
   providedIn: 'root'
@@ -14,19 +14,19 @@ export class SessionService {
 
   constructor(private _httpClient: HttpClient) { }
 
-  getSession(sessionId: string): Observable<Session> {
+  getSession(sessionId: string): Observable<SessionInfo> {
     return this._httpClient.get(`${this._baseUrl}/v1/sessions/${sessionId}`).pipe(
-      map(value => <Session>value)
+      map(value => <SessionInfo>value)
     )
   }
 
-  createSession(session: CreateSession): Observable<ControlSession> {
+  createSession(session: Session): Observable<SessionHostInfo> {
     return this._httpClient.post(`${this._baseUrl}/v1/sessions`, session).pipe(
-      map(value => <ControlSession>value)
+      map(value => <SessionHostInfo>value)
     )
   }
 
-  sendSessionMessage(session: ControlSession, text: string): Observable<Session> {
+  sendSessionMessage(session: SessionHostInfo, text: string): Observable<SessionInfo> {
     const message = {
       controlId: session.controlId,
       action: 'notify',
@@ -35,7 +35,7 @@ export class SessionService {
       }
     };
     return this._httpClient.post(`${this._baseUrl}/v1/sessions/${session.id}/actions`, message).pipe(
-      map(value => <Session>value)
+      map(value => <SessionInfo>value)
     )
   }
 

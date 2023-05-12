@@ -2,7 +2,7 @@ import { Component } from '@angular/core';
 import { BehaviorSubject, Subject, filter, map, merge, switchMap, tap } from 'rxjs';
 import { ActivatedRoute } from '@angular/router';
 import { SessionService } from '../../data-access/session.service';
-import { ControlSession, CreateSession, Session } from '../../models/session';
+import { SessionHostInfo, Session, SessionInfo } from '../../models/session';
 
 @Component({
   selector: 'app-session',
@@ -14,7 +14,7 @@ export class SessionComponent {
   constructor(private _sessionService: SessionService, private _route: ActivatedRoute) {
   }
 
-  session = new Subject<CreateSession>();
+  session = new Subject<Session>();
   messages = new BehaviorSubject<string[]>([]);
 
   getSessionById$ = this._route.params.pipe(
@@ -38,7 +38,7 @@ export class SessionComponent {
     this.session.next(session);
   }
 
-  isSessionHost(session: ControlSession | Session): boolean {
+  isSessionHost(session: SessionHostInfo | SessionInfo): boolean {
     return 'controlId' in session;
   }
 }

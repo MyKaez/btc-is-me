@@ -1,5 +1,5 @@
 import { Component, Input } from '@angular/core';
-import { Session } from "../../models/session";
+import { SessionInfo } from "../../models/session";
 
 @Component({
   selector: 'app-session-info',
@@ -8,7 +8,7 @@ import { Session } from "../../models/session";
 })
 export class SessionInfoComponent {
 
-  @Input("session") session!: Session;
+  @Input("session") session!: SessionInfo;
 
   get sessionLink(): string {
     const sessionId = this.session.id;
