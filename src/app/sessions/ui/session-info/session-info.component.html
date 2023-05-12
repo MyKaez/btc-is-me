@@ -12,6 +12,7 @@
 </p>
 
 <h3>Session Users</h3>
+Amount of users in session: {{session.users.length}}
 <ul>
     <li *ngFor="let user of session.users">
         <app-user-info [user]="user"></app-user-info>
