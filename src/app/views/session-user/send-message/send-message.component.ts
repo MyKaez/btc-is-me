@@ -3,7 +3,7 @@ import { FormControl, Validators } from '@angular/forms';
 import { Subject, switchMap } from 'rxjs';
 import { Session } from 'src/app/models/types';
 import { User } from 'src/app/models/user';
-import { SessionService } from 'src/app/sessions/services/session.service';
+import { SessionService } from 'src/app/sessions/data-access/session.service';
 
 @Component({
   selector: 'app-send-message',

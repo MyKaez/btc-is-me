@@ -2,7 +2,7 @@ import { Component, Input } from '@angular/core';
 import { FormControl, Validators } from '@angular/forms';
 import { Subject, switchMap } from 'rxjs';
 import { Session } from 'src/app/models/types';
-import { SessionService } from 'src/app/sessions/services/session.service';
+import { SessionService } from 'src/app/sessions/data-access/session.service';
 
 @Component({
   selector: 'app-sessions-user',
