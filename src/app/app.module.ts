@@ -6,7 +6,7 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
-import { SessionComponent } from './sessions/session.component';
+import { SessionComponent } from './sessions/feature/session-main/session.component';
 import { SessionInfoComponent } from './views/session-info/session-info.component';
 import { SessionCreatorComponent } from './views/session-creator/session-creator.component';
 import { SessionsHostComponent } from './views/session-host/session-host.component';
