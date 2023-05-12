@@ -7,6 +7,12 @@
     <span *ngIf="message$ | async"></span>
 </div>
 <ng-template #noUser>
-    <input type="text" [formControl]="userNameControl" [disabled]="userNameControl.invalid">
-    <button (click)="registerUser()">Register User!</button>
+    <div *ngIf="loading$ | async;else enterData">
+        Loading...
+    </div>
+    <ng-template #enterData>
+        Please register as user
+        <input type="text" [formControl]="userNameControl" [disabled]="userNameControl.invalid">
+        <button (click)="registerUser()">Register User!</button>
+    </ng-template>
 </ng-template>

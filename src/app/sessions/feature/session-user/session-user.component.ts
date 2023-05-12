@@ -19,6 +19,7 @@ export class SessionUserComponent {
 
   private userName = new Subject<string>();
   private message = new Subject<Message>();
+  private loading = new Subject<boolean>();
 
   userNameControl = new FormControl('', [Validators.required, Validators.minLength(5)]);
 
@@ -31,7 +32,10 @@ export class SessionUserComponent {
     switchMap(([user, message]) => this._sessionService.sendUserMessage(this.session.id, user.id, message)),
   );
 
+  loading$ = this.loading.pipe();
+
   registerUser(): void {
+    this.loading.next(true);
     this.userName.next(this.userNameControl.value ?? '');
   }
 
