@@ -1,5 +1,4 @@
 import { Component, Input } from '@angular/core';
-import { FormControl, Validators } from '@angular/forms';
 import { Subject, switchMap } from 'rxjs';
 import { SessionHostInfo, SessionInfo } from "../../models/session";
 import { SessionService } from 'src/app/sessions/data-access/session.service';
@@ -15,6 +14,7 @@ export class SessionsHostComponent {
   @Input("session") session!: SessionInfo;
 
   private message = new Subject<Message>();
+  private sessionStatus = new Subject<'start' | 'stop'>();
 
   get controlSession(): SessionHostInfo {
     return <SessionHostInfo>this.session;
@@ -27,7 +27,19 @@ export class SessionsHostComponent {
     switchMap(message => this._sessionService.sendSessionMessage(this.controlSession, message))
   );
 
+  sessionStatus$ = this.sessionStatus.pipe(
+    switchMap(status => this._sessionService.executeSessionAction(this.controlSession, status))
+  );
+
   sendMessage(message: Message): void {
     this.message.next(message);
+  }
+
+  start() {
+    this.sessionStatus.next('start');
+  }
+
+  stop() {
+    this.sessionStatus.next('stop');
   }
 }

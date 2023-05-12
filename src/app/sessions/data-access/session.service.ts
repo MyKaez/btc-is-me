@@ -38,6 +38,16 @@ export class SessionService {
     )
   }
 
+  executeSessionAction(session: SessionHostInfo, status: string): any {
+    const req = {
+      controlId: session.controlId,
+      action: status
+    };
+    return this._httpClient.post(`${this._baseUrl}/v1/sessions/${session.id}/actions`, req).pipe(
+      map(value => <SessionInfo>value)
+    )
+  }
+
   registerUser(sessionId: string, userName: string): Observable<User> {
     const user = { name: userName };
     return this._httpClient.post(`${this._baseUrl}/v1/sessions/${sessionId}/users`, user).pipe(

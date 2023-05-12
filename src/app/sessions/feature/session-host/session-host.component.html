@@ -1,6 +1,15 @@
 <h2>Host Actions</h2>
 
-<app-send-message (messageSend)="sendMessage($event)"></app-send-message>
-<span *ngIf="message$ | async as message">
-    {{message}}
-</span>
+<div>
+    <app-send-message [senderId]="session.id" (messageSend)="sendMessage($event)"></app-send-message>
+    <span *ngIf="message$ | async as message">
+        {{message}}
+    </span>
+</div>
+<div>
+    <button (click)="start()">Start Session</button>
+    <button (click)="stop()">Stop Session</button>
+    <span *ngIf="sessionStatus$ | async as sessionStatus">
+        Status: {{sessionStatus}}
+    </span>
+</div>
