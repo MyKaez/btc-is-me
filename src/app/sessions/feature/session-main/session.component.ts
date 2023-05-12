@@ -47,7 +47,7 @@ export class SessionComponent {
   }
 
   isSessionHost(session: SessionHostInfo | SessionInfo): boolean {
-    return session as SessionHostInfo !== undefined;
+    return 'controlId' in session;
   }
 
   printMessage(message: Message) {
