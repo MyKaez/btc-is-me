@@ -3,6 +3,7 @@ import { FormControl, Validators } from '@angular/forms';
 import { Subject, combineLatest, shareReplay, switchMap, tap } from 'rxjs';
 import { SessionInfo } from "../../models/session";
 import { SessionService } from 'src/app/sessions/data-access/session.service';
+import { Message } from '../../models/message';
 
 @Component({
   selector: 'app-sessions-user',
@@ -17,7 +18,7 @@ export class SessionUserComponent {
   }
 
   private userName = new Subject<string>();
-  private message = new Subject<string>();
+  private message = new Subject<Message>();
 
   userNameControl = new FormControl('', [Validators.required, Validators.minLength(5)]);
 
@@ -34,7 +35,7 @@ export class SessionUserComponent {
     this.userName.next(this.userNameControl.value ?? '');
   }
 
-  sendMessage(message: string) {
+  sendMessage(message: Message) {
     this.message.next(message);
   }
 }

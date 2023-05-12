@@ -4,6 +4,7 @@ import { Observable, map } from 'rxjs';
 import { HubConnection, HubConnectionBuilder } from '@microsoft/signalr';
 import { User } from '../models/user';
 import { SessionHostInfo, Session, SessionInfo } from '../models/session';
+import { Message } from '../models/message';
 
 @Injectable({
   providedIn: 'root'
@@ -26,15 +27,13 @@ export class SessionService {
     )
   }
 
-  sendSessionMessage(session: SessionHostInfo, text: string): Observable<SessionInfo> {
-    const message = {
+  sendSessionMessage(session: SessionHostInfo, message: Message): Observable<SessionInfo> {
+    const req = {
       controlId: session.controlId,
       action: 'notify',
-      data: {
-        message: text
-      }
+      data: message
     };
-    return this._httpClient.post(`${this._baseUrl}/v1/sessions/${session.id}/actions`, message).pipe(
+    return this._httpClient.post(`${this._baseUrl}/v1/sessions/${session.id}/actions`, req).pipe(
       map(value => <SessionInfo>value)
     )
   }
@@ -46,10 +45,7 @@ export class SessionService {
     )
   }
 
-  sendUserMessage(sessionId: string, userId: string, text: string): Observable<User> {
-    const message = {
-      message: text
-    };
+  sendUserMessage(sessionId: string, userId: string, message: Message): Observable<User> {
     return this._httpClient.post(`${this._baseUrl}/v1/sessions/${sessionId}/users/${userId}/actions`, message).pipe(
       map(value => <User>value)
     )

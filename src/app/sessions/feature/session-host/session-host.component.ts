@@ -3,6 +3,7 @@ import { FormControl, Validators } from '@angular/forms';
 import { Subject, switchMap } from 'rxjs';
 import { SessionHostInfo, SessionInfo } from "../../models/session";
 import { SessionService } from 'src/app/sessions/data-access/session.service';
+import { Message } from '../../models/message';
 
 @Component({
   selector: 'app-sessions-host',
@@ -13,6 +14,8 @@ export class SessionsHostComponent {
 
   @Input("session") session!: SessionInfo;
 
+  private message = new Subject<Message>();
+
   get controlSession(): SessionHostInfo {
     return <SessionHostInfo>this.session;
   }
@@ -20,16 +23,11 @@ export class SessionsHostComponent {
   constructor(private _sessionService: SessionService) {
   }
 
-  messageControl = new FormControl('', [Validators.required]);
-  message = new Subject<string>();
-
-  currentMessage$ = this.message.pipe(
+  message$ = this.message.pipe(
     switchMap(message => this._sessionService.sendSessionMessage(this.controlSession, message))
   );
 
-  sendMessage(): void {
-    const message = this.messageControl.value ?? '';
+  sendMessage(message: Message): void {
     this.message.next(message);
-    this.messageControl.setValue('');
   }
 }

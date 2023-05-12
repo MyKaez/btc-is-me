@@ -1,7 +1,6 @@
 import { Component, EventEmitter, Input, Output } from '@angular/core';
 import { FormControl, Validators } from '@angular/forms';
-import { SessionInfo } from "../../models/session";
-import { User } from 'src/app/sessions/models/user';
+import { Message } from '../../models/message';
 
 @Component({
   selector: 'app-send-message',
@@ -10,15 +9,17 @@ import { User } from 'src/app/sessions/models/user';
 })
 export class SendMessageComponent {
 
-  @Input("session") session!: SessionInfo;
-  @Input("user") user!: User;
-
-  @Output("messageSend") messageSend = new EventEmitter<string>();
+  @Input("senderId") senderId!: string;
+  @Output("messageSend") messageSend = new EventEmitter<Message>();
 
   messageControl = new FormControl('', [Validators.required]);
 
   sendMessage() {
-    const message = this.messageControl.value ?? '';
+    const text = this.messageControl.value ?? '';
+    const message = {
+      senderId: this.senderId,
+      text: text
+    };
     this.messageSend.next(message);
     this.messageControl.setValue('');
   }
