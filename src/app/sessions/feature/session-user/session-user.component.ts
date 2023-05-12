@@ -2,9 +2,9 @@ import { Component, Input } from '@angular/core';
 import { FormControl, Validators } from '@angular/forms';
 import { Subject, combineLatest, shareReplay, switchMap, tap } from 'rxjs';
 import { SessionInfo } from "../../models/session";
-import { SessionService } from 'src/app/sessions/data-access/session.service';
 import { Message } from '../../models/message';
 import { UserService } from '../../data-access/user.service';
+import { SuggestionsService } from '../../data-access/suggestions.service';
 
 @Component({
   selector: 'app-sessions-user',
@@ -15,7 +15,7 @@ export class SessionUserComponent {
 
   @Input("session") session!: SessionInfo;
 
-  constructor(private _userService: UserService) {
+  constructor(private _userService: UserService, private _suggestionService: SuggestionsService) {
   }
 
   private userName = new Subject<string>();
@@ -34,6 +34,13 @@ export class SessionUserComponent {
   );
 
   loading$ = this.loading.pipe();
+
+  ngAfterViewInit(): void {
+    const subscription = this._suggestionService.suggestUser().subscribe(suggestion => {
+      this.userNameControl.setValue(suggestion.name);
+      subscription.unsubscribe();
+    });
+  }
 
   registerUser(): void {
     this.loading.next(true);

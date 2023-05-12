@@ -23,7 +23,7 @@ export class SessionCreatorComponent implements AfterViewInit {
   );
 
   ngAfterViewInit(): void {
-    const subscription = this._suggestionService.suggest().subscribe(suggestion => {
+    const subscription = this._suggestionService.suggestSession().subscribe(suggestion => {
       this.nameControl.setValue(suggestion.name);
       subscription.unsubscribe();
     });
