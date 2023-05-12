@@ -2,7 +2,6 @@ import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable, map } from 'rxjs';
 import { HubConnection, HubConnectionBuilder } from '@microsoft/signalr';
-import { User } from '../models/user';
 import { SessionHostInfo, Session, SessionInfo, SessionAction } from '../models/session';
 import { Message } from '../models/message';
 
@@ -35,19 +34,6 @@ export class SessionService {
     };
     return this._httpClient.post(`${this._baseUrl}/v1/sessions/${session.id}/actions`, req).pipe(
       map(value => <SessionInfo>value)
-    )
-  }
-
-  registerUser(sessionId: string, userName: string): Observable<User> {
-    const user = { name: userName };
-    return this._httpClient.post(`${this._baseUrl}/v1/sessions/${sessionId}/users`, user).pipe(
-      map(value => <User>value)
-    )
-  }
-
-  sendUserMessage(sessionId: string, userId: string, message: Message): Observable<User> {
-    return this._httpClient.post(`${this._baseUrl}/v1/sessions/${sessionId}/users/${userId}/actions`, message).pipe(
-      map(value => <User>value)
     )
   }
 

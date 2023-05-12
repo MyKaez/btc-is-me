@@ -4,6 +4,7 @@ import { Subject, combineLatest, shareReplay, switchMap, tap } from 'rxjs';
 import { SessionInfo } from "../../models/session";
 import { SessionService } from 'src/app/sessions/data-access/session.service';
 import { Message } from '../../models/message';
+import { UserService } from '../../data-access/user.service';
 
 @Component({
   selector: 'app-sessions-user',
@@ -14,7 +15,7 @@ export class SessionUserComponent {
 
   @Input("session") session!: SessionInfo;
 
-  constructor(private _sessionService: SessionService) {
+  constructor(private _userService: UserService) {
   }
 
   private userName = new Subject<string>();
@@ -24,12 +25,12 @@ export class SessionUserComponent {
   userNameControl = new FormControl('', [Validators.required, Validators.minLength(5)]);
 
   user$ = this.userName.pipe(
-    switchMap(userName => this._sessionService.registerUser(this.session.id, userName)),
+    switchMap(userName => this._userService.registerUser(this.session.id, userName)),
     shareReplay(1)
   );
 
   message$ = combineLatest([this.user$, this.message]).pipe(
-    switchMap(([user, message]) => this._sessionService.sendUserMessage(this.session.id, user.id, message)),
+    switchMap(([user, message]) => this._userService.sendUserMessage(this.session.id, user.id, message)),
   );
 
   loading$ = this.loading.pipe();
