@@ -1,10 +1,9 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable, map } from 'rxjs';
-import { ControlSession, Session } from '../models/types';
-import { CreateSession } from '../models/create-session';
 import { HubConnection, HubConnectionBuilder } from '@microsoft/signalr';
 import { User } from '../models/user';
+import { ControlSession, CreateSession, Session } from '../models/session';
 
 @Injectable({
   providedIn: 'root'

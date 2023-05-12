@@ -9,3 +9,7 @@ export interface Session {
 export interface ControlSession extends Session {
     controlId: string;
 }
+
+export interface CreateSession {
+    name: string;
+}

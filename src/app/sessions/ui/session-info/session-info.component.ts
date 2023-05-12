@@ -1,5 +1,5 @@
 import { Component, Input } from '@angular/core';
-import { Session } from 'src/app/sessions/models/types';
+import { Session } from "../../models/session";
 
 @Component({
   selector: 'app-session-info',

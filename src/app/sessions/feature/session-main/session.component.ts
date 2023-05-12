@@ -1,9 +1,8 @@
 import { Component } from '@angular/core';
 import { BehaviorSubject, Subject, filter, map, merge, switchMap, tap } from 'rxjs';
-import { ControlSession, Session } from '../../models/types';
 import { ActivatedRoute } from '@angular/router';
 import { SessionService } from '../../data-access/session.service';
-import { CreateSession } from '../../models/create-session';
+import { ControlSession, CreateSession, Session } from '../../models/session';
 
 @Component({
   selector: 'app-session',
