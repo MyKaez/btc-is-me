@@ -13,7 +13,7 @@ export class SessionCreatorComponent {
 
   nameControl = new FormControl('', [Validators.required, Validators.minLength(5)]);
 
-  $nameControl = this.nameControl.valueChanges.pipe(
+  nameControl$ = this.nameControl.valueChanges.pipe(
     debounceTime(300),
     distinctUntilChanged()
   );
