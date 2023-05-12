@@ -12,13 +12,18 @@
 
     <h2>Shared Messages</h2>
     <ul>
-        <li *ngFor="let msg of messages| async">
+        <li *ngFor="let msg of messages$| async">
             {{msg}}
         </li>
     </ul>
 </div>
 
 <ng-template #noSession>
-    Please create a session or hook up into an existing one<br />
-    <app-session-creator (nameChange)="registerSession($event)"></app-session-creator>
+    <div *ngIf="loading$ | async;else enterData">
+        Loading...
+    </div>
+    <ng-template #enterData>
+        Please create a session or hook up into an existing one<br />
+        <app-session-creator (nameChange)="registerSession($event)"></app-session-creator>
+    </ng-template>
 </ng-template>
