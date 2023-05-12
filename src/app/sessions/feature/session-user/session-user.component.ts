@@ -1,6 +1,6 @@
 import { Component, Input } from '@angular/core';
 import { FormControl, Validators } from '@angular/forms';
-import { Subject, switchMap } from 'rxjs';
+import { Subject, combineLatest, shareReplay, switchMap, tap } from 'rxjs';
 import { SessionInfo } from "../../models/session";
 import { SessionService } from 'src/app/sessions/data-access/session.service';
 
@@ -16,14 +16,25 @@ export class SessionUserComponent {
   constructor(private _sessionService: SessionService) {
   }
 
+  private userName = new Subject<string>();
+  private message = new Subject<string>();
+
   userNameControl = new FormControl('', [Validators.required, Validators.minLength(5)]);
-  userName = new Subject<string>();
 
   user$ = this.userName.pipe(
-    switchMap(userName => this._sessionService.registerUser(this.session.id, userName))
+    switchMap(userName => this._sessionService.registerUser(this.session.id, userName)),
+    shareReplay(1)
+  );
+
+  message$ = combineLatest([this.user$, this.message]).pipe(
+    switchMap(([user, message]) => this._sessionService.sendUserMessage(this.session.id, user.id, message)),
   );
 
   registerUser(): void {
     this.userName.next(this.userNameControl.value ?? '');
+  }
+
+  sendMessage(message: string) {
+    this.message.next(message);
   }
 }

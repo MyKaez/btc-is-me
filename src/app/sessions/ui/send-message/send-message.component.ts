@@ -1,9 +1,7 @@
-import { Component, Input } from '@angular/core';
+import { Component, EventEmitter, Input, Output } from '@angular/core';
 import { FormControl, Validators } from '@angular/forms';
-import { Subject, switchMap } from 'rxjs';
 import { SessionInfo } from "../../models/session";
 import { User } from 'src/app/sessions/models/user';
-import { SessionService } from 'src/app/sessions/data-access/session.service';
 
 @Component({
   selector: 'app-send-message',
@@ -15,19 +13,13 @@ export class SendMessageComponent {
   @Input("session") session!: SessionInfo;
   @Input("user") user!: User;
 
-  constructor(private _sessionService: SessionService) {
-  }
+  @Output("messageSend") messageSend = new EventEmitter<string>();
 
   messageControl = new FormControl('', [Validators.required]);
-  message = new Subject<string>();
-
-  message$ = this.message.pipe(
-    switchMap(message => this._sessionService.sendUserMessage(this.session.id, this.user.id, message))
-  );
 
   sendMessage() {
     const message = this.messageControl.value ?? '';
-    this.message.next(message);
+    this.messageSend.next(message);
     this.messageControl.setValue('');
   }
 }
