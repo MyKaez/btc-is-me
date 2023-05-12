@@ -1,6 +1,6 @@
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
-import { SessionComponent } from './session/session.component';
+import { SessionComponent } from './sessions/session.component';
 
 const routes: Routes = [
   { path: 'sessions', component: SessionComponent },
