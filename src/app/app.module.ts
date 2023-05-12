@@ -9,8 +9,8 @@ import { AppComponent } from './app.component';
 import { SessionComponent } from './sessions/feature/session-main/session.component';
 import { SessionInfoComponent } from './sessions/ui/session-info/session-info.component';
 import { SessionCreatorComponent } from './sessions/ui/session-creator/session-creator.component';
-import { SessionsHostComponent } from './views/session-host/session-host.component';
-import { SessionUserComponent } from './views/session-user/session-user.component';
+import { SessionsHostComponent } from './sessions/feature/session-host/session-host.component';
+import { SessionUserComponent } from './sessions/feature/session-user/session-user.component';
 import { SendMessageComponent } from './sessions/ui/send-message/send-message.component';
 
 @NgModule({
