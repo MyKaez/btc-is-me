@@ -1,8 +1,8 @@
 import { Component, Input } from '@angular/core';
 import { FormControl, Validators } from '@angular/forms';
 import { Subject, switchMap } from 'rxjs';
-import { Session } from 'src/app/models/types';
-import { User } from 'src/app/models/user';
+import { Session } from 'src/app/sessions/models/types';
+import { User } from 'src/app/sessions/models/user';
 import { SessionService } from 'src/app/sessions/data-access/session.service';
 
 @Component({
