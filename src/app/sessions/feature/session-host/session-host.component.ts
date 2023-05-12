@@ -24,11 +24,11 @@ export class SessionsHostComponent {
   }
 
   message$ = this.message.pipe(
-    switchMap(message => this._sessionService.sendSessionMessage(this.controlSession, message))
+    switchMap(message => this._sessionService.sendMessage(this.controlSession, 'notify', message))
   );
 
   sessionStatus$ = this.sessionStatus.pipe(
-    switchMap(status => this._sessionService.executeSessionAction(this.controlSession, status))
+    switchMap(status => this._sessionService.sendMessage(this.controlSession, status))
   );
 
   sendMessage(message: Message): void {

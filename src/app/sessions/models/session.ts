@@ -3,10 +3,13 @@ export interface Session {
     name: string;
 }
 
+export type SessionAction = 'start' | 'stop' | 'notify';
+export type SessionStatus = 'notStarted' | 'started' | 'stopped';
+
 export interface SessionInfo {
     id: string;
     name: string;
-    status: 'notStarted' | 'started' | 'stopped';
+    status: SessionStatus;
     configuration?: any;
     expirationTime: Date;
 }
