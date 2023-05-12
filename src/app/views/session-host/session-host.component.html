@@ -1,7 +1,7 @@
 <h2>Host Actions</h2>
 
 <input type="text" [formControl]="messageControl">
-<button (click)="sendMessage()" [disabled]="messageControl.invalid">Click!</button>
+<button (click)="sendMessage()" [disabled]="messageControl.invalid">Send Message!</button>
 <span *ngIf="currentMessage$ | async as message">
     {{message}}
 </span>
