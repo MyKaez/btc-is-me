@@ -1,6 +1,5 @@
 <h2>Host Actions</h2>
 
-<app-send-message></app-send-message>
 <app-send-message (messageSend)="sendMessage($event)"></app-send-message>
 <span *ngIf="message$ | async as message">
     {{message}}
