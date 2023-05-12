@@ -6,10 +6,10 @@ import { SessionService } from 'src/app/services/session.service';
 
 @Component({
   selector: 'app-sessions-user',
-  templateUrl: './sessions-user.component.html',
-  styleUrls: ['./sessions-user.component.sass']
+  templateUrl: './session-user.component.html',
+  styleUrls: ['./session-user.component.sass']
 })
-export class SessionsUserComponent {
+export class SessionUserComponent {
 
   @Input("session") session!: Session;
 
