@@ -36,7 +36,7 @@ export class SessionComponent {
     filter(session => session !== undefined),
     tap(session => this._sessionService.connect(session.id, connection => {
       connection.on(session.id, message => this.messages.next([message, ...this.messages.value]));
-      connection.on(`${session.id}:CreateUser`, user => session.users = [...session.users, user])
+      connection.on(`${session.id}:CreateUser`, user => session.users = [...session.users, user]);
     })),
     shareReplay(1)
   );
