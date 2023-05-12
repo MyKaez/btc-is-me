@@ -6,8 +6,8 @@ import { SessionService } from 'src/app/services/session.service';
 
 @Component({
   selector: 'app-sessions-host',
-  templateUrl: './sessions-host.component.html',
-  styleUrls: ['./sessions-host.component.sass']
+  templateUrl: './session-host.component.html',
+  styleUrls: ['./session-host.component.sass']
 })
 export class SessionsHostComponent {
 

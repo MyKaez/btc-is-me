@@ -9,7 +9,7 @@ import { AppComponent } from './app.component';
 import { SessionComponent } from './session/session.component';
 import { SessionInfoComponent } from './views/session-info/session-info.component';
 import { SessionCreatorComponent } from './views/session-creator/session-creator.component';
-import { SessionsHostComponent } from './views/sessions-host/sessions-host.component';
+import { SessionsHostComponent } from './views/session-host/session-host.component';
 import { SessionsUserComponent } from './views/sessions-user/sessions-user.component';
 import { SendMessageComponent } from './views/sessions-user/send-message/send-message.component';
 
