@@ -35,11 +35,13 @@ export class SessionService {
     )
   }
 
-  connect(sessionId: string, consumer: (message: Message) => void): HubConnection {
+  connect(sessionId: string, listener: (connection: HubConnection) => void): HubConnection {
     const connection = new HubConnectionBuilder()
       .withUrl(`${this._url}/v1/sessions`)
       .build();
-    connection.on(sessionId, message => consumer(message));
+
+    listener(connection);
+
     connection.start()
       .then(() => console.log('connection started'))
       .catch((err) => console.log('error while establishing signalr connection: ' + err));
