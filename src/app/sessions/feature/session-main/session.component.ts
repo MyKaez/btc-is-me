@@ -3,6 +3,7 @@ import { BehaviorSubject, Subject, combineLatest, filter, map, merge, shareRepla
 import { ActivatedRoute } from '@angular/router';
 import { SessionService } from '../../data-access/session.service';
 import { SessionHostInfo, Session, SessionInfo } from '../../models/session';
+import { Message } from '../../models/message';
 
 @Component({
   selector: 'app-session',
@@ -15,7 +16,7 @@ export class SessionComponent {
   }
 
   private session = new Subject<Session>();
-  private messages = new BehaviorSubject<string[]>([]);
+  private messages = new BehaviorSubject<Message[]>([]);
   private load = new Subject<boolean>();
 
   messages$ = this.messages.pipe();
@@ -46,6 +47,10 @@ export class SessionComponent {
   }
 
   isSessionHost(session: SessionHostInfo | SessionInfo): boolean {
-    return 'controlId' in session;
+    return session as SessionHostInfo !== undefined;
+  }
+
+  printMessage(message: Message) {
+    return JSON.stringify(message);
   }
 }

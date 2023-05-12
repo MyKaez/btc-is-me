@@ -12,8 +12,8 @@
 
     <h2>Shared Messages</h2>
     <ul>
-        <li *ngFor="let msg of messages$| async">
-            {{msg}}
+        <li *ngFor="let message of messages$| async">
+            {{printMessage(message)}}
         </li>
     </ul>
 </div>
