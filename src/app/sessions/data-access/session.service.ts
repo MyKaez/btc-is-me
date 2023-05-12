@@ -1,5 +1,5 @@
 import { HttpClient } from '@angular/common/http';
-import { Injectable } from '@angular/core';
+import { Inject, Injectable } from '@angular/core';
 import { Observable, map } from 'rxjs';
 import { HubConnection, HubConnectionBuilder } from '@microsoft/signalr';
 import { SessionHostInfo, Session, SessionInfo, SessionAction } from '../models/session';
@@ -9,19 +9,17 @@ import { Message } from '../models/message';
   providedIn: 'root'
 })
 export class SessionService {
-  private _baseUrl = 'https://api.btcis.me';
-  //private _baseUrl = 'https://localhost:5001';
 
-  constructor(private _httpClient: HttpClient) { }
+  constructor(@Inject('BTCIS.ME-API') private _url: string, private _httpClient: HttpClient) { }
 
   getSession(sessionId: string): Observable<SessionInfo> {
-    return this._httpClient.get(`${this._baseUrl}/v1/sessions/${sessionId}`).pipe(
+    return this._httpClient.get(`${this._url}/v1/sessions/${sessionId}`).pipe(
       map(value => <SessionInfo>value)
     )
   }
 
   createSession(session: Session): Observable<SessionHostInfo> {
-    return this._httpClient.post(`${this._baseUrl}/v1/sessions`, session).pipe(
+    return this._httpClient.post(`${this._url}/v1/sessions`, session).pipe(
       map(value => <SessionHostInfo>value)
     )
   }
@@ -32,14 +30,14 @@ export class SessionService {
       action: action,
       data: message
     };
-    return this._httpClient.post(`${this._baseUrl}/v1/sessions/${session.id}/actions`, req).pipe(
+    return this._httpClient.post(`${this._url}/v1/sessions/${session.id}/actions`, req).pipe(
       map(value => <SessionInfo>value)
     )
   }
 
   connect(sessionId: string, consumer: (message: string) => void): HubConnection {
     const connection = new HubConnectionBuilder()
-      .withUrl(`${this._baseUrl}/v1/sessions`)
+      .withUrl(`${this._url}/v1/sessions`)
       .build();
     connection.on(sessionId, message => consumer(message));
     connection.start()
