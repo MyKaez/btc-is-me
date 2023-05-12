@@ -7,11 +7,11 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 import { SessionComponent } from './sessions/feature/session-main/session.component';
-import { SessionInfoComponent } from './views/session-info/session-info.component';
+import { SessionInfoComponent } from './sessions/ui/session-info/session-info.component';
 import { SessionCreatorComponent } from './views/session-creator/session-creator.component';
 import { SessionsHostComponent } from './views/session-host/session-host.component';
 import { SessionUserComponent } from './views/session-user/session-user.component';
-import { SendMessageComponent } from './views/session-user/send-message/send-message.component';
+import { SendMessageComponent } from './sessions/ui/send-message/send-message.component';
 
 @NgModule({
   declarations: [
