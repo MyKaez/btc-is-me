@@ -10,3 +10,10 @@
 <p>
     <a [href]="sessionLink" target="_blank">{{sessionLink}}</a>
 </p>
+
+<h3>Session Users</h3>
+<ul>
+    <li *ngFor="let user of session.users">
+        <app-user-info [user]="user"></app-user-info>
+    </li>
+</ul>

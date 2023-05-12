@@ -1,3 +1,4 @@
+import { User } from "./user";
 
 export interface Session {
     name: string;
@@ -12,6 +13,7 @@ export interface SessionInfo {
     status: SessionStatus;
     configuration?: any;
     expirationTime: Date;
+    users: User[];
 }
 
 export interface SessionHostInfo extends SessionInfo {

@@ -12,6 +12,7 @@ import { SessionCreatorComponent } from './sessions/ui/session-creator/session-c
 import { SessionsHostComponent } from './sessions/feature/session-host/session-host.component';
 import { SessionUserComponent } from './sessions/feature/session-user/session-user.component';
 import { SendMessageComponent } from './sessions/ui/send-message/send-message.component';
+import { UserInfoComponent } from './sessions/ui/user-info/user-info.component';
 
 @NgModule({
   declarations: [
@@ -21,7 +22,8 @@ import { SendMessageComponent } from './sessions/ui/send-message/send-message.co
     SessionCreatorComponent,
     SessionsHostComponent,
     SessionUserComponent,
-    SendMessageComponent
+    SendMessageComponent,
+    UserInfoComponent
   ],
   imports: [
     BrowserModule,
