@@ -1,14 +1,45 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, Input, OnInit } from '@angular/core';
+import { SessionHostInfo, SessionInfo } from '../../models/session';
+import { Subject, switchMap } from 'rxjs';
+import { Message } from '../../models/message';
+import { SessionService } from '../../data-access/session.service';
 
 @Component({
   selector: 'app-host',
   templateUrl: './host.component.html',
   styleUrls: ['./host.component.scss'],
 })
-export class HostComponent  implements OnInit {
+export class HostComponent {
 
-  constructor() { }
+  @Input("session") session!: SessionInfo;
 
-  ngOnInit() {}
+  private message = new Subject<Message>();
+  private sessionStatus = new Subject<'start' | 'stop'>();
 
+  constructor(private sessionService: SessionService) {
+  }
+
+  get controlSession(): SessionHostInfo {
+    return <SessionHostInfo>this.session;
+  }
+
+  message$ = this.message.pipe(
+    switchMap(message => this.sessionService.sendMessage(this.controlSession, 'notify', message))
+  );
+
+  sessionStatus$ = this.sessionStatus.pipe(
+    switchMap(status => this.sessionService.sendMessage(this.controlSession, status))
+  );
+
+  sendMessage(message: Message): void {
+    this.message.next(message);
+  }
+
+  start() {
+    this.sessionStatus.next('start');
+  }
+
+  stop() {
+    this.sessionStatus.next('stop');
+  }
 }

@@ -1,3 +1,18 @@
-<p>
-  user works!
-</p>
+<h2>User Actions</h2>
+
+<div *ngIf="user$ | async as user;else noUser">
+  <p>Hello {{user.name}}!</p>
+  <p>Your ID is {{user.id}}</p>
+  <!--app-send-message [senderId]="user.id" (messageSend)="sendMessage($event)"></app-send-message-->
+  <span *ngIf="message$ | async"></span>
+</div>
+<ng-template #noUser>
+  <div *ngIf="loading$ | async;else enterData">
+    Loading...
+  </div>
+  <ng-template #enterData>
+    Please register as user
+    <input type="text" [formControl]="userNameControl" [disabled]="userNameControl.invalid">
+    <button (click)="registerUser()">Register User!</button>
+  </ng-template>
+</ng-template>

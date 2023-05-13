@@ -10,6 +10,8 @@ import { MainPage } from './feature/main/main.page';
 import { InputSessionComponent } from './ui/input-session/input-session.component';
 import { SessionInfoComponent } from './ui/session-info/session-info.component';
 import { UserInfoComponent } from './ui/user-info/user-info.component';
+import { HostComponent } from './feature/host/host.component';
+import { UserComponent } from './feature/user/user.component';
 
 @NgModule({
   imports: [
@@ -23,7 +25,9 @@ import { UserInfoComponent } from './ui/user-info/user-info.component';
     MainPage,
     InputSessionComponent,
     SessionInfoComponent,
-    UserInfoComponent
+    UserInfoComponent,
+    HostComponent,
+    UserComponent
   ]
 })
 export class SessionModule { }

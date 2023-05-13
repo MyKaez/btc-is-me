@@ -1,8 +1,8 @@
 import { HttpClient } from '@angular/common/http';
 import { Inject, Injectable } from '@angular/core';
-import { User } from '@ionic/cli';
 import { Observable, map } from 'rxjs';
 import { Message } from '../models/message';
+import { User } from '../models/user';
 
 @Injectable({
   providedIn: 'root'

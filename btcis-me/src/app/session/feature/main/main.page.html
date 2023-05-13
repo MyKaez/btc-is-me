@@ -18,14 +18,14 @@
 
       <app-session-info [session]="session"></app-session-info>
 
-      <!--
+
       <div *ngIf="isSessionHost(session);else user">
-          <app-sessions-host [session]="session"></app-sessions-host>
+        <app-session-host [session]="session"></app-session-host>
       </div>
       <ng-template #user>
-          <app-sessions-user [session]="session"></app-sessions-user>
+        <app-session-user [session]="session"></app-session-user>
       </ng-template>
-  -->
+
       <h2>Shared Messages</h2>
       <ul>
         <li *ngFor="let message of messages$| async">
