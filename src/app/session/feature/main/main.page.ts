@@ -11,6 +11,7 @@ import { User } from '../../models/user';
   styleUrls: ['./main.page.scss'],
 })
 export class MainPage {
+
   private static readonly LOCAL_STORAGE = 'sessionHost';
 
   private session = new Subject<Session>();
@@ -62,7 +63,13 @@ export class MainPage {
   currentSession$ = merge(this.getSessionById$, this.storedSession$, this.createSession$).pipe(
     filter(session => session !== undefined),
     map(session => <SessionHostInfo>session),
-    take(1)
+    switchMap(session => this.sessionService.getSession(session.id).pipe(
+      map(inner => {
+        return { ...session, users: inner.users };
+      })
+    )),
+    take(1),
+    shareReplay(1)
   );
 
   hubConnection$ = this.currentSession$.pipe(
