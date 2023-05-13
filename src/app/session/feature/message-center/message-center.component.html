@@ -1,7 +1,7 @@
 <h2>Shared Messages</h2>
 <app-send-message [senderId]="user?.id ?? session.id" (messageSend)="sendMessage($event)"></app-send-message>
 <ion-list>
-  <ion-item *ngFor="let message of messages$ | async">
+  <ion-item *ngFor="let message of messages">
     <ion-card [slot]="isMe(message) ? 'end' : 'start'">
       <ion-card-content>
         {{message.text}}

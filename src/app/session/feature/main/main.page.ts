@@ -4,6 +4,7 @@ import { SessionService } from '../../data-access/session.service';
 import { Subject, catchError, delay, filter, map, merge, of, shareReplay, switchMap, take, tap } from 'rxjs';
 import { Session, SessionHostInfo, SessionInfo } from '../../models/session';
 import { User } from '../../models/user';
+import { Message } from '../../models/message';
 
 @Component({
   selector: 'app-main',
@@ -22,6 +23,7 @@ export class MainPage {
 
   user?: User;
   type: 'session-info' | 'message-center' | 'user-action' = 'session-info';
+  messages: Message[] = [];
 
   getSessionById$ = this.route.params.pipe(
     map(p => p['id']),
@@ -77,6 +79,15 @@ export class MainPage {
   hubConnection$ = this.currentSession$.pipe(
     map(session => this.sessionService.connect(connection => {
       connection.on(`${session.id}:CreateUser`, user => session.users = [...session.users, user]);
+      connection.on(session.id, message => {
+        if ('id' in message && 'status' in message) {
+          this.messages = [{ senderId: message.id, text: 'Status updated: ' + message.status }, ...this.messages];
+        } else if ('senderId' in message && 'text' in message) {
+          this.messages = [message, ...this.messages];
+        } else {
+          this.messages = [{ senderId: '???', text: 'cannot handle: ' + JSON.stringify(message) }, ...this.messages];
+        }
+      });
     })),
     shareReplay(1)
   )
@@ -96,4 +107,5 @@ export class MainPage {
   setUser(user: User) {
     this.user = user;
   }
+
 }

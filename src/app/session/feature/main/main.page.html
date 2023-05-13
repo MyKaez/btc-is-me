@@ -27,7 +27,7 @@
         </ion-segment-button>
       </ion-segment>
 
-      <div [ngSwitch]="type">
+      <div [ngSwitch]="type" *ngIf="hubConnection$ | async">
         <div *ngSwitchCase="'session-info'">
           <app-session-info [session]="session"></app-session-info>
         </div>
@@ -40,8 +40,7 @@
           </ng-template>
         </div>
         <div *ngSwitchCase="'message-center'">
-          <app-message-center [session]="session" [user]="user" [hubConnection]="hubConnection"
-            *ngIf="hubConnection$ | async as hubConnection"></app-message-center>
+          <app-message-center [session]="session" [user]="user" [messages]="messages"></app-message-center>
         </div>
       </div>
     </div>
