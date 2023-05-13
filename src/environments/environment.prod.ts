@@ -1,3 +1,4 @@
 export const environment = {
-  production: true
+  production: true,
+  btcApi: 'https://api.btcis.me'
 };
