@@ -1,7 +1,7 @@
 import { Component } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { SessionService } from '../../data-access/session.service';
-import { Subject, catchError, filter, map, merge, of, shareReplay, switchMap, take, tap } from 'rxjs';
+import { Subject, catchError, delay, filter, map, merge, of, shareReplay, switchMap, take, tap } from 'rxjs';
 import { Session, SessionHostInfo, SessionInfo } from '../../models/session';
 import { User } from '../../models/user';
 
@@ -37,6 +37,7 @@ export class MainPage {
   );
 
   storedSession$ = of(localStorage.getItem(MainPage.LOCAL_STORAGE)).pipe(
+    delay(200), // we should delay this, since it's just a fallback!! 
     filter(session => session !== null),
     map(session => <SessionHostInfo>JSON.parse(session!)),
     switchMap(session => this.sessionService.getSession(session.id).pipe(
@@ -60,7 +61,8 @@ export class MainPage {
     tap(session => localStorage.setItem(MainPage.LOCAL_STORAGE, JSON.stringify({ ...session, users: [] }))),
   );
 
-  currentSession$ = merge(this.getSessionById$, this.storedSession$, this.createSession$).pipe(
+  currentSession$ = merge(this.getSessionById$, this.createSession$, this.storedSession$).pipe(
+    take(1),
     filter(session => session !== undefined),
     map(session => <SessionHostInfo>session),
     switchMap(session => this.sessionService.getSession(session.id).pipe(
@@ -68,7 +70,6 @@ export class MainPage {
         return { ...session, users: inner.users };
       })
     )),
-    take(1),
     shareReplay(1)
   );
 
