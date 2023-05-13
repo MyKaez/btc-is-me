@@ -1,5 +1,9 @@
-<ion-input label="Name" placeholder="Enter session name" [formControl]="nameControl"></ion-input>
-
-<span *ngIf="nameControl$ | async as name">
-  <ion-button (click)="nameChange.emit(name)" [disabled]="nameControl.invalid">Register</ion-button>
-</span>
+<h2>Register Session</h2>
+<ion-item>
+  <ion-input label="Session Name" labelPlacement="stacked" placeholder="Enter session name"
+    [formControl]="nameControl"></ion-input>
+  <span *ngIf="nameControl$ | async as name">
+    <ion-button fill="clear" slot="end" (click)="nameChange.emit(name)"
+      [disabled]="nameControl.invalid">Register</ion-button>
+  </span>
+</ion-item>

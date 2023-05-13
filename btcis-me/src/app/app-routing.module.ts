@@ -9,11 +9,11 @@ const routes: Routes = [
   },
   {
     path: 'session',
-    loadChildren: () => import('./session/main.module').then(m => m.MainPageModule)
+    loadChildren: () => import('./session/session.module').then(m => m.SessionModule)
   },
   {
     path: 'session/:id',
-    loadChildren: () => import('./session/main.module').then(m => m.MainPageModule)
+    loadChildren: () => import('./session/session.module').then(m => m.SessionModule)
   },
   {
     path: 'folder/:id',

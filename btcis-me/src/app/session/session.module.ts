@@ -26,4 +26,4 @@ import { UserInfoComponent } from './ui/user-info/user-info.component';
     UserInfoComponent
   ]
 })
-export class MainPageModule { }
+export class SessionModule { }
