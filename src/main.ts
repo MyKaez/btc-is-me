@@ -11,8 +11,8 @@ if (environment.production) {
 const providers = [
   {
     provide: 'BTCIS.ME-API',
-    //useFactory: () => 'https://api.btcis.me'
-    useFactory: () => 'https://localhost:5001'
+    useFactory: () => 'https://api.btcis.me'
+    //useFactory: () => 'https://localhost:5001'
   }
 ]
 
