@@ -19,19 +19,15 @@
       <app-session-info [session]="session"></app-session-info>
 
 
-      <div *ngIf="isSessionHost(session);else user">
+      <div *ngIf="isSessionHost(session);else userInfo">
         <app-host [session]="session"></app-host>
       </div>
-      <ng-template #user>
-        <app-user [session]="session"></app-user>
+      <ng-template #userInfo>
+        <app-user [session]="session" (userChange)="setUser($event)"></app-user>
       </ng-template>
 
-      <h2>Shared Messages</h2>
-      <ul>
-        <li *ngFor="let message of messages$| async">
-          {{printMessage(message)}}
-        </li>
-      </ul>
+      <app-message-center [session]="session" [user]="user" [hubConnection]="hubConnection"
+        *ngIf="hubConnection$ | async as hubConnection"></app-message-center>
     </div>
 
     <ng-template #noSession>

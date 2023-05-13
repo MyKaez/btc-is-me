@@ -1,9 +1,9 @@
 import { Component } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { SessionService } from '../../data-access/session.service';
-import { BehaviorSubject, Subject, catchError, filter, map, merge, of, shareReplay, switchMap, take, tap } from 'rxjs';
+import { Subject, catchError, filter, map, merge, of, shareReplay, switchMap, take, tap } from 'rxjs';
 import { Session, SessionHostInfo, SessionInfo } from '../../models/session';
-import { Message } from '../../models/message';
+import { User } from '../../models/user';
 
 @Component({
   selector: 'app-main',
@@ -11,17 +11,15 @@ import { Message } from '../../models/message';
   styleUrls: ['./main.page.scss'],
 })
 export class MainPage {
-
   private static readonly LOCAL_STORAGE = 'sessionHost';
 
   private session = new Subject<Session>();
-  private messages = new BehaviorSubject<Message[]>([]);
   private load = new Subject<boolean>();
 
   constructor(private sessionService: SessionService, private route: ActivatedRoute) {
   }
 
-  messages$ = this.messages.pipe();
+  user?: User;
 
   getSessionById$ = this.route.params.pipe(
     map(p => p['id']),
@@ -64,13 +62,15 @@ export class MainPage {
   currentSession$ = merge(this.getSessionById$, this.storedSession$, this.createSession$).pipe(
     filter(session => session !== undefined),
     map(session => <SessionHostInfo>session),
-    take(1),
-    tap(session => this.sessionService.connect(connection => {
-      connection.on(session.id, message => this.messages.next([message, ...this.messages.value]));
+    take(1)
+  );
+
+  hubConnection$ = this.currentSession$.pipe(
+    map(session => this.sessionService.connect(connection => {
       connection.on(`${session.id}:CreateUser`, user => session.users = [...session.users, user]);
     })),
     shareReplay(1)
-  );
+  )
 
   loading$ = this.load.pipe();
 
@@ -84,7 +84,7 @@ export class MainPage {
     return 'controlId' in session;
   }
 
-  printMessage(message: Message) {
-    return JSON.stringify(message);
+  setUser(user: User) {
+    this.user = user;
   }
 }

@@ -13,6 +13,7 @@ import { UserInfoComponent } from './ui/user-info/user-info.component';
 import { HostComponent } from './feature/host/host.component';
 import { UserComponent } from './feature/user/user.component';
 import { SendMessageComponent } from './ui/send-message/send-message.component';
+import { MessageCenterComponent } from './feature/message-center/message-center.component';
 
 @NgModule({
   imports: [
@@ -26,6 +27,7 @@ import { SendMessageComponent } from './ui/send-message/send-message.component';
     MainPage,
     HostComponent,
     UserComponent,
+    MessageCenterComponent,
     InputSessionComponent,
     SessionInfoComponent,
     UserInfoComponent,
