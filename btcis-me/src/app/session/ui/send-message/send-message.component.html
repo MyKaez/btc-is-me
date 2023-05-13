@@ -1,0 +1,4 @@
+<div>
+  <input type="text" [formControl]="messageControl">
+  <button (click)="sendMessage()" [disabled]="messageControl.invalid">Send Message</button>
+</div>

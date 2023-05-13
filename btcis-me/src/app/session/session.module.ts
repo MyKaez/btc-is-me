@@ -12,6 +12,7 @@ import { SessionInfoComponent } from './ui/session-info/session-info.component';
 import { UserInfoComponent } from './ui/user-info/user-info.component';
 import { HostComponent } from './feature/host/host.component';
 import { UserComponent } from './feature/user/user.component';
+import { SendMessageComponent } from './ui/send-message/send-message.component';
 
 @NgModule({
   imports: [
@@ -23,11 +24,12 @@ import { UserComponent } from './feature/user/user.component';
   ],
   declarations: [
     MainPage,
+    HostComponent,
+    UserComponent,
     InputSessionComponent,
     SessionInfoComponent,
     UserInfoComponent,
-    HostComponent,
-    UserComponent
+    SendMessageComponent
   ]
 })
 export class SessionModule { }

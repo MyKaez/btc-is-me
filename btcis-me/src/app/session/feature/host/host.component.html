@@ -1,7 +1,7 @@
 <h2>Host Actions</h2>
 
 <div>
-  <!--app-send-message [senderId]="session.id" (messageSend)="sendMessage($event)"></app-send-message-->
+  <app-send-message [senderId]="session.id" (messageSend)="sendMessage($event)"></app-send-message>
   <span *ngIf="message$ | async as message">
     {{message}}
   </span>
