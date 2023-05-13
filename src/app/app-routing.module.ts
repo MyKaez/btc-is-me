@@ -1,17 +1,30 @@
 import { NgModule } from '@angular/core';
-import { RouterModule, Routes } from '@angular/router';
-import { SessionComponent } from './sessions/feature/session-main/session.component';
+import { PreloadAllModules, RouterModule, Routes } from '@angular/router';
 
 const routes: Routes = [
-  { path: 'sessions', component: SessionComponent },
-  { path: 'sessions/:sessionId', component: SessionComponent },
-  { path: '', redirectTo: '/sessions', pathMatch: 'full' },
+  {
+    path: '',
+    redirectTo: 'session',
+    pathMatch: 'full'
+  },
+  {
+    path: 'session',
+    loadChildren: () => import('./session/session.module').then(m => m.SessionModule)
+  },
+  {
+    path: 'session/:id',
+    loadChildren: () => import('./session/session.module').then(m => m.SessionModule)
+  },
+  {
+    path: 'folder/:id',
+    loadChildren: () => import('./folder/folder.module').then(m => m.FolderPageModule)
+  },
 ];
 
 @NgModule({
-  imports: [RouterModule.forRoot(routes)],
+  imports: [
+    RouterModule.forRoot(routes, { preloadingStrategy: PreloadAllModules })
+  ],
   exports: [RouterModule]
 })
-export class AppRoutingModule {
-
-}
+export class AppRoutingModule { }

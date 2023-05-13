@@ -1,7 +1,0 @@
-{
-  "name": "btcis.me",
-  "integrations": {
-    "capacitor": {}
-  },
-  "type": "angular"
-}

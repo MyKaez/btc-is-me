@@ -1,6 +1,0 @@
-<p>
-    Session Name <input type="text" [formControl]="nameControl">
-    <span *ngIf="nameControl$ | async as name">
-        <button (click)="nameChange.emit(name)" [disabled]="nameControl.invalid">Register session</button>
-    </span>
-</p>
