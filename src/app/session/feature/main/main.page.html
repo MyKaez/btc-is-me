@@ -18,7 +18,6 @@
 
       <app-session-info [session]="session"></app-session-info>
 
-
       <div *ngIf="isSessionHost(session);else userInfo">
         <app-host [session]="session"></app-host>
       </div>
