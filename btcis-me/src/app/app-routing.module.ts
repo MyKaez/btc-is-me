@@ -8,13 +8,13 @@ const routes: Routes = [
     pathMatch: 'full'
   },
   {
+    path: 'session',
+    loadChildren: () => import('./session/feature/main/main.module').then(m => m.MainPageModule)
+  },
+  {
     path: 'folder/:id',
     loadChildren: () => import('./folder/folder.module').then(m => m.FolderPageModule)
   },
-  {
-    path: 'session',
-    loadChildren: () => import('./session/session.module').then(m => m.SessionPageModule)
-  }
 ];
 
 @NgModule({
