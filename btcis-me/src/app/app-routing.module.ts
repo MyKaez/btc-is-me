@@ -12,7 +12,7 @@ const routes: Routes = [
     loadChildren: () => import('./session/main.module').then(m => m.MainPageModule)
   },
   {
-    path: 'session:id',
+    path: 'session/:id',
     loadChildren: () => import('./session/main.module').then(m => m.MainPageModule)
   },
   {
