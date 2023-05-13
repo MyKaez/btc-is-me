@@ -18,7 +18,10 @@
     "@angular/platform-browser": "^16.0.0",
     "@angular/platform-browser-dynamic": "^16.0.0",
     "@angular/router": "^16.0.0",
+    "@ionic/cli": "^7.1.1",
     "@microsoft/signalr": "^7.0.5",
+    "cordova-res": "^0.15.4",
+    "native-run": "^1.7.2",
     "rxjs": "~7.8.0",
     "tslib": "^2.3.0",
     "zone.js": "~0.13.0"
