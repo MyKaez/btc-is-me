@@ -4,6 +4,8 @@ import { User } from '../../models/user';
 import { BehaviorSubject } from 'rxjs';
 import { Message } from '../../models/message';
 import { HubConnection } from '@microsoft/signalr';
+import { SessionService } from '../../data-access/session.service';
+import { UserService } from '../../data-access/user.service';
 
 @Component({
   selector: 'app-message-center',
@@ -11,13 +13,14 @@ import { HubConnection } from '@microsoft/signalr';
   styleUrls: ['./message-center.component.scss'],
 })
 export class MessageCenterComponent implements OnInit {
+
   @Input("session") session!: SessionInfo;
   @Input("hubConnection") hubConnection!: HubConnection;
   @Input("user") user?: User;
 
   private messages = new BehaviorSubject<Message[]>([]);
 
-  constructor() { }
+  constructor(private sessionService: SessionService, private userService: UserService) { }
 
   messages$ = this.messages.pipe();
 
@@ -33,6 +36,18 @@ export class MessageCenterComponent implements OnInit {
     });
   }
 
+  sendMessage(message: Message): void {
+    if (this.user) {
+      const subscription = this.userService.sendUserMessage(this.session.id, this.user.id, message).subscribe(() => {
+        subscription.unsubscribe();
+      });
+    } else if ('controlId' in this.session) {
+      const subscription = this.sessionService.sendMessage({ ...this.session, controlId: <string>this.session.controlId }, 'notify', message).subscribe(() => {
+        subscription.unsubscribe();
+      });
+    }
+  }
+
   isMe(message: Message): boolean {
     return !this.user && this.session.id === message.senderId || this.user?.id === message.senderId;
   }
@@ -41,7 +56,6 @@ export class MessageCenterComponent implements OnInit {
     if (this.isMe(message)) {
       return 'Me';
     }
-
     if (this.session.id === message.senderId) {
       return 'Session Host';
     }

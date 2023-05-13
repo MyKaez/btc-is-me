@@ -3,7 +3,6 @@
 <div *ngIf="user$ | async as user;else noUser">
   <p>Hello {{user.name}}!</p>
   <p>Your ID is {{user.id}}</p>
-  <app-send-message [senderId]="user.id" (messageSend)="sendMessage($event)"></app-send-message>
 </div>
 <ng-template #noUser>
   <div *ngIf="loading$ | async;else enterData">

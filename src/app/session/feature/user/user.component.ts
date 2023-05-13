@@ -44,12 +44,4 @@ export class UserComponent {
     this.loading.next(true);
     this.userName.next(this.userNameControl.value ?? '');
   }
-
-  sendMessage(message: Message): void {
-    const subscription = this.user$.pipe(switchMap(user =>
-      this.userService.sendUserMessage(this.session.id, user.id, message)
-    )).subscribe(() => {
-      subscription.unsubscribe();
-    });
-  }
 }

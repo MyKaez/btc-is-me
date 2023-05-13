@@ -14,19 +14,31 @@
   <div id="container">
 
     <div *ngIf="currentSession$ | async as session;else noSession">
-      <h1>Current Session</h1>
 
-      <app-session-info [session]="session"></app-session-info>
+      <ion-segment value="session-info" [(ngModel)]="type">
+        <ion-segment-button value="session-info">
+          <ion-label>Session Info</ion-label>
+        </ion-segment-button>
+        <ion-segment-button value="message-center">
+          <ion-label>Message Center</ion-label>
+        </ion-segment-button>
+      </ion-segment>
 
-      <div *ngIf="isSessionHost(session);else userInfo">
-        <app-host [session]="session"></app-host>
+      <div [ngSwitch]="type">
+        <div *ngSwitchCase="'session-info'">
+          <app-session-info [session]="session"></app-session-info>
+          <div *ngIf="isSessionHost(session);else userInfo">
+            <app-host [session]="session"></app-host>
+          </div>
+          <ng-template #userInfo>
+            <app-user [session]="session" (userChange)="setUser($event)"></app-user>
+          </ng-template>
+        </div>
+        <div *ngSwitchCase="'message-center'">
+          <app-message-center [session]="session" [user]="user" [hubConnection]="hubConnection"
+            *ngIf="hubConnection$ | async as hubConnection"></app-message-center>
+        </div>
       </div>
-      <ng-template #userInfo>
-        <app-user [session]="session" (userChange)="setUser($event)"></app-user>
-      </ng-template>
-
-      <app-message-center [session]="session" [user]="user" [hubConnection]="hubConnection"
-        *ngIf="hubConnection$ | async as hubConnection"></app-message-center>
     </div>
 
     <ng-template #noSession>

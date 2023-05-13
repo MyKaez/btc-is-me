@@ -1,9 +1,6 @@
 <h2>Host Actions</h2>
 
 <div>
-  <app-send-message [senderId]="session.id" (messageSend)="sendMessage($event)"></app-send-message>
-</div>
-<div>
   <ion-item>
     <ion-button fill="clear" (click)="start()">Start Session</ion-button>
     <ion-button fill="clear" (click)="stop()">Stop Session</ion-button>
