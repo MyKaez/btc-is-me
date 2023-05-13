@@ -62,8 +62,8 @@ export class MainPage {
   );
 
   currentSession$ = merge(this.getSessionById$, this.createSession$, this.storedSession$).pipe(
-    take(1),
     filter(session => session !== undefined),
+    take(1),
     map(session => <SessionHostInfo>session),
     switchMap(session => this.sessionService.getSession(session.id).pipe(
       map(inner => {
