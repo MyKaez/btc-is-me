@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { AfterViewInit, Component } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { SessionService } from '../../data-access/session.service';
 import { BehaviorSubject, Subject, filter, map, merge, shareReplay, switchMap, tap } from 'rxjs';
@@ -10,13 +10,30 @@ import { Message } from '../../models/message';
   templateUrl: './main.page.html',
   styleUrls: ['./main.page.scss'],
 })
-export class MainPage {
+export class MainPage implements AfterViewInit {
+
+  private static readonly LOCAL_STORAGE = 'sessionHost';
 
   private session = new Subject<Session>();
   private messages = new BehaviorSubject<Message[]>([]);
   private load = new Subject<boolean>();
 
   constructor(private sessionService: SessionService, private route: ActivatedRoute) {
+  }
+
+  ngAfterViewInit(): void {
+    const session = localStorage.getItem(MainPage.LOCAL_STORAGE);
+    if (session) {
+      const host = <SessionHostInfo>JSON.parse(session);
+      const subscription = this.sessionService.getSession(host.id).subscribe(res => {
+        if (res?.id === host.id) {
+          this.session.next(host);
+        } else {
+          localStorage.removeItem(MainPage.LOCAL_STORAGE);
+        }
+        subscription.unsubscribe();
+      });
+    }
   }
 
   messages$ = this.messages.pipe();
@@ -32,8 +49,8 @@ export class MainPage {
     switchMap(session => this.sessionService.createSession(session))
   );
 
-  currentSession$ = merge(this.createSession$, this.getSessionById$).pipe(
-    filter(session => session !== undefined),
+  currentSession$ = merge(this.getSessionById$, this.createSession$).pipe(
+    tap(session => localStorage.setItem(MainPage.LOCAL_STORAGE, JSON.stringify(session))),
     tap(session => this.sessionService.connect(connection => {
       connection.on(session.id, message => this.messages.next([message, ...this.messages.value]));
       connection.on(`${session.id}:CreateUser`, user => session.users = [...session.users, user]);
