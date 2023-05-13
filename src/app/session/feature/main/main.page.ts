@@ -38,7 +38,7 @@ export class MainPage {
 
   storedSession$ = of(localStorage.getItem(MainPage.LOCAL_STORAGE)).pipe(
     delay(200), // we should delay this, since it's just a fallback!! 
-    filter(session => session !== null),
+    filter(session => session !== undefined && session !== null),
     map(session => <SessionHostInfo>JSON.parse(session!)),
     switchMap(session => this.sessionService.getSession(session.id).pipe(
       map(inner => {
@@ -56,7 +56,7 @@ export class MainPage {
   );
 
   createSession$ = this.session.pipe(
-    filter(session => session !== undefined),
+    filter(session => session !== undefined && session !== null),
     switchMap(session => this.sessionService.createSession(session)),
     tap(session => localStorage.setItem(MainPage.LOCAL_STORAGE, JSON.stringify({ ...session, users: [] }))),
   );
