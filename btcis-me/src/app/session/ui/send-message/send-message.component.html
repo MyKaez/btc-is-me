@@ -1,4 +1,6 @@
-<div>
-  <input type="text" [formControl]="messageControl">
-  <button (click)="sendMessage()" [disabled]="messageControl.invalid">Send Message</button>
-</div>
+<ion-item>
+  <ion-textarea label="Message" labelPlacement="stacked" placeholder="Enter message"
+    [formControl]="messageControl"></ion-textarea>
+  <ion-button fill="clear" slot="end" (click)="sendMessage()" [disabled]="messageControl.invalid">Send
+    Message</ion-button>
+</ion-item>
