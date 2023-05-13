@@ -22,7 +22,7 @@ export class MainPage {
   messages$ = this.messages.pipe();
 
   getSessionById$ = this.route.params.pipe(
-    map(p => p['sessionId']),
+    map(p => p['id']),
     filter(sessionId => sessionId !== undefined),
     switchMap(p => this.sessionService.getSession(p))
   );
