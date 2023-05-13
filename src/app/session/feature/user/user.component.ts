@@ -15,6 +15,7 @@ import { User } from '../../models/user';
 export class UserComponent {
 
   @Input("session") session!: SessionInfo;
+  @Input("user") user?: User;
   @Output("userChange") userChange = new EventEmitter<User>();
 
   private userName = new Subject<string>();

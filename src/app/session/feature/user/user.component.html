@@ -1,8 +1,8 @@
 <h2>User Actions</h2>
 
-<div *ngIf="user$ | async as user;else noUser">
-  <p>Hello {{user.name}}!</p>
-  <p>Your ID is {{user.id}}</p>
+<div *ngIf=" user || (user$ | async);else noUser">
+  <p>Hello {{user?.name}}!</p>
+  <p>Your ID is {{user?.id}}</p>
 </div>
 <ng-template #noUser>
   <div *ngIf="loading$ | async;else enterData">

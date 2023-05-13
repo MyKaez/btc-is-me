@@ -21,7 +21,7 @@ export class MainPage {
   }
 
   user?: User;
-  type: 'session-info' | 'message-center' = 'session-info';
+  type: 'session-info' | 'message-center' | 'user-action' = 'session-info';
 
   getSessionById$ = this.route.params.pipe(
     map(p => p['id']),
