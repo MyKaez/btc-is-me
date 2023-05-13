@@ -12,6 +12,10 @@ const routes: Routes = [
     loadChildren: () => import('./session/main.module').then(m => m.MainPageModule)
   },
   {
+    path: 'session:id',
+    loadChildren: () => import('./session/main.module').then(m => m.MainPageModule)
+  },
+  {
     path: 'folder/:id',
     loadChildren: () => import('./folder/folder.module').then(m => m.FolderPageModule)
   },

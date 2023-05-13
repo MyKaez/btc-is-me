@@ -16,9 +16,9 @@
     <div *ngIf="currentSession$ | async as session;else noSession">
       <h1>Current Session</h1>
 
-      <!--
       <app-session-info [session]="session"></app-session-info>
-  
+
+      <!--
       <div *ngIf="isSessionHost(session);else user">
           <app-sessions-host [session]="session"></app-sessions-host>
       </div>
