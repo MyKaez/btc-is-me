@@ -1,6 +1,7 @@
 <h2>Shared Messages</h2>
-<ul>
-  <li *ngFor="let message of messages$| async">
-    {{printMessage(message)}}
-  </li>
-</ul>
+<ion-list>
+  <ion-item *ngFor="let message of messages$ | async">
+    <ion-label slot="start">{{getSender(message)}}</ion-label>
+    <ion-textarea>{{message.text}}</ion-textarea>
+  </ion-item>
+</ion-list>

@@ -11,7 +11,6 @@ import { HubConnection } from '@microsoft/signalr';
   styleUrls: ['./message-center.component.scss'],
 })
 export class MessageCenterComponent implements OnInit {
-
   @Input("session") session!: SessionInfo;
   @Input("hubConnection") hubConnection!: HubConnection;
   @Input("user") user?: User;
@@ -26,7 +25,15 @@ export class MessageCenterComponent implements OnInit {
     this.hubConnection.on(this.session.id, message => this.messages.next([message, ...this.messages.value]));
   }
 
-  printMessage(message: Message) {
-    return JSON.stringify(message);
+  getSender(message: Message) {
+    if (this.session.id === message.senderId) {
+      return 'Session Host';
+    }
+    const user = this.session.users.find(u => u.id === message.senderId);
+    if (user) {
+      return user.name;
+    } else {
+      return 'unknown sender id: ' + message.senderId;
+    }
   }
 }
