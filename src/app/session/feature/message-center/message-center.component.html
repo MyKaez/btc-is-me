@@ -1,7 +1,14 @@
 <h2>Shared Messages</h2>
 <ion-list>
   <ion-item *ngFor="let message of messages$ | async">
-    <ion-label slot="start">{{getSender(message)}}</ion-label>
-    <ion-textarea>{{message.text}}</ion-textarea>
+    <ion-card [slot]="isMe(message) ? 'end' : 'start'">
+      <ion-card-content>
+        {{message.text}}
+
+        <ion-label color="primary">
+          {{getSender(message)}}
+        </ion-label>
+      </ion-card-content>
+    </ion-card>
   </ion-item>
 </ion-list>

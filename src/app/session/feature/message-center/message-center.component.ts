@@ -25,7 +25,15 @@ export class MessageCenterComponent implements OnInit {
     this.hubConnection.on(this.session.id, message => this.messages.next([message, ...this.messages.value]));
   }
 
+  isMe(message: Message): boolean {
+    return !this.user && this.session.id === message.senderId || this.user?.id === message.senderId;
+  }
+
   getSender(message: Message) {
+    if (this.isMe(message)) {
+      return 'Me';
+    }
+
     if (this.session.id === message.senderId) {
       return 'Session Host';
     }
