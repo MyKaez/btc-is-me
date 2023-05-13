@@ -20,10 +20,10 @@
 
 
       <div *ngIf="isSessionHost(session);else user">
-        <app-session-host [session]="session"></app-session-host>
+        <app-host [session]="session"></app-host>
       </div>
       <ng-template #user>
-        <app-session-user [session]="session"></app-session-user>
+        <app-user [session]="session"></app-user>
       </ng-template>
 
       <h2>Shared Messages</h2>
