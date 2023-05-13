@@ -1,7 +1,7 @@
-import { AfterViewInit, Component } from '@angular/core';
+import { Component } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { SessionService } from '../../data-access/session.service';
-import { BehaviorSubject, Subject, filter, map, merge, shareReplay, switchMap, tap } from 'rxjs';
+import { BehaviorSubject, Subject, catchError, filter, map, merge, of, shareReplay, switchMap, take, tap } from 'rxjs';
 import { Session, SessionHostInfo, SessionInfo } from '../../models/session';
 import { Message } from '../../models/message';
 
@@ -10,7 +10,7 @@ import { Message } from '../../models/message';
   templateUrl: './main.page.html',
   styleUrls: ['./main.page.scss'],
 })
-export class MainPage implements AfterViewInit {
+export class MainPage {
 
   private static readonly LOCAL_STORAGE = 'sessionHost';
 
@@ -21,36 +21,50 @@ export class MainPage implements AfterViewInit {
   constructor(private sessionService: SessionService, private route: ActivatedRoute) {
   }
 
-  ngAfterViewInit(): void {
-    const session = localStorage.getItem(MainPage.LOCAL_STORAGE);
-    if (session) {
-      const host = <SessionHostInfo>JSON.parse(session);
-      const subscription = this.sessionService.getSession(host.id).subscribe(res => {
-        if (res?.id === host.id) {
-          this.session.next(host);
-        } else {
-          localStorage.removeItem(MainPage.LOCAL_STORAGE);
-        }
-        subscription.unsubscribe();
-      });
-    }
-  }
-
   messages$ = this.messages.pipe();
 
   getSessionById$ = this.route.params.pipe(
     map(p => p['id']),
-    filter(sessionId => sessionId !== undefined),
-    switchMap(p => this.sessionService.getSession(p))
+    filter(sessionId => sessionId !== undefined && sessionId !== null),
+    switchMap(p => this.sessionService.getSession(p).pipe(
+      catchError(error => {
+        if (error.status === 404) {
+          return of(undefined);
+        } else {
+          throw error;
+        }
+      })
+    ))
+  );
+
+  storedSession$ = of(localStorage.getItem(MainPage.LOCAL_STORAGE)).pipe(
+    filter(session => session !== null),
+    map(session => <SessionHostInfo>JSON.parse(session!)),
+    switchMap(session => this.sessionService.getSession(session.id).pipe(
+      map(inner => {
+        return { ...session, expirationTime: inner.expirationTime }
+      }),
+      catchError(error => {
+        if (error.status === 404) {
+          localStorage.removeItem(MainPage.LOCAL_STORAGE);
+          return of(undefined);
+        } else {
+          throw error;
+        }
+      })
+    ))
   );
 
   createSession$ = this.session.pipe(
     filter(session => session !== undefined),
-    switchMap(session => this.sessionService.createSession(session))
+    switchMap(session => this.sessionService.createSession(session)),
+    tap(session => localStorage.setItem(MainPage.LOCAL_STORAGE, JSON.stringify({ ...session, users: [] }))),
   );
 
-  currentSession$ = merge(this.getSessionById$, this.createSession$).pipe(
-    tap(session => localStorage.setItem(MainPage.LOCAL_STORAGE, JSON.stringify(session))),
+  currentSession$ = merge(this.getSessionById$, this.storedSession$, this.createSession$).pipe(
+    filter(session => session !== undefined),
+    map(session => <SessionHostInfo>session),
+    take(1),
     tap(session => this.sessionService.connect(connection => {
       connection.on(session.id, message => this.messages.next([message, ...this.messages.value]));
       connection.on(`${session.id}:CreateUser`, user => session.users = [...session.users, user]);
