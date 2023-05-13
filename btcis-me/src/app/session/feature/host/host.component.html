@@ -2,14 +2,13 @@
 
 <div>
   <app-send-message [senderId]="session.id" (messageSend)="sendMessage($event)"></app-send-message>
-  <span *ngIf="message$ | async as message">
-    {{message}}
-  </span>
 </div>
 <div>
-  <button (click)="start()">Start Session</button>
-  <button (click)="stop()">Stop Session</button>
-  <span *ngIf="sessionStatus$ | async as sessionStatus">
-    Status: {{sessionStatus}}
-  </span>
+  <ion-item>
+    <ion-button fill="clear" (click)="start()">Start Session</ion-button>
+    <ion-button fill="clear" (click)="stop()">Stop Session</ion-button>
+    <ion-badge slot="end" *ngIf="sessionStatus$ | async as sessionStatus">
+      {{sessionStatus.status}}
+    </ion-badge>
+  </ion-item>
 </div>

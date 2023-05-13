@@ -23,16 +23,14 @@ export class HostComponent {
     return <SessionHostInfo>this.session;
   }
 
-  message$ = this.message.pipe(
-    switchMap(message => this.sessionService.sendMessage(this.controlSession, 'notify', message))
-  );
-
   sessionStatus$ = this.sessionStatus.pipe(
     switchMap(status => this.sessionService.sendMessage(this.controlSession, status))
   );
 
   sendMessage(message: Message): void {
-    this.message.next(message);
+    const subscription = this.sessionService.sendMessage(this.controlSession, 'notify', message).subscribe(() => {
+      subscription.unsubscribe();
+    });
   }
 
   start() {
