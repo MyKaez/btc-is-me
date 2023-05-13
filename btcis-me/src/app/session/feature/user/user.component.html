@@ -12,7 +12,13 @@
   </div>
   <ng-template #enterData>
     Please register as user
-    <input type="text" [formControl]="userNameControl" [disabled]="userNameControl.invalid">
-    <button (click)="registerUser()">Register User!</button>
+
+    <ion-item>
+      <ion-input label="User Name" labelPlacement="stacked" placeholder="Enter user name"
+        [formControl]="userNameControl"></ion-input>
+      <ion-button fill="clear" slot="end" (click)="registerUser()"
+        [disabled]="userNameControl.invalid">Register</ion-button>
+    </ion-item>
+
   </ng-template>
 </ng-template>
