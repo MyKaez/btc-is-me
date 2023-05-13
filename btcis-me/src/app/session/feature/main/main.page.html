@@ -10,4 +10,39 @@
       <ion-title size="large">Session</ion-title>
     </ion-toolbar>
   </ion-header>
+
+  <div id="container">
+
+    <div *ngIf="currentSession$ | async as session;else noSession">
+      <h1>Current Session</h1>
+
+      <!--
+      <app-session-info [session]="session"></app-session-info>
+  
+      <div *ngIf="isSessionHost(session);else user">
+          <app-sessions-host [session]="session"></app-sessions-host>
+      </div>
+      <ng-template #user>
+          <app-sessions-user [session]="session"></app-sessions-user>
+      </ng-template>
+  -->
+      <h2>Shared Messages</h2>
+      <ul>
+        <li *ngFor="let message of messages$| async">
+          {{printMessage(message)}}
+        </li>
+      </ul>
+    </div>
+
+    <ng-template #noSession>
+      <div *ngIf="loading$ | async;else enterData">
+        Loading...
+      </div>
+      <ng-template #enterData>
+        Please create a session or hook up into an existing one<br />
+        <app-input-session (nameChange)="registerSession($event)"></app-input-session>
+      </ng-template>
+
+    </ng-template>
+  </div>
 </ion-content>

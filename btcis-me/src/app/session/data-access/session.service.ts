@@ -34,7 +34,7 @@ export class SessionService {
     )
   }
 
-  connect(sessionId: string, listener: (connection: HubConnection) => void): HubConnection {
+  connect(listener: (connection: HubConnection) => void): HubConnection {
     const connection = new HubConnectionBuilder()
       .withUrl(`${this.url}/sessions-hub`)
       .build();

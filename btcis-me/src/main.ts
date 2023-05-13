@@ -8,5 +8,13 @@ if (environment.production) {
   enableProdMode();
 }
 
-platformBrowserDynamic().bootstrapModule(AppModule)
+const providers = [
+  {
+    provide: 'BTCIS.ME-API',
+    //useFactory: () => 'https://api.btcis.me'
+    useFactory: () => 'https://localhost:5001'
+  }
+]
+
+platformBrowserDynamic(providers).bootstrapModule(AppModule)
   .catch(err => console.log(err));
