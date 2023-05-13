@@ -22,7 +22,15 @@ export class MessageCenterComponent implements OnInit {
   messages$ = this.messages.pipe();
 
   ngOnInit() {
-    this.hubConnection.on(this.session.id, message => this.messages.next([message, ...this.messages.value]));
+    this.hubConnection.on(this.session.id, message => {
+      if ('id' in message && 'status' in message) {
+        this.messages.next([{ senderId: message.id, text: 'Status updated: ' + message.status }, ...this.messages.value]);
+      } else if ('senderId' in message && 'text' in message) {
+        this.messages.next([message, ...this.messages.value]);
+      } else {
+        this.messages.next([{ senderId: '???', text: 'cannot handle: ' + JSON.stringify(message) }, ...this.messages.value]);
+      }
+    });
   }
 
   isMe(message: Message): boolean {
