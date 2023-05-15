@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { ActivatedRoute } from '@angular/router';
+import { ActivatedRoute, Route, Router } from '@angular/router';
 import { SessionService } from '../../data-access/session.service';
 import { Subject, catchError, delay, filter, map, merge, of, shareReplay, switchMap, take, tap } from 'rxjs';
 import { Session, SessionHostInfo, SessionInfo } from '../../models/session';
@@ -18,7 +18,7 @@ export class MainPage {
   private session = new Subject<Session>();
   private load = new Subject<boolean>();
 
-  constructor(private sessionService: SessionService, private route: ActivatedRoute) {
+  constructor(private sessionService: SessionService, private route: ActivatedRoute, private router: Router) {
   }
 
   user?: User;
@@ -31,6 +31,7 @@ export class MainPage {
     switchMap(p => this.sessionService.getSession(p).pipe(
       catchError(error => {
         if (error.status === 404) {
+          this.router.navigate(['/session']);
           return of(undefined);
         } else {
           throw error;
