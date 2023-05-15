@@ -96,6 +96,11 @@ export class MainPage {
 
   loading$ = this.load.pipe();
 
+  logOut() {
+    localStorage.removeItem(MainPage.LOCAL_STORAGE);
+    this.router.navigate(['/log-out/session'])
+  }
+
   registerSession(sessionName: string): void {
     this.load.next(true);
     const session = { name: sessionName };
