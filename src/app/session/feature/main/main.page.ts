@@ -79,7 +79,7 @@ export class MainPage {
   );
 
   hubConnection$ = this.currentSession$.pipe(
-    map(session => this.sessionService.connect(connection => {
+    map(session => this.sessionService.connect(session.id, connection => {
       connection.on(`${session.id}:CreateSession`, session => console.log('Created session: ' + session.id));
       connection.on(`${session.id}:CreateUser`, user => session.users = [...session.users, user]);
       connection.on(`${session.id}:SessionUpdate`, update => {
