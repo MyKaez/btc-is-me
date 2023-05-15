@@ -1,6 +1,6 @@
 import { Component, Input } from '@angular/core';
 import { SessionInfo } from '../../models/session';
-import { User } from '../../models/user';
+import { UserControl } from '../../models/user';
 import { Message } from '../../models/message';
 import { SessionService } from '../../data-access/session.service';
 import { UserService } from '../../data-access/user.service';
@@ -13,14 +13,14 @@ import { UserService } from '../../data-access/user.service';
 export class MessageCenterComponent {
 
   @Input("session") session!: SessionInfo;
-  @Input("user") user?: User;
+  @Input("user") user?: UserControl;
   @Input("messages") messages!: Message[];
 
   constructor(private sessionService: SessionService, private userService: UserService) { }
 
   sendMessage(message: Message): void {
     if (this.user) {
-      const subscription = this.userService.sendUserMessage(this.session.id, this.user.id, message).subscribe(() => {
+      const subscription = this.userService.sendUserMessage(this.session.id, this.user.id, this.user.controlId, message).subscribe(() => {
         subscription.unsubscribe();
       });
     } else if ('controlId' in this.session) {
