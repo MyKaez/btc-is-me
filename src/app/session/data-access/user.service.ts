@@ -2,7 +2,7 @@ import { HttpClient } from '@angular/common/http';
 import { Inject, Injectable } from '@angular/core';
 import { Observable, map } from 'rxjs';
 import { Message } from '../models/message';
-import { User } from '../models/user';
+import { User, UserControl } from '../models/user';
 
 @Injectable({
   providedIn: 'root'
@@ -11,15 +11,16 @@ export class UserService {
 
   constructor(@Inject('BTCIS.ME-API') private url: string, private httpClient: HttpClient) { }
 
-  registerUser(sessionId: string, userName: string): Observable<User> {
+  registerUser(sessionId: string, userName: string): Observable<UserControl> {
     const user = { name: userName };
     return this.httpClient.post(`${this.url}/v1/sessions/${sessionId}/users`, user).pipe(
-      map(value => <User>value)
+      map(value => <UserControl>value)
     )
   }
 
-  sendUserMessage(sessionId: string, userId: string, message: Message): Observable<User> {
+  sendUserMessage(sessionId: string, userId: string, controlId: string, message: Message): Observable<User> {
     const req = {
+      controlId: controlId,
       data: message
     };
     return this.httpClient.post(`${this.url}/v1/sessions/${sessionId}/users/${userId}/actions`, req).pipe(
