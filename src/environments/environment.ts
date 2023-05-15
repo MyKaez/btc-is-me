@@ -4,8 +4,8 @@
 
 export const environment = {
   production: false,
-  btcApi: 'https://api.btcis.me',
-  //btcApi: 'https://localhost:5001',
+  //btcApi: 'https://api.btcis.me',
+  btcApi: 'https://localhost:5001',
 };
 
 /*

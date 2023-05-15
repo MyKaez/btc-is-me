@@ -17,6 +17,12 @@ export class SessionService {
     )
   }
 
+  getAll(): Observable<SessionInfo[]> {
+    return this.httpClient.get(`${this.url}/v1/sessions`).pipe(
+      map(value => <SessionInfo[]>value)
+    )
+  }
+
   createSession(session: Session): Observable<SessionControlInfo> {
     return this.httpClient.post(`${this.url}/v1/sessions`, session).pipe(
       map(value => <SessionControlInfo>value)

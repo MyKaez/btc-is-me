@@ -55,6 +55,8 @@
       <ng-template #enterData>
         Please create a session or hook up into an existing one<br />
         <app-input-session (nameChange)="registerSession($event)"></app-input-session>
+
+        <app-session-list></app-session-list>
       </ng-template>
 
     </ng-template>

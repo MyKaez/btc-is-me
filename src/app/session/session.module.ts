@@ -14,6 +14,7 @@ import { HostComponent } from './feature/host/host.component';
 import { UserComponent } from './feature/user/user.component';
 import { SendMessageComponent } from './ui/send-message/send-message.component';
 import { MessageCenterComponent } from './feature/message-center/message-center.component';
+import { SessionListComponent } from './ui/session-list/session-list.component';
 
 @NgModule({
   imports: [
@@ -31,7 +32,8 @@ import { MessageCenterComponent } from './feature/message-center/message-center.
     InputSessionComponent,
     SessionInfoComponent,
     UserInfoComponent,
-    SendMessageComponent
+    SendMessageComponent,
+    SessionListComponent
   ]
 })
 export class SessionModule { }

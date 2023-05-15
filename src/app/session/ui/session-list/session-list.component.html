@@ -1,0 +1,9 @@
+<h2>Existing Sessions</h2>
+<ion-list *ngIf="sessions$ | async as sessions">
+  <ion-item *ngFor="let session of sessions">
+    <ion-label>{{session.name}}</ion-label>
+    <ion-label>{{session.status}}</ion-label>
+    <ion-label>{{session.expirationTime}}</ion-label>
+    <ion-button (click)="openSession(session.id)">Open</ion-button>
+  </ion-item>
+</ion-list>
