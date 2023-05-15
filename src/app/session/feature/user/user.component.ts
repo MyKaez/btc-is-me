@@ -3,9 +3,8 @@ import { Subject, shareReplay, switchMap, tap } from 'rxjs';
 import { SessionInfo } from '../../models/session';
 import { UserService } from '../../data-access/user.service';
 import { SuggestionService } from '../../data-access/suggestion.service';
-import { Message } from '../../models/message';
 import { FormControl, Validators } from '@angular/forms';
-import { User } from '../../models/user';
+import { User, UserControl } from '../../models/user';
 
 @Component({
   selector: 'app-user',
@@ -16,7 +15,7 @@ export class UserComponent {
 
   @Input("session") session!: SessionInfo;
   @Input("user") user?: User;
-  @Output("userChange") userChange = new EventEmitter<User>();
+  @Output("userChange") userChange = new EventEmitter<UserControl>();
 
   private userName = new Subject<string>();
   private loading = new Subject<boolean>();
