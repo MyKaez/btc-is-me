@@ -37,7 +37,8 @@ export class MainPage {
           throw error;
         }
       })
-    ))
+    )),
+    tap(_ => this.type = 'user-action')
   );
 
   storedSession$ = of(localStorage.getItem(MainPage.LOCAL_STORAGE)).pipe(
@@ -108,5 +109,4 @@ export class MainPage {
   setUser(user: User) {
     this.user = user;
   }
-
 }
