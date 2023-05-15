@@ -1,5 +1,5 @@
 import { Component, Input, OnInit } from '@angular/core';
-import { SessionHostInfo, SessionInfo } from '../../models/session';
+import { SessionControlInfo, SessionInfo } from '../../models/session';
 import { Subject, switchMap } from 'rxjs';
 import { Message } from '../../models/message';
 import { SessionService } from '../../data-access/session.service';
@@ -18,8 +18,8 @@ export class HostComponent {
   constructor(private sessionService: SessionService) {
   }
 
-  get controlSession(): SessionHostInfo {
-    return <SessionHostInfo>this.session;
+  get controlSession(): SessionControlInfo {
+    return <SessionControlInfo>this.session;
   }
 
   sessionStatus$ = this.sessionStatus.pipe(

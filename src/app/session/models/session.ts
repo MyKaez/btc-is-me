@@ -16,6 +16,6 @@ export interface SessionInfo {
     users: User[];
 }
 
-export interface SessionHostInfo extends SessionInfo {
+export interface SessionControlInfo extends SessionInfo {
     controlId: string;
 }

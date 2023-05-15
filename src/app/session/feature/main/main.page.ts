@@ -1,9 +1,9 @@
 import { Component } from '@angular/core';
-import { ActivatedRoute, Route, Router } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import { SessionService } from '../../data-access/session.service';
 import { Subject, catchError, delay, filter, map, merge, of, shareReplay, switchMap, take, tap } from 'rxjs';
-import { Session, SessionHostInfo, SessionInfo } from '../../models/session';
-import { User } from '../../models/user';
+import { Session, SessionControlInfo, SessionInfo } from '../../models/session';
+import { UserControl } from '../../models/user';
 import { Message } from '../../models/message';
 
 @Component({
@@ -21,7 +21,7 @@ export class MainPage {
   constructor(private sessionService: SessionService, private route: ActivatedRoute, private router: Router) {
   }
 
-  user?: User;
+  user?: UserControl;
   type: 'session-info' | 'message-center' | 'user-action' = 'session-info';
   messages: Message[] = [];
 
@@ -44,7 +44,7 @@ export class MainPage {
   storedSession$ = of(localStorage.getItem(MainPage.LOCAL_STORAGE)).pipe(
     filter(session => session !== undefined && session !== null),
     delay(200), // we should delay this, since it's just a fallback!! 
-    map(session => <SessionHostInfo>JSON.parse(session!)),
+    map(session => <SessionControlInfo>JSON.parse(session!)),
     switchMap(session => this.sessionService.getSession(session.id).pipe(
       map(inner => {
         return { ...session, expirationTime: inner.expirationTime }
@@ -69,7 +69,7 @@ export class MainPage {
   currentSession$ = merge(this.getSessionById$, this.createSession$, this.storedSession$).pipe(
     filter(session => session !== undefined),
     take(1),
-    map(session => <SessionHostInfo>session),
+    map(session => <SessionControlInfo>session),
     switchMap(session => this.sessionService.getSession(session.id).pipe(
       map(inner => {
         return { ...session, users: inner.users };
@@ -80,11 +80,14 @@ export class MainPage {
 
   hubConnection$ = this.currentSession$.pipe(
     map(session => this.sessionService.connect(connection => {
+      connection.on(`${session.id}:CreateSession`, session => console.log('Created session: ' + session.id));
       connection.on(`${session.id}:CreateUser`, user => session.users = [...session.users, user]);
-      connection.on(session.id, message => {
-        if ('id' in message && 'status' in message) {
-          this.messages = [{ senderId: message.id, text: 'Status updated: ' + message.status }, ...this.messages];
-        } else if ('senderId' in message && 'text' in message) {
+      connection.on(`${session.id}:SessionUpdate`, update => {
+        session.status = update.status;
+        this.messages = [{ senderId: update.id, text: 'Status updated: ' + update.status }, ...this.messages];
+      });
+      connection.on(`${session.id}:UserMessage`, message => {
+        if ('senderId' in message && 'text' in message) {
           this.messages = [message, ...this.messages];
         } else {
           this.messages = [{ senderId: '???', text: 'cannot handle: ' + JSON.stringify(message) }, ...this.messages];
@@ -107,11 +110,11 @@ export class MainPage {
     this.session.next(session);
   }
 
-  isSessionHost(session: SessionHostInfo | SessionInfo): boolean {
+  isSessionHost(session: SessionControlInfo | SessionInfo): boolean {
     return 'controlId' in session;
   }
 
-  setUser(user: User) {
+  setUser(user: UserControl) {
     this.user = user;
   }
 }

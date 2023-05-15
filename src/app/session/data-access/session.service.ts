@@ -2,7 +2,7 @@ import { HttpClient } from '@angular/common/http';
 import { Inject, Injectable } from '@angular/core';
 import { HubConnection, HubConnectionBuilder } from '@microsoft/signalr';
 import { Observable, map } from 'rxjs';
-import { Session, SessionAction, SessionHostInfo, SessionInfo } from '../models/session';
+import { Session, SessionAction, SessionControlInfo, SessionInfo } from '../models/session';
 import { Message } from '../models/message';
 
 @Injectable({
@@ -17,13 +17,13 @@ export class SessionService {
     )
   }
 
-  createSession(session: Session): Observable<SessionHostInfo> {
+  createSession(session: Session): Observable<SessionControlInfo> {
     return this.httpClient.post(`${this.url}/v1/sessions`, session).pipe(
-      map(value => <SessionHostInfo>value)
+      map(value => <SessionControlInfo>value)
     )
   }
 
-  sendMessage(session: SessionHostInfo, action: SessionAction, message?: Message): Observable<SessionInfo> {
+  sendMessage(session: SessionControlInfo, action: SessionAction, message?: Message): Observable<SessionInfo> {
     const req = {
       controlId: session.controlId,
       action: action,
