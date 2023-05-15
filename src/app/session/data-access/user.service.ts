@@ -18,9 +18,9 @@ export class UserService {
     )
   }
 
-  sendUserMessage(sessionId: string, userId: string, controlId: string, message: Message): Observable<User> {
+  sendMessage(sessionId: string, userId: UserControl, message: Message): Observable<User> {
     const req = {
-      controlId: controlId,
+      controlId: userId.controlId,
       data: message
     };
     return this.httpClient.post(`${this.url}/v1/sessions/${sessionId}/users/${userId}/actions`, req).pipe(

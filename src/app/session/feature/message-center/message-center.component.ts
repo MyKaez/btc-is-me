@@ -20,11 +20,12 @@ export class MessageCenterComponent {
 
   sendMessage(message: Message): void {
     if (this.user) {
-      const subscription = this.userService.sendUserMessage(this.session.id, this.user.id, this.user.controlId, message).subscribe(() => {
+      const subscription = this.userService.sendMessage(this.session.id, this.user, message).subscribe(() => {
         subscription.unsubscribe();
       });
     } else if ('controlId' in this.session) {
-      const subscription = this.sessionService.sendMessage({ ...this.session, controlId: <string>this.session.controlId }, 'notify', message).subscribe(() => {
+      const sessionControl = { ...this.session, controlId: <string>this.session.controlId };
+      const subscription = this.sessionService.sendMessage(sessionControl, 'notify', message).subscribe(() => {
         subscription.unsubscribe();
       });
     }
