@@ -18,14 +18,37 @@
 
   <h3>Personal Session Data</h3>
 
-  <div *ngIf="session.status === 'preparing'">
-    <ion-item>
-      <ion-input label="Hashrate" labelPlacement="stacked" placeholder="Enter Hashrate" [disabled]="true"
-        [formControl]="hashRateControl"></ion-input>
-      <ion-button fill="clear" slot="end" (click)="hashRateControl.setValue(100)">Determine Hashrate</ion-button>
-    </ion-item>
-    <ion-button fill="clear" (click)="ready()">Ready for session!</ion-button>
+
+  <div [ngSwitch]="session.status">
+    <div *ngSwitchCase="'notStarted'">
+
+      <h3>Not Started</h3>
+
+    </div>
+    <div *ngSwitchCase="'preparing'">
+
+      <h3>Preparing</h3>
+
+      <ion-item>
+        <ion-input label="Hashrate" labelPlacement="stacked" placeholder="Enter Hashrate" [disabled]="true"
+          [formControl]="hashRateControl"></ion-input>
+        <ion-button fill="clear" slot="end" (click)="hashRateControl.setValue(100)">Determine Hashrate</ion-button>
+      </ion-item>
+      <ion-button fill="clear" (click)="ready()">Ready for session!</ion-button>
+
+    </div>
+    <div *ngSwitchCase="'started'">
+
+      <h3>Started</h3>
+
+    </div>
+    <div *ngSwitchCase="'stopped'">
+
+      <h3>Stopped</h3>
+
+    </div>
   </div>
+
 </div>
 <ng-template #noUser>
   <div *ngIf="loading$ | async;else enterData">
