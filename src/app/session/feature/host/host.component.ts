@@ -12,7 +12,7 @@ import { SessionService } from '../../data-access/session.service';
 export class HostComponent {
   @Input("session") session!: SessionInfo;
 
-  private sessionStatus = new Subject<'prepare' | 'start' | 'stop'>();
+  private sessionStatus = new Subject<{ status: 'prepare' | 'start' | 'stop', data: any }>();
 
   constructor(private sessionService: SessionService) {
   }
@@ -22,19 +22,28 @@ export class HostComponent {
   }
 
   sessionStatus$ = this.sessionStatus.pipe(
-    switchMap(status => this.sessionService.sendMessage(this.controlSession, status))
+    switchMap(input => this.sessionService.executeAction(this.controlSession, input.status, input.data))
   );
 
   prepare() {
-    this.sessionStatus.next('prepare');
+    this.sessionStatus.next({
+      status: 'prepare',
+      data: {}
+    });
   }
 
   start() {
-    this.sessionStatus.next('start');
+    this.sessionStatus.next({
+      status: 'start',
+      data: {}
+    });
   }
 
   stop() {
-    this.sessionStatus.next('stop');
+    this.sessionStatus.next({
+      status: 'stop',
+      data: {}
+    });
   }
 
   clear() {
