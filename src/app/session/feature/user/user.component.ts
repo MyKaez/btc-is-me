@@ -24,6 +24,7 @@ export class UserComponent {
   }
 
   userNameControl = new FormControl('', [Validators.required, Validators.minLength(5)]);
+  hashRateControl = new FormControl<number>(0);
 
   user$ = this.userName.pipe(
     switchMap(userName => this.userService.registerUser(this.session.id, userName)),
@@ -43,5 +44,11 @@ export class UserComponent {
   registerUser(): void {
     this.loading.next(true);
     this.userName.next(this.userNameControl.value ?? '');
+  }
+
+  ready(): void {
+    if (this.user) {
+      this.user.status = 'ready';
+    }
   }
 }

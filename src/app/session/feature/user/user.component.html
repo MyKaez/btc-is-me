@@ -1,8 +1,31 @@
 <h2>User Actions</h2>
 
-<div *ngIf=" user || (user$ | async);else noUser">
-  <p>Hello {{user?.name}}!</p>
-  <p>Your ID is {{user?.id}}</p>
+<div *ngIf="user || (user$ | async) as user;else noUser">
+  <ion-list>
+    <ion-item>
+      <ion-label>ID</ion-label>
+      <ion-label>{{user.id}}</ion-label>
+    </ion-item>
+    <ion-item>
+      <ion-label>Name</ion-label>
+      <ion-label>{{user.name}}</ion-label>
+    </ion-item>
+    <ion-item>
+      <ion-label>Status</ion-label>
+      <ion-label>{{user.status}}</ion-label>
+    </ion-item>
+  </ion-list>
+
+  <h3>Personal Session Data</h3>
+
+  <div *ngIf="session.status === 'preparing'">
+    <ion-item>
+      <ion-input label="Hashrate" labelPlacement="stacked" placeholder="Enter Hashrate" [disabled]="true"
+        [formControl]="hashRateControl"></ion-input>
+      <ion-button fill="clear" slot="end" (click)="hashRateControl.setValue(100)">Determine Hashrate</ion-button>
+    </ion-item>
+    <ion-button fill="clear" (click)="ready()">Ready for session!</ion-button>
+  </div>
 </div>
 <ng-template #noUser>
   <div *ngIf="loading$ | async;else enterData">
