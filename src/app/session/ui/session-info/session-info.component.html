@@ -19,9 +19,9 @@
     <ion-label>Expiration Time</ion-label>
     <ion-label>{{session.expirationTime}}</ion-label>
   </ion-item>
-  <ion-item>
+  <ion-item *ngIf="session.configuration">
     <ion-label>SimulationType</ion-label>
-    <ion-label>{{session.configuration?.simulationType}}</ion-label>
+    <ion-label>{{session.configuration.simulationType}}</ion-label>
   </ion-item>
   <ion-item>
     <ion-label>Link </ion-label>

@@ -1,7 +1,6 @@
 import { Component, Input, OnInit } from '@angular/core';
 import { SessionControlInfo, SessionInfo } from '../../models/session';
 import { Subject, switchMap } from 'rxjs';
-import { Message } from '../../models/message';
 import { SessionService } from '../../data-access/session.service';
 
 @Component({
@@ -12,7 +11,7 @@ import { SessionService } from '../../data-access/session.service';
 export class HostComponent {
   @Input("session") session!: SessionInfo;
 
-  private sessionStatus = new Subject<{ status: 'prepare' | 'start' | 'stop', data: any }>();
+  private sessionStatus = new Subject<{ status: 'prepare' | 'start' | 'stop', configuration: any }>();
 
   constructor(private sessionService: SessionService) {
   }
@@ -22,13 +21,13 @@ export class HostComponent {
   }
 
   sessionStatus$ = this.sessionStatus.pipe(
-    switchMap(input => this.sessionService.executeAction(this.controlSession, input.status, input.data))
+    switchMap(input => this.sessionService.executeAction(this.controlSession, input.status, input.configuration))
   );
 
   prepare() {
     this.sessionStatus.next({
       status: 'prepare',
-      data: {
+      configuration: {
         simulationType: 'proof-of-work'
       }
     });
@@ -37,14 +36,14 @@ export class HostComponent {
   start() {
     this.sessionStatus.next({
       status: 'start',
-      data: {}
+      configuration: {}
     });
   }
 
   stop() {
     this.sessionStatus.next({
       status: 'stop',
-      data: {}
+      configuration: {}
     });
   }
 

@@ -81,7 +81,7 @@ export class MainPage {
       con.on(`${session.id}:DeleteUser`, userId => session.users = session.users.filter(user => user.id !== userId));
       con.on(`${session.id}:SessionUpdate`, update => {
         session.status = update.status;
-        session.configuration = update.data
+        session.configuration = update.configuration
         this.messages = [{ senderId: update.id, text: 'Status updated: ' + update.status }, ...this.messages];
       });
       con.on(`${session.id}:UserMessage`, message => {

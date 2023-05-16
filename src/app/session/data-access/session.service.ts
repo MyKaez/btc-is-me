@@ -33,18 +33,18 @@ export class SessionService {
     const req = {
       controlId: session.controlId,
       action: 'notify',
-      data: message
+      configuration: message
     };
     return this.httpClient.post(`${this.url}/v1/sessions/${session.id}/actions`, req).pipe(
       map(value => <SessionInfo>value)
     )
   }
 
-  executeAction(session: SessionControlInfo, action: SessionAction, data: any): Observable<SessionInfo> {
+  executeAction(session: SessionControlInfo, action: SessionAction, configuration: any): Observable<SessionInfo> {
     const req = {
       controlId: session.controlId,
       action: action,
-      data: data
+      configuration: configuration
     };
     return this.httpClient.post(`${this.url}/v1/sessions/${session.id}/actions`, req).pipe(
       map(value => <SessionInfo>value)
