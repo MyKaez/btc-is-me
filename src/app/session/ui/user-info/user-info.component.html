@@ -5,5 +5,6 @@ Amount of users in session: {{session.users.length}}
     <ion-item *ngFor="let user of session.users">
         <ion-label>{{user.id}}</ion-label>
         <ion-label>{{user.name}}</ion-label>
+        <ion-label>{{user.status}} </ion-label>
     </ion-item>
 </ion-list>
