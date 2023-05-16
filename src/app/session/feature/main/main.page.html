@@ -32,8 +32,9 @@
 
       <div [ngSwitch]="type" *ngIf="hubConnection$ | async">
         <div *ngSwitchCase="'session-info'">
-          <app-session-info [session]="session"></app-session-info>
           <app-host [session]="session" *ngIf="isSessionHost(session)"></app-host>
+          <app-session-info [session]="session"></app-session-info>
+          <app-user-info [session]="session"></app-user-info>
         </div>
         <div *ngSwitchCase="'user-action'">
           <app-user [session]="session" [user]="user" (userChange)="setUser($event)"></app-user>
@@ -51,7 +52,6 @@
       <ng-template #enterData>
         Please create a session or hook up into an existing one<br />
         <app-input-session (nameChange)="registerSession($event)"></app-input-session>
-
         <app-session-list></app-session-list>
       </ng-template>
 

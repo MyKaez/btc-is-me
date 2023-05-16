@@ -1,20 +1,28 @@
 <h2>Session Info</h2>
 
-<ul>
-  <li>ID: {{session.id}}</li>
-  <li>Name: {{session.name}}</li>
-  <li>Status: {{session.status}}</li>
-  <li>Expiration Time: {{session.expirationTime}}</li>
-</ul>
-
-<p>
-  <a [href]="sessionLink" target="_blank">{{sessionLink}}</a>
-</p>
-
-<h3>Session Users</h3>
-Amount of users in session: {{session.users.length}}
-<ul>
-  <li *ngFor="let user of session.users">
-    <app-user-info [user]="user"></app-user-info>
-  </li>
-</ul>
+<ion-list>
+  <ion-item>
+    <ion-label>ID</ion-label>
+    <ion-label>{{session.id}}</ion-label>
+  </ion-item>
+  <ion-item>
+    <ion-label>Name</ion-label>
+    <ion-label>{{session.name}}</ion-label>
+  </ion-item>
+  <ion-item>
+    <ion-label>Status</ion-label>
+    <ion-label>
+      <ion-badge>{{session.status}}</ion-badge>
+    </ion-label>
+  </ion-item>
+  <ion-item>
+    <ion-label>Expiration Time</ion-label>
+    <ion-label>{{session.expirationTime}}</ion-label>
+  </ion-item>
+  <ion-item>
+    <ion-label>Link </ion-label>
+    <ion-label>
+      <a [href]="sessionLink" target="_blank">{{sessionLink}}</a>
+    </ion-label>
+  </ion-item>
+</ion-list>

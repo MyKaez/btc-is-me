@@ -1,5 +1,5 @@
 import { Component, Input } from '@angular/core';
-import { User } from '../../models/user';
+import { SessionInfo } from '../../models/session';
 
 @Component({
   selector: 'app-user-info',
@@ -7,5 +7,5 @@ import { User } from '../../models/user';
   styleUrls: ['./user-info.component.scss'],
 })
 export class UserInfoComponent {
-  @Input("user") user!: User;
+  @Input("session") session!: SessionInfo;
 }

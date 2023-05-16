@@ -1,1 +1,9 @@
-<p>{{user.name}} ({{user.id}})</p>
+<h3>Session Users</h3>
+Amount of users in session: {{session.users.length}}
+
+<ion-list>
+    <ion-item *ngFor="let user of session.users">
+        <ion-label>{{user.id}}</ion-label>
+        <ion-label>{{user.name}}</ion-label>
+    </ion-item>
+</ion-list>
