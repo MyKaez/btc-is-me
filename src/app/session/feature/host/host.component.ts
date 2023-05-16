@@ -28,7 +28,9 @@ export class HostComponent {
   prepare() {
     this.sessionStatus.next({
       status: 'prepare',
-      data: {}
+      data: {
+        simulationType: 'proof-of-work'
+      }
     });
   }
 
