@@ -1,12 +1,22 @@
 <h2>Host Actions</h2>
 
 <div>
-  <ion-item>
-    <ion-button fill="clear" (click)="start()">Start Session</ion-button>
-    <ion-button fill="clear" (click)="stop()">Stop Session</ion-button>
+  <ion-toolbar>
+    <ion-button fill="clear" (click)="prepare()" [disabled]="session.status !== 'notStarted'">
+      Prepare Session
+    </ion-button>
+    <ion-button fill="clear" (click)="start()" [disabled]="session.status !== 'preparing'">
+      Start Session
+    </ion-button>
+    <ion-button fill="clear" (click)="stop()" [disabled]="session.status !== 'started'">
+      Stop Session
+    </ion-button>
+    <ion-button fill="clear" (click)="clear()" [disabled]="session.status !== 'stopped'">
+      Clear Session
+    </ion-button>
     <ion-badge slot="end">
       <span *ngIf="sessionStatus$ | async as sessionStatus;else notLoaded">{{sessionStatus.status}}</span>
       <ng-template #notLoaded>{{session.status}}</ng-template>
     </ion-badge>
-  </ion-item>
+  </ion-toolbar>
 </div>

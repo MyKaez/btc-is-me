@@ -4,8 +4,8 @@ export interface Session {
     name: string;
 }
 
-export type SessionAction = 'start' | 'stop' | 'notify';
-export type SessionStatus = 'notStarted' | 'started' | 'stopped';
+export type SessionAction = 'prepare' | 'start' | 'stop' | 'notify';
+export type SessionStatus = 'notStarted' | 'preparing' | 'started' | 'stopped';
 
 export interface SessionInfo {
     id: string;

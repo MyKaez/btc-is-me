@@ -10,10 +10,9 @@ import { SessionService } from '../../data-access/session.service';
   styleUrls: ['./host.component.scss'],
 })
 export class HostComponent {
-
   @Input("session") session!: SessionInfo;
 
-  private sessionStatus = new Subject<'start' | 'stop'>();
+  private sessionStatus = new Subject<'prepare' | 'start' | 'stop'>();
 
   constructor(private sessionService: SessionService) {
   }
@@ -26,11 +25,19 @@ export class HostComponent {
     switchMap(status => this.sessionService.sendMessage(this.controlSession, status))
   );
 
+  prepare() {
+    this.sessionStatus.next('prepare');
+  }
+
   start() {
     this.sessionStatus.next('start');
   }
 
   stop() {
     this.sessionStatus.next('stop');
+  }
+
+  clear() {
+    throw new Error('Method not implemented.');
   }
 }
