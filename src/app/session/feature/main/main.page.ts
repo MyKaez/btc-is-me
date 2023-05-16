@@ -47,7 +47,7 @@ export class MainPage {
     map(session => <SessionControlInfo>JSON.parse(session!)),
     switchMap(session => this.sessionService.getSession(session.id).pipe(
       map(inner => {
-        return { ...session, expirationTime: inner.expirationTime }
+        return { ...session, expirationTime: inner.expirationTime, status: inner.status }
       }),
       catchError(error => {
         if (error.status === 404) {
