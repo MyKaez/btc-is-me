@@ -22,10 +22,10 @@
         <ion-segment-button value="session-info">
           <ion-label>Session</ion-label>
         </ion-segment-button>
-        <ion-segment-button value="user-action">
+        <ion-segment-button value="user-action" *ngIf="!isSessionHost(session)">
           <ion-label>User</ion-label>
         </ion-segment-button>
-        <ion-segment-button value="message-center">
+        <ion-segment-button value=" message-center">
           <ion-label>Message Center</ion-label>
         </ion-segment-button>
       </ion-segment>
@@ -33,14 +33,10 @@
       <div [ngSwitch]="type" *ngIf="hubConnection$ | async">
         <div *ngSwitchCase="'session-info'">
           <app-session-info [session]="session"></app-session-info>
+          <app-host [session]="session" *ngIf="isSessionHost(session)"></app-host>
         </div>
         <div *ngSwitchCase="'user-action'">
-          <div *ngIf="isSessionHost(session);else userInfo">
-            <app-host [session]="session"></app-host>
-          </div>
-          <ng-template #userInfo>
-            <app-user [session]="session" [user]="user" (userChange)="setUser($event)"></app-user>
-          </ng-template>
+          <app-user [session]="session" [user]="user" (userChange)="setUser($event)"></app-user>
         </div>
         <div *ngSwitchCase="'message-center'">
           <app-message-center [session]="session" [user]="user" [messages]="messages"></app-message-center>
