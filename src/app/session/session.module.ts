@@ -15,6 +15,7 @@ import { UserComponent } from './feature/user/user.component';
 import { SendMessageComponent } from './ui/send-message/send-message.component';
 import { MessageCenterComponent } from './feature/message-center/message-center.component';
 import { SessionListComponent } from './ui/session-list/session-list.component';
+import { QRCodeModule } from 'angularx-qrcode';
 
 @NgModule({
   imports: [
@@ -22,7 +23,8 @@ import { SessionListComponent } from './ui/session-list/session-list.component';
     FormsModule,
     ReactiveFormsModule,
     IonicModule,
-    MainPageRoutingModule
+    MainPageRoutingModule,
+    QRCodeModule
   ],
   declarations: [
     MainPage,
