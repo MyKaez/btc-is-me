@@ -4,8 +4,9 @@
   <ion-item>
     <ion-button fill="clear" (click)="start()">Start Session</ion-button>
     <ion-button fill="clear" (click)="stop()">Stop Session</ion-button>
-    <ion-badge slot="end" *ngIf="sessionStatus$ | async as sessionStatus">
-      {{sessionStatus.status}}
+    <ion-badge slot="end">
+      <span *ngIf="sessionStatus$ | async as sessionStatus;else notLoaded">{{sessionStatus.status}}</span>
+      <ng-template #notLoaded>{{session.status}}</ng-template>
     </ion-badge>
   </ion-item>
 </div>
