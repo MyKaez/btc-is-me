@@ -46,9 +46,7 @@ export class MainPage {
     delay(200), // we should delay this, since it's just a fallback!! 
     map(session => <SessionControlInfo>JSON.parse(session!)),
     switchMap(session => this.sessionService.getSession(session.id).pipe(
-      map(inner => {
-        return { ...session, expirationTime: inner.expirationTime, status: inner.status }
-      }),
+      map(inner => <SessionControlInfo>{ ...session, ...inner }),
       catchError(error => {
         if (error.status === 404) {
           localStorage.removeItem(MainPage.LOCAL_STORAGE);
@@ -71,9 +69,7 @@ export class MainPage {
     take(1),
     map(session => <SessionControlInfo>session),
     switchMap(session => this.sessionService.getSession(session.id).pipe(
-      map(inner => {
-        return { ...session, users: inner.users };
-      })
+      map(inner => <SessionControlInfo>{ ...session, ...inner })
     )),
     shareReplay(1)
   );
