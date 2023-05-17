@@ -29,13 +29,12 @@ export class SessionService {
     )
   }
 
-  sendMessage(session: SessionControlInfo, message?: Message): Observable<SessionInfo> {
+  sendMessage(session: SessionControlInfo, message: Message): Observable<SessionInfo> {
     const req = {
       controlId: session.controlId,
-      action: 'notify',
-      configuration: message
+      ...message
     };
-    return this.httpClient.post(`${this.url}/v1/sessions/${session.id}/actions`, req).pipe(
+    return this.httpClient.post(`${this.url}/v1/sessions/${session.id}/messages`, req).pipe(
       map(value => <SessionInfo>value)
     )
   }
