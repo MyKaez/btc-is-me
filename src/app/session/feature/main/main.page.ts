@@ -89,16 +89,26 @@ export class MainPage {
         console.log('UpdateSession');
         session.status = update.status;
         session.configuration = update.configuration;
-        this.messages = [{ senderId: update.id, text: 'Status updated: ' + update.status }, ...this.messages];
+        this.messages = [{ senderId: update.id, text: `status update:  ${update.status}` }, ...this.messages];
       });
       con.on(`${session.id}:UserMessage`, message => {
         console.log('UserMessage');
         if ('senderId' in message && 'text' in message) {
           this.messages = [message, ...this.messages];
         } else {
-          this.messages = [{ senderId: '???', text: 'cannot handle: ' + JSON.stringify(message) }, ...this.messages];
+          this.messages = [{ senderId: '???', text: 'cannot handle UserMessage: ' + JSON.stringify(message) }, ...this.messages];
         }
       });
+      con.on(`${session.id}:UserUpdate`, update => {
+        console.log('UserUpdate');
+        const user = session.users.find(u => u.id == update.userId);
+        if (user) {
+          user.configuration = update.configuration;
+          this.messages = [{ senderId: user.id, text: `user update: ${user.status}` }, ...this.messages];
+        } else {
+          this.messages = [{ senderId: '???', text: 'cannot handle UserUpdate: ' + JSON.stringify(update) }, ...this.messages];
+        }
+      })
     }, con => con.invoke('RegisterSession', session.id))),
     shareReplay(1)
   )
