@@ -5,6 +5,7 @@ import { Subject, catchError, delay, filter, map, merge, of, shareReplay, switch
 import { Session, SessionControlInfo, SessionInfo } from '../../models/session';
 import { UserControl } from '../../models/user';
 import { Message } from '../../models/message';
+import { UserService } from '../../data-access/user.service';
 
 @Component({
   selector: 'app-main',
@@ -18,7 +19,7 @@ export class MainPage {
   private session = new Subject<Session>();
   private load = new Subject<boolean>();
 
-  constructor(private sessionService: SessionService, private route: ActivatedRoute, private router: Router) {
+  constructor(private sessionService: SessionService, private userService: UserService, private route: ActivatedRoute, private router: Router) {
   }
 
   user?: UserControl;
@@ -79,9 +80,10 @@ export class MainPage {
       con.on(`${session.id}:CreateSession`, session => console.log('Created session: ' + session.id));
       con.on(`${session.id}:CreateUser`, user => {
         console.log('CreateUser');
-        session.users = [...session.users, user]
-        console.log('Instead of adding, we should get all users from the api')
-        console.log('Reason: new users will not be notified about existing users')
+        const subscription = this.userService.getUsers(session.id).subscribe(users => {
+          session.users = users;
+          subscription.unsubscribe();
+        });
       });
       con.on(`${session.id}:DeleteUser`, userId => {
         console.log('DeleteUser');

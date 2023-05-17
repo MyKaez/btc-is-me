@@ -11,15 +11,15 @@ import { Message } from '../models/message';
 export class SessionService {
   constructor(@Inject('BTCIS.ME-API') private url: string, private httpClient: HttpClient) { }
 
-  getSession(sessionId: string): Observable<SessionInfo> {
-    return this.httpClient.get(`${this.url}/v1/sessions/${sessionId}`).pipe(
-      map(value => <SessionInfo>value)
-    )
-  }
-
   getAll(): Observable<SessionInfo[]> {
     return this.httpClient.get(`${this.url}/v1/sessions`).pipe(
       map(value => <SessionInfo[]>value)
+    )
+  }
+
+  getSession(sessionId: string): Observable<SessionInfo> {
+    return this.httpClient.get(`${this.url}/v1/sessions/${sessionId}`).pipe(
+      map(value => <SessionInfo>value)
     )
   }
 

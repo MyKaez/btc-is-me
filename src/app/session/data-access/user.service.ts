@@ -11,6 +11,12 @@ export class UserService {
 
   constructor(@Inject('BTCIS.ME-API') private url: string, private httpClient: HttpClient) { }
 
+  getUsers(sessionId: string): Observable<User[]> {
+    return this.httpClient.get(`${this.url}/v1/sessions/${sessionId}/users`).pipe(
+      map(value => <User[]>value)
+    )
+  }
+
   registerUser(sessionId: string, userName: string): Observable<UserControl> {
     const user = { name: userName };
     return this.httpClient.post(`${this.url}/v1/sessions/${sessionId}/users`, user).pipe(
