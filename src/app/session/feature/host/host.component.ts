@@ -1,6 +1,6 @@
 import { Component, Input, } from '@angular/core';
 import { SessionControlInfo, SessionInfo, SessionAction } from '../../models/session';
-import { BehaviorSubject, filter, shareReplay, switchMap, tap } from 'rxjs';
+import { BehaviorSubject, combineLatest, filter, map, switchMap, withLatestFrom } from 'rxjs';
 import { SessionService } from '../../data-access/session.service';
 
 @Component({
@@ -13,6 +13,7 @@ export class HostComponent {
   @Input("session") session!: SessionInfo;
 
   private sessionStatus = new BehaviorSubject<{ action?: SessionAction, configuration: any }>({ configuration: this.session?.configuration });
+  private button = new BehaviorSubject<boolean>(false);
 
   constructor(private sessionService: SessionService) {
   }
@@ -21,24 +22,27 @@ export class HostComponent {
     return <SessionControlInfo>this.session;
   }
 
-  sessionUpdates$ = this.sessionStatus.pipe(
-    // if status is "notStarted", we will automatically update the action to "prepare" if we do not filter here!
-    filter(_ => this.session.status !== 'notStarted'),
-    switchMap(input => this.sessionService.executeAction(this.controlSession, input.action!, input.configuration))
+  sessionUpdates$ = combineLatest([this.sessionStatus, this.button]).pipe(
+    filter(([_, button]) => button === true),
+    switchMap(([input, _]) => this.sessionService.executeAction(this.controlSession, input.action!, input.configuration)),
+    map((input) => input.status)
   );
 
   prepare() {
     const session = this.createUpdate('prepare', { simulationType: 'proofOfWork' });
+    this.button.next(true);
     this.sessionStatus.next(session);
   }
 
   start() {
     const session = this.createUpdate('start');
+    this.button.next(true);
     this.sessionStatus.next(session);
   }
 
   stop() {
     const session = this.createUpdate('stop');
+    this.button.next(true);
     this.sessionStatus.next(session);
   }
 
@@ -53,6 +57,7 @@ export class HostComponent {
 
   clear() {
     const update = { action: <SessionAction>'reset', configuration: {} };
+    this.button.next(true);
     this.sessionStatus.next(update);
   }
 }
