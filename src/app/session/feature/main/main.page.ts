@@ -77,14 +77,22 @@ export class MainPage {
   hubConnection$ = this.currentSession$.pipe(
     map(session => this.sessionService.connect(con => {
       con.on(`${session.id}:CreateSession`, session => console.log('Created session: ' + session.id));
-      con.on(`${session.id}:CreateUser`, user => session.users = [...session.users, user]);
-      con.on(`${session.id}:DeleteUser`, userId => session.users = session.users.filter(user => user.id !== userId));
+      con.on(`${session.id}:CreateUser`, user => {
+        console.log('CreateUser');
+        session.users = [...session.users, user]
+      });
+      con.on(`${session.id}:DeleteUser`, userId => {
+        console.log('DeleteUser');
+        session.users = session.users.filter(user => user.id !== userId)
+      });
       con.on(`${session.id}:SessionUpdate`, update => {
+        console.log('UpdateSession');
         session.status = update.status;
         session.configuration = update.configuration
         this.messages = [{ senderId: update.id, text: 'Status updated: ' + update.status }, ...this.messages];
       });
       con.on(`${session.id}:UserMessage`, message => {
+        console.log('UserMessage');
         if ('senderId' in message && 'text' in message) {
           this.messages = [message, ...this.messages];
         } else {
