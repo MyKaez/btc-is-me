@@ -21,7 +21,17 @@ export class UserService {
   sendMessage(sessionId: string, user: UserControl, message: Message): Observable<User> {
     const req = {
       controlId: user.controlId,
-      configuration: message
+      ...message
+    };
+    return this.httpClient.post(`${this.url}/v1/sessions/${sessionId}/users/${user.id}/messages`, req).pipe(
+      map(value => <User>value)
+    )
+  }
+
+  sendUpdate(sessionId: string, user: UserControl, configuration: any): Observable<User> {
+    const req = {
+      controlId: user.controlId,
+      configuration: configuration
     };
     return this.httpClient.post(`${this.url}/v1/sessions/${sessionId}/users/${user.id}/actions`, req).pipe(
       map(value => <User>value)
