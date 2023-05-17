@@ -101,8 +101,9 @@ export class MainPage {
       });
       con.on(`${session.id}:UserUpdate`, update => {
         console.log('UserUpdate');
-        const user = session.users.find(u => u.id == update.userId);
+        const user = session.users.find(u => u.id == update.id);
         if (user) {
+          user.status = update.status;
           user.configuration = update.configuration;
           this.messages = [{ senderId: user.id, text: `user update: ${user.status}` }, ...this.messages];
         } else {
