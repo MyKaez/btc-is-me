@@ -80,6 +80,8 @@ export class MainPage {
       con.on(`${session.id}:CreateUser`, user => {
         console.log('CreateUser');
         session.users = [...session.users, user]
+        console.log('Instead of adding, we should get all users from the api')
+        console.log('Reason: new users will not be notified about existing users')
       });
       con.on(`${session.id}:DeleteUser`, userId => {
         console.log('DeleteUser');
