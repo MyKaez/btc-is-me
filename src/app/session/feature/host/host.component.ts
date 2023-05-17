@@ -1,6 +1,6 @@
-import { Component, Input, OnInit } from '@angular/core';
-import { SessionControlInfo, SessionInfo } from '../../models/session';
-import { Subject, switchMap } from 'rxjs';
+import { Component, Input, } from '@angular/core';
+import { SessionControlInfo, SessionInfo, SessionAction } from '../../models/session';
+import { BehaviorSubject, switchMap } from 'rxjs';
 import { SessionService } from '../../data-access/session.service';
 
 @Component({
@@ -9,9 +9,10 @@ import { SessionService } from '../../data-access/session.service';
   styleUrls: ['./host.component.scss'],
 })
 export class HostComponent {
+
   @Input("session") session!: SessionInfo;
 
-  private sessionStatus = new Subject<{ status: 'prepare' | 'start' | 'stop', configuration: any }>();
+  private sessionStatus = new BehaviorSubject<{ action?: SessionAction, configuration: any }>({ configuration: {} });
 
   constructor(private sessionService: SessionService) {
   }
@@ -20,34 +21,35 @@ export class HostComponent {
     return <SessionControlInfo>this.session;
   }
 
-  sessionStatus$ = this.sessionStatus.pipe(
-    switchMap(input => this.sessionService.executeAction(this.controlSession, input.status, input.configuration))
+  sessionUpdates$ = this.sessionStatus.pipe(
+    switchMap(input => this.sessionService.executeAction(this.controlSession, input.action!, input.configuration))
   );
 
   prepare() {
-    this.sessionStatus.next({
-      status: 'prepare',
-      configuration: {
-        simulationType: 'proof-of-work'
-      }
-    });
+    const session = this.createSession('prepare', { simulationType: 'proofOfWork' });
+    this.sessionStatus.next(session);
   }
 
   start() {
-    this.sessionStatus.next({
-      status: 'start',
-      configuration: {}
-    });
+    const session = this.createSession('start');
+    this.sessionStatus.next(session);
   }
 
   stop() {
-    this.sessionStatus.next({
-      status: 'stop',
-      configuration: {}
-    });
+    const session = this.createSession('stop');
+    this.sessionStatus.next(session);
   }
 
   clear() {
-    throw new Error('Method not implemented.');
+    const session = this.createSession('reset');
+    this.sessionStatus.next(session);
+  }
+
+  createSession(action: SessionAction, config?: any) {
+    return {
+      ...this.sessionStatus.value, action: action, configuration: {
+        ...this.sessionStatus.value.configuration, ...(config ?? {})
+      }
+    };
   }
 }
