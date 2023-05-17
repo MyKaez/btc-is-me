@@ -12,7 +12,7 @@ export class HostComponent {
 
   @Input("session") session!: SessionInfo;
 
-  private sessionStatus = new BehaviorSubject<{ action?: SessionAction, configuration: any }>({ configuration: this.session?.configuration });
+  private sessionStatus = new BehaviorSubject<{ action?: SessionAction, configuration: any }>({ configuration: {} });
   private button = new BehaviorSubject<boolean>(false);
 
   constructor(private sessionService: SessionService) {
@@ -48,10 +48,14 @@ export class HostComponent {
 
   createUpdate(action: SessionAction, config?: any) {
     const update = {
-      ...this.sessionStatus.value, action: action, configuration: {
-        ...this.sessionStatus.value.configuration, ...(config ?? {})
+      ...this.sessionStatus.value, action: action,
+      configuration: {
+        ...(this.session.configuration ?? {}),
+        ...this.sessionStatus.value.configuration,
+        ...(config ?? {})
       }
     };
+    console.log(JSON.stringify(update));
     return update;
   }
 

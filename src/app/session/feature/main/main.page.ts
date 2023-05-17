@@ -88,7 +88,7 @@ export class MainPage {
       con.on(`${session.id}:SessionUpdate`, update => {
         console.log('UpdateSession');
         session.status = update.status;
-        session.configuration = update.configuration
+        session.configuration = update.configuration;
         this.messages = [{ senderId: update.id, text: 'Status updated: ' + update.status }, ...this.messages];
       });
       con.on(`${session.id}:UserMessage`, message => {
