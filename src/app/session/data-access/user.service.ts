@@ -31,6 +31,7 @@ export class UserService {
   sendUpdate(sessionId: string, user: UserControl, configuration: any): Observable<User> {
     const req = {
       controlId: user.controlId,
+      status: user.status,
       configuration: configuration
     };
     return this.httpClient.post(`${this.url}/v1/sessions/${sessionId}/users/${user.id}/actions`, req).pipe(

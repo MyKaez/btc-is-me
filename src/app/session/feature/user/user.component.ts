@@ -47,8 +47,13 @@ export class UserComponent {
   }
 
   ready(): void {
-    if (this.user) {
-      this.user.status = 'ready';
+    if (!this.user) {
+      return;
     }
+    this.user.status = 'ready';
+    const config = { hashRate: this.hashRateControl.value };
+    const subscription = this.userService.sendUpdate(this.session.id, <UserControl>this.user, config).subscribe(_ => {
+      subscription.unsubscribe();
+    });
   }
 }

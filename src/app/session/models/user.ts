@@ -2,7 +2,8 @@
 export interface User {
     id: string;
     name: string;
-    status: UserStatus
+    status: UserStatus,
+    configuration?: any
 }
 
 export type UserStatus = 'notReady' | 'ready';
