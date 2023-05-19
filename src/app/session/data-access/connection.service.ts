@@ -13,31 +13,35 @@ export class ConnectionService {
 
   connect(con: HubConnection, session: SessionControlInfo, messageUpdate: (messages: Message[]) => void) {
     con.on(`${session.id}:CreateSession`, session => console.log('Created session: ' + session.id));
-    con.on(`${session.id}:CreateUser`, user => {
-      console.log('CreateUser');
-      const subscription = this.userService.getUsers(session.id).subscribe(users => {
-        session.users = users;
-        subscription.unsubscribe();
-      });
-    });
-    con.on(`${session.id}:DeleteUser`, userId => {
-      console.log('DeleteUser');
-      session.users = session.users.filter(user => user.id !== userId)
-    });
+
     con.on(`${session.id}:SessionUpdate`, update => {
       console.log('UpdateSession');
       session.status = update.status;
       session.configuration = update.configuration;
       messageUpdate([{ senderId: update.id, text: `status update:  ${update.status}` }]);
     });
-    con.on(`${session.id}:UserMessage`, message => {
-      console.log('UserMessage');
-      if ('senderId' in message && 'text' in message) {
-        messageUpdate([message]);
-      } else {
-        messageUpdate([{ senderId: '???', text: 'cannot handle UserMessage: ' + JSON.stringify(message) }]);
+
+    con.on(`${session.id}:CreateUser`, _ => {
+      console.log('CreateUser');
+      const subscription = this.userService.getUsers(session.id).subscribe(users => {
+        session.users = users;
+        subscription.unsubscribe();
+      });
+    });
+
+    con.on(`${session.id}:DeleteUser`, userId => {
+      console.log('DeleteUser');
+      const user = session.users.find(user => user.id === userId);
+      if (!user) {
+        console.log('No user found');
+        return;
+      }
+      session.users.unshift(user);
+      if (session.configuration?.simulationType === 'proofOfWork') {
+        session.configuration.hashRate -= Number.parseInt(user.configuration.hashRate);
       }
     });
+
     con.on(`${session.id}:UserUpdate`, update => {
       console.log('UserUpdate');
       const user = session.users.find(u => u.id == update.id);
@@ -49,12 +53,20 @@ export class ConnectionService {
           if (!session.configuration.hashRate) {
             session.configuration.hashRate = 0;
           }
-          console.log(JSON.stringify(session.configuration))
-          session.configuration.hashRate += update.configuration.hashRate;
+          session.configuration.hashRate += Number.parseInt(update.configuration.hashRate);
         }
       } else {
         messageUpdate([{ senderId: '???', text: 'cannot handle UserUpdate: ' + JSON.stringify(update) }]);
       }
-    })
+    });
+
+    con.on(`${session.id}:UserMessage`, message => {
+      console.log('UserMessage');
+      if ('senderId' in message && 'text' in message) {
+        messageUpdate([message]);
+      } else {
+        messageUpdate([{ senderId: '???', text: 'cannot handle UserMessage: ' + JSON.stringify(message) }]);
+      }
+    });
   }
 }
