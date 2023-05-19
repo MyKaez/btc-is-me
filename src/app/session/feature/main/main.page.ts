@@ -6,6 +6,7 @@ import { Session, SessionControlInfo, SessionInfo } from '../../models/session';
 import { UserControl } from '../../models/user';
 import { Message } from '../../models/message';
 import { UserService } from '../../data-access/user.service';
+import { ConnectionService } from '../../data-access/connection.service';
 
 @Component({
   selector: 'app-main',
@@ -19,7 +20,7 @@ export class MainPage {
   private session = new Subject<Session>();
   private load = new Subject<boolean>();
 
-  constructor(private sessionService: SessionService, private userService: UserService, private route: ActivatedRoute, private router: Router) {
+  constructor(private route: ActivatedRoute, private router: Router, private sessionService: SessionService, private connectionService: ConnectionService) {
   }
 
   user?: UserControl;
@@ -76,45 +77,10 @@ export class MainPage {
   );
 
   hubConnection$ = this.currentSession$.pipe(
-    map(session => this.sessionService.connect(con => {
-      con.on(`${session.id}:CreateSession`, session => console.log('Created session: ' + session.id));
-      con.on(`${session.id}:CreateUser`, user => {
-        console.log('CreateUser');
-        const subscription = this.userService.getUsers(session.id).subscribe(users => {
-          session.users = users;
-          subscription.unsubscribe();
-        });
-      });
-      con.on(`${session.id}:DeleteUser`, userId => {
-        console.log('DeleteUser');
-        session.users = session.users.filter(user => user.id !== userId)
-      });
-      con.on(`${session.id}:SessionUpdate`, update => {
-        console.log('UpdateSession');
-        session.status = update.status;
-        session.configuration = update.configuration;
-        this.messages = [{ senderId: update.id, text: `status update:  ${update.status}` }, ...this.messages];
-      });
-      con.on(`${session.id}:UserMessage`, message => {
-        console.log('UserMessage');
-        if ('senderId' in message && 'text' in message) {
-          this.messages = [message, ...this.messages];
-        } else {
-          this.messages = [{ senderId: '???', text: 'cannot handle UserMessage: ' + JSON.stringify(message) }, ...this.messages];
-        }
-      });
-      con.on(`${session.id}:UserUpdate`, update => {
-        console.log('UserUpdate');
-        const user = session.users.find(u => u.id == update.id);
-        if (user) {
-          user.status = update.status;
-          user.configuration = update.configuration;
-          this.messages = [{ senderId: user.id, text: `user update: ${user.status}` }, ...this.messages];
-        } else {
-          this.messages = [{ senderId: '???', text: 'cannot handle UserUpdate: ' + JSON.stringify(update) }, ...this.messages];
-        }
-      })
-    }, con => con.invoke('RegisterSession', session.id))),
+    map(session => this.sessionService.connect(
+      con => this.connectionService.connect(con, session, messages => this.messages = [...messages, ...this.messages]),
+      con => con.invoke('RegisterSession', session.id))
+    ),
     shareReplay(1)
   )
 
