@@ -1,6 +1,12 @@
-<ion-list *ngFor="let block of blocks">
-  <ion-item>
-    <ion-label>{{block.text}}</ion-label>
-    <ion-label>{{block.hash}}</ion-label>
-  </ion-item>
-</ion-list>
+<div *ngIf="user?.status === 'done';else work">
+  Winner: {{winner}} <br />
+  Winner Block: {{winnerBlock}}<br />
+</div>
+<ng-template #work>
+  <ion-list *ngFor="let block of blocks">
+    <ion-item>
+      <ion-label>{{block.text}}</ion-label>
+      <ion-label>{{block.hash}}</ion-label>
+    </ion-item>
+  </ion-list>
+</ng-template>

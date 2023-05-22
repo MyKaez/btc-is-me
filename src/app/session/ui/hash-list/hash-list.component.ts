@@ -20,6 +20,18 @@ export class HashListComponent {
     }
   }
 
+  get winnerBlock(): string {
+    const block = <Block>this.session!.configuration;
+    return block.hash;
+  }
+
+  get winner(): string {
+    const block = <Block>this.session!.configuration;
+    const user = this.session!.users.find(u => u.id === block.userId);
+
+    return user?.name ?? 'unknown';
+  }
+
   blocks: Block[] = [];
 
   async findBlock(): Promise<Block> {
@@ -35,6 +47,9 @@ export class HashListComponent {
         hash: hash
       };
       this.blocks.unshift(block);
+      if (this.blocks.length > 100) {
+        this.blocks.pop();
+      }
       await delay(1);
     } while (this.blocks[0].hash > this.session!.configuration.threshold);
     return this.blocks[0];
@@ -57,6 +72,9 @@ export class HashListComponent {
           hash: hash
         };
         this.blocks.unshift(block);
+        if (this.blocks.length > 100) {
+          this.blocks.pop();
+        }
         await delay(1);
       }
       this.blocks = [];
