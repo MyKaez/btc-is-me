@@ -10,7 +10,7 @@ import { debounceTime, distinctUntilChanged } from 'rxjs';
 })
 export class InputSessionComponent implements OnInit {
 
-  @Output() nameChange = new EventEmitter<string>();
+  @Output("nameChange") nameChange = new EventEmitter<string>();
 
   constructor(private suggestionService: SuggestionService) {
   }

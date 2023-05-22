@@ -32,15 +32,16 @@
       <ion-item>
         <ion-input label="Hashrate" labelPlacement="stacked" placeholder="Enter Hashrate" [disabled]="true"
           [formControl]="hashRateControl"></ion-input>
-        <ion-button fill="clear" slot="end" (click)="hashRateControl.setValue(100)">Determine Hashrate</ion-button>
+        <ion-button fill="clear" slot="end" (click)="determine()">Determine Hashrate</ion-button>
       </ion-item>
       <ion-button fill="clear" (click)="ready()">Ready for session!</ion-button>
 
+      <app-hash-list [session]="session" [user]="user" (hashFound)="hashFound($event)" #hashList></app-hash-list>
     </div>
     <div *ngSwitchCase="'started'">
-
       <h3>Started</h3>
 
+      <app-hash-list [session]="session" [user]="user" (hashFound)="hashFound($event)" #hashList></app-hash-list>
     </div>
     <div *ngSwitchCase="'stopped'">
 

@@ -1,0 +1,6 @@
+<ion-list *ngFor="let block of blocks$ | async ">
+  <ion-item>
+    <ion-label>{{block.text}}</ion-label>
+    <ion-label>{{block.hash}}</ion-label>
+  </ion-item>
+</ion-list>
