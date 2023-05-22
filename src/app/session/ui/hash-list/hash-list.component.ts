@@ -3,6 +3,7 @@ import { User } from '../../models/user';
 import { SessionInfo } from '../../models/session';
 import { Block } from '../../models/block';
 import { of, take } from 'rxjs';
+import { SHA256 } from 'crypto-js';
 
 @Component({
   selector: 'app-hash-list',
@@ -26,10 +27,11 @@ export class HashListComponent {
     const template = `${this.user!.id}_${new Date().toLocaleDateString()}-${new Date().toLocaleTimeString()}'_`
     for (let i = 0; i < 10; i++) {
       const text = template + i;
+      const hash = SHA256(text).toString();
       const block = {
         userId: this.user!.id,
         text: text,
-        hash: text
+        hash: hash
       };
       this.hashes.unshift(block);
     }
