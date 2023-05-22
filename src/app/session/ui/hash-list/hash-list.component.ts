@@ -2,7 +2,6 @@ import { Component, EventEmitter, Input, Output } from '@angular/core';
 import { User } from '../../models/user';
 import { SessionInfo } from '../../models/session';
 import { Block } from '../../models/block';
-import { of, take } from 'rxjs';
 import { SHA256 } from 'crypto-js';
 
 @Component({
@@ -13,28 +12,61 @@ import { SHA256 } from 'crypto-js';
 export class HashListComponent {
   @Input("session") session?: SessionInfo;
   @Input("user") user?: User;
-  @Output("hashChange") hashChange = new EventEmitter<Block>();
+  @Output("blockFound") blockFound = new EventEmitter<Block>();
 
-  private hashes: Block[] = [];
+  @Input("go") set go(value: boolean) {
+    if (value && this.user?.status == 'ready') {
+      this.findBlock().then(block => this.blockFound.emit(block));
+    }
+  }
 
-  blocks$ = of(this.hashes).pipe(
-    //tap(blocks => blocks[0].hash < this.session?.configuration?.threshold)
-    take(100)
-  );
+  blocks: Block[] = [];
 
-
-  determine(): number {
-    const template = `${this.user!.id}_${new Date().toLocaleDateString()}-${new Date().toLocaleTimeString()}'_`
-    for (let i = 0; i < 10; i++) {
-      const text = template + i;
+  async findBlock(): Promise<Block> {
+    let overallHashRate = 0;
+    const template = `${this.user!.id}_${new Date().toLocaleDateString()}-${new Date().toLocaleTimeString()}'_`;
+    do {
+      overallHashRate++;
+      const text = template + overallHashRate;
       const hash = SHA256(text).toString();
       const block = {
         userId: this.user!.id,
         text: text,
         hash: hash
       };
-      this.hashes.unshift(block);
-    }
-    return 200;
+      this.blocks.unshift(block);
+      await delay(1);
+    } while (this.blocks[0].hash > this.session!.configuration.threshold);
+    return this.blocks[0];
   }
+
+  async determine(): Promise<number> {
+    let overallHashRate = 0;
+    const determineRounds = 5;
+    const template = `${this.user!.id}_${new Date().toLocaleDateString()}-${new Date().toLocaleTimeString()}'_`;
+    for (let i = 0; i < determineRounds; i++) {
+      const start = new Date();
+      start.setSeconds(start.getSeconds() + 1);
+      while (start.getTime() > new Date().getTime()) {
+        overallHashRate++;
+        const text = template + overallHashRate;
+        const hash = SHA256(text).toString();
+        const block = {
+          userId: this.user!.id,
+          text: text,
+          hash: hash
+        };
+        this.blocks.unshift(block);
+        await delay(1);
+      }
+      this.blocks = [];
+    }
+    const allowedHashRate = Math.round(Math.round(overallHashRate * 0.75) / determineRounds);
+
+    return allowedHashRate;
+  }
+}
+
+export function delay(ms: number): Promise<unknown> {
+  return new Promise(resolve => setTimeout(resolve, ms));
 }

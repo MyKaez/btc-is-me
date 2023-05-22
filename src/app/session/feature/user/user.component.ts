@@ -5,8 +5,8 @@ import { UserService } from '../../data-access/user.service';
 import { SuggestionService } from '../../data-access/suggestion.service';
 import { FormControl, Validators } from '@angular/forms';
 import { User, UserControl } from '../../models/user';
-import { Block } from '../../models/block';
 import { HashListComponent } from '../../ui/hash-list/hash-list.component';
+import { Block } from '../../models/block';
 
 @Component({
   selector: 'app-user',
@@ -60,14 +60,15 @@ export class UserComponent {
     });
   }
 
-  determine() {
+  async determine() {
     if (this.hashList) {
-      const hashRate = this.hashList.determine();
+      const hashRate = await this.hashList.determine();
       this.hashRateControl.setValue(hashRate);
+      this.ready();
     }
   }
 
-  hashFound(block: any) {
+  blockFound(block: Block) {
     const subscription = this.userService.sendUpdate(this.session.id, <UserControl>this.user, block).subscribe(_ => {
       subscription.unsubscribe();
     })

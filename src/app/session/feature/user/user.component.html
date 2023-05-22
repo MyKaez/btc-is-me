@@ -35,13 +35,13 @@
         <ion-button fill="clear" slot="end" (click)="determine()">Determine Hashrate</ion-button>
       </ion-item>
       <ion-button fill="clear" (click)="ready()">Ready for session!</ion-button>
-
-      <app-hash-list [session]="session" [user]="user" (hashFound)="hashFound($event)" #hashList></app-hash-list>
+      <app-hash-list [session]="session" [user]="user" #hashList></app-hash-list>
     </div>
     <div *ngSwitchCase="'started'">
       <h3>Started</h3>
 
-      <app-hash-list [session]="session" [user]="user" (hashFound)="hashFound($event)" #hashList></app-hash-list>
+      <app-hash-list [session]="session" [user]="user" [go]="true" (blockFound)="blockFound($event)"
+        #hashList></app-hash-list>
     </div>
     <div *ngSwitchCase="'stopped'">
 
