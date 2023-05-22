@@ -69,6 +69,8 @@ export class UserComponent {
   }
 
   blockFound(block: Block) {
+    const user = <UserControl>this.user;
+    user.status = 'done';
     const subscription = this.userService.sendUpdate(this.session.id, <UserControl>this.user, block).subscribe(_ => {
       subscription.unsubscribe();
     })

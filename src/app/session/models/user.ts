@@ -1,4 +1,3 @@
-
 export interface User {
     id: string;
     name: string;
@@ -6,7 +5,7 @@ export interface User {
     configuration?: any
 }
 
-export type UserStatus = 'notReady' | 'ready';
+export type UserStatus = 'notReady' | 'ready' | 'done';
 
 export interface UserControl extends User {
     controlId: string;
