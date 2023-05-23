@@ -29,11 +29,12 @@ export class UserComponent {
   userNameControl = new FormControl('', [Validators.required, Validators.minLength(5)]);
   hashRateControl = new FormControl<number>(0);
 
-  user$ = this.userName.pipe(
+  registerUser$ = this.userName.pipe(
     switchMap(userName => this.userService.registerUser(this.session.id, userName)),
     shareReplay(1),
     tap(user => this.userChange.emit(user))
   );
+  user$ = this.registerUser$;
 
   loading$ = this.loading.pipe();
 
