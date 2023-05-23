@@ -103,9 +103,6 @@ export class MainPage {
 
   setUser(user: UserControl) {
     this.user = user;
-    const subscription = this.hubConnection$.subscribe(con => {
-      con.invoke('RegisterUser', user.id);
-      subscription.unsubscribe();
-    });
+
   }
 }
