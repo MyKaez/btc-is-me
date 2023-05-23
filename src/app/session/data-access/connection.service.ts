@@ -36,10 +36,10 @@ export class ConnectionService {
         console.log('No user found');
         return;
       }
-      session.users.unshift(user);
-      if (session.configuration?.simulationType === 'proofOfWork') {
-        session.configuration.hashRate -= Number.parseInt(user.configuration.hashRate);
-      }
+      const subscription = this.userService.getUsers(session.id).subscribe(users => {
+        session.users = users;
+        subscription.unsubscribe();
+      });
     });
 
     con.on(`${session.id}:UserUpdate`, update => {
