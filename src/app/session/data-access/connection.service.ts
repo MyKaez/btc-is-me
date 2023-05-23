@@ -25,7 +25,7 @@ export class ConnectionService {
       console.log('CreateUser');
       con.invoke('RegisterUser', user.id);
       const subscription = this.userService.getUsers(session.id).subscribe(users => {
-        session.users = users;;
+        session.users = users;
         subscription.unsubscribe();
       });
     });
