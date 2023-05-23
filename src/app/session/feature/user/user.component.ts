@@ -1,5 +1,5 @@
 import { Component, EventEmitter, Input, Output, ViewChild } from '@angular/core';
-import { Subject, shareReplay, switchMap, tap } from 'rxjs';
+import { Subject, map, merge, shareReplay, switchMap, tap } from 'rxjs';
 import { SessionInfo } from '../../models/session';
 import { UserService } from '../../data-access/user.service';
 import { SuggestionService } from '../../data-access/suggestion.service';
@@ -21,6 +21,7 @@ export class UserComponent {
   @ViewChild("hashList") hashList?: HashListComponent;;
 
   private userName = new Subject<string>();
+  private userId = new Subject<string>();
   private loading = new Subject<boolean>();
 
   constructor(private userService: UserService, private suggestionService: SuggestionService) {
@@ -31,10 +32,17 @@ export class UserComponent {
 
   registerUser$ = this.userName.pipe(
     switchMap(userName => this.userService.registerUser(this.session.id, userName)),
-    shareReplay(1),
+    shareReplay(1)
+  );
+  getUser$ = this.userId.pipe(
+    switchMap(id => this.userService.getUsers(this.session.id).pipe(
+      map(users => users.find(u => u.id === id)!)
+    )),
+    map(user => { return { ...<UserControl>this.user, ...user } })
+  );
+  user$ = merge(this.registerUser$, this.getUser$).pipe(
     tap(user => this.userChange.emit(user))
   );
-  user$ = this.registerUser$;
 
   loading$ = this.loading.pipe();
 
