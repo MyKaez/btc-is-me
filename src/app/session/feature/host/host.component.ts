@@ -46,6 +46,12 @@ export class HostComponent {
     this.sessionStatus.next(session);
   }
 
+  clear() {
+    const update = this.createUpdate('reset');
+    this.button.next(true);
+    this.sessionStatus.next(update);
+  }
+
   createUpdate(action: SessionAction, config?: any) {
     const update = {
       ...this.sessionStatus.value, action: action,
@@ -57,11 +63,5 @@ export class HostComponent {
     };
     console.log(JSON.stringify(update));
     return update;
-  }
-
-  clear() {
-    const update = { action: <SessionAction>'reset', configuration: {} };
-    this.button.next(true);
-    this.sessionStatus.next(update);
   }
 }
