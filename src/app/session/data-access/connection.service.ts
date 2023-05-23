@@ -21,10 +21,11 @@ export class ConnectionService {
       messageUpdate([{ senderId: update.id, text: `status update:  ${update.status}` }]);
     });
 
-    con.on(`${session.id}:CreateUser`, _ => {
+    con.on(`${session.id}:CreateUser`, user => {
       console.log('CreateUser');
+      con.invoke('RegisterUser', user.id);
       const subscription = this.userService.getUsers(session.id).subscribe(users => {
-        session.users = users;
+        session.users = users;;
         subscription.unsubscribe();
       });
     });
@@ -49,12 +50,6 @@ export class ConnectionService {
         user.status = update.status;
         user.configuration = update.configuration;
         messageUpdate([{ senderId: user.id, text: `user update: ${user.status}` }]);
-        if (session.configuration?.simulationType === 'proofOfWork') {
-          if (!session.configuration.hashRate) {
-            session.configuration.hashRate = 0;
-          }
-          session.configuration.hashRate += Number.parseInt(update.configuration.hashRate);
-        }
       } else {
         messageUpdate([{ senderId: '???', text: 'cannot handle UserUpdate: ' + JSON.stringify(update) }]);
       }
