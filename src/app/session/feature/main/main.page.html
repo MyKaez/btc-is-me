@@ -1,8 +1,10 @@
 <ion-header [translucent]="true">
   <ion-toolbar>
     <ion-title>Session</ion-title>
-    <ion-buttons slot="end" end>
-      <ion-button ion-button color="royal" (click)="logOut()">log out</ion-button>
+    <ion-buttons slot="end" *ngIf="currentSession$ | async as session">
+      <ion-button ion-button color="royal" (click)="logOut()" *ngIf="isSessionHost(session)">
+        log out
+      </ion-button>
     </ion-buttons>
   </ion-toolbar>
 </ion-header>
@@ -37,7 +39,7 @@
           <app-user-info [session]="session"></app-user-info>
         </div>
         <div *ngSwitchCase="'user-action'">
-          <app-user [session]="session" [user]="user" (userChange)="setUser($event)"></app-user>
+          <app-user [session]="session" (userChange)="userView.getUser($event)" #userView></app-user>
         </div>
         <div *ngSwitchCase="'message-center'">
           <app-message-center [session]="session" [user]="user" [messages]="messages"></app-message-center>
