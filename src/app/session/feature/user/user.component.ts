@@ -7,6 +7,7 @@ import { FormControl, Validators } from '@angular/forms';
 import { User, UserControl } from '../../models/user';
 import { HashListComponent } from '../../ui/hash-list/hash-list.component';
 import { Block } from '../../models/block';
+import { HubConnection } from '@microsoft/signalr';
 
 @Component({
   selector: 'app-user',
@@ -16,6 +17,7 @@ import { Block } from '../../models/block';
 export class UserComponent {
 
   @Input("session") session!: SessionInfo;
+  @Input("hubConnection") hubConnection!: HubConnection;
   @Input("user") user?: User;
   @Output("userChange") userChange = new EventEmitter<UserControl>();
   @ViewChild("hashList") hashList?: HashListComponent;;
@@ -47,10 +49,15 @@ export class UserComponent {
   loading$ = this.loading.pipe();
 
   ngAfterViewInit(): void {
-    const subscription = this.suggestionService.suggestUser().subscribe(suggestion => {
-      this.userNameControl.setValue(suggestion.name);
-      subscription.unsubscribe();
-    });
+    if (!this.user) {
+      this.hubConnection.on(`${this.session.id}:UserUpdate`, user => {
+        this.userId.next(user.id);
+      });
+      const subscription = this.suggestionService.suggestUser().subscribe(suggestion => {
+        this.userNameControl.setValue(suggestion.name);
+        subscription.unsubscribe();
+      });
+    }
   }
 
   registerUser(): void {
