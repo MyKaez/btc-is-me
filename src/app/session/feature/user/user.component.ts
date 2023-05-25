@@ -51,7 +51,9 @@ export class UserComponent {
   ngAfterViewInit(): void {
     if (!this.user) {
       this.hubConnection.on(`${this.session.id}:UserUpdate`, user => {
-        this.userId.next(user.id);
+        if (this.user?.id == user.id) {
+          this.userId.next(user.id);
+        }
       });
       const subscription = this.suggestionService.suggestUser().subscribe(suggestion => {
         this.userNameControl.setValue(suggestion.name);
