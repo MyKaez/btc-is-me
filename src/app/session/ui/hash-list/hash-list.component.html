@@ -11,16 +11,16 @@
     </span>
     <ion-list>
       <ion-item>
-        <ion-label>Winner</ion-label>
-        <ion-text>{{winner}}</ion-text>
+        <ion-input label="Winner" labelPlacement="stacked" [readonly]="true" [value]="winner">
+        </ion-input>
       </ion-item>
       <ion-item>
-        <ion-label>Text</ion-label>
-        <ion-text>{{winnerBlock.text}}</ion-text>
+        <ion-input label="Text" labelPlacement="stacked" [readonly]="true" [value]="winnerBlock.text">
+        </ion-input>
       </ion-item>
       <ion-item>
-        <ion-label>Hash</ion-label>
-        <ion-text>{{winnerBlock.hash}}</ion-text>
+        <ion-input label="Hash" labelPlacement="stacked" [readonly]="true" [value]="winnerBlock.hash">
+        </ion-input>
       </ion-item>
     </ion-list>
   </ng-template>
