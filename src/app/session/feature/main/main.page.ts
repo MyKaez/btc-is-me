@@ -5,7 +5,6 @@ import { Subject, catchError, delay, filter, map, merge, of, shareReplay, switch
 import { Session, SessionControlInfo, SessionInfo } from '../../models/session';
 import { UserControl } from '../../models/user';
 import { Message } from '../../models/message';
-import { UserService } from '../../data-access/user.service';
 import { ConnectionService } from '../../data-access/connection.service';
 
 @Component({
@@ -20,7 +19,9 @@ export class MainPage {
   private session = new Subject<Session>();
   private load = new Subject<boolean>();
 
-  constructor(private route: ActivatedRoute, private router: Router, private sessionService: SessionService, private connectionService: ConnectionService) {
+  constructor(
+    private route: ActivatedRoute, private router: Router,
+    private sessionService: SessionService, private connectionService: ConnectionService) {
   }
 
   user?: UserControl;
@@ -103,6 +104,5 @@ export class MainPage {
 
   setUser(user: UserControl) {
     this.user = user;
-
   }
 }
