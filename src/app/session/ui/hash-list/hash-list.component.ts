@@ -39,7 +39,7 @@ export class HashListComponent {
   async findBlock(): Promise<Block> {
     let overallHashRate = 0;
     const id = this.user!.id.split('-')[0];
-    const timestamp = new Date().toLocaleDateString() + '-' + new Date().toLocaleTimeString();
+    const timestamp = new Date().toISOString();
     const template = `${id}_${timestamp}_`;
     do {
       overallHashRate++;
