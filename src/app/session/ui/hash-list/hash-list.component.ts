@@ -51,7 +51,7 @@ export class HashListComponent {
         hash: hash
       };
       this.blocks.unshift(block);
-      if (this.blocks.length > 100) {
+      if (this.blocks.length > 20) {
         this.blocks.pop();
       }
       await delay(1);
