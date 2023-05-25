@@ -20,15 +20,16 @@ export class HashListComponent {
     }
   }
 
-  get winnerBlock(): string {
-    const block = <Block>this.session!.configuration;
-    return block.hash;
+  get winnerBlock(): Block {
+    return <Block>this.session!.configuration;
+  }
+
+  get isMe(): boolean {
+    return this.user?.id === this.winnerBlock.userId;
   }
 
   get winner(): string {
-    const block = <Block>this.session!.configuration;
-    const user = this.session!.users.find(u => u.id === block.userId);
-
+    const user = this.session!.users.find(u => u.id === this.winnerBlock.userId);
     return user?.name ?? 'unknown';
   }
 
@@ -72,7 +73,7 @@ export class HashListComponent {
           hash: hash
         };
         this.blocks.unshift(block);
-        if (this.blocks.length > 100) {
+        if (this.blocks.length > 20) {
           this.blocks.pop();
         }
         await delay(1);

@@ -1,6 +1,14 @@
-<div *ngIf="user?.status === 'done';else work">
-  Winner: {{winner}} <br />
-  Winner Block: {{winnerBlock}}<br />
+<div *ngIf="session?.status === 'stopped' || user?.status === 'done';else work">
+  <span *ngIf="isMe" class="winner">
+    <ion-icon name="trophy-outline"></ion-icon>
+  </span>
+  <span *ngIf="!isMe" class="loser">
+    <ion-icon name="close-circle-outline"></ion-icon>
+  </span>
+  <br>
+  Winner: {{winner}}<br />
+  Winner Text: {{winnerBlock.text}}<br />
+  Winner Hash: {{winnerBlock.hash}}<br />
 </div>
 <ng-template #work>
   <ion-list *ngFor="let block of blocks">
