@@ -3,6 +3,7 @@ import { User } from '../../models/user';
 import { SessionInfo } from '../../models/session';
 import { Block } from '../../models/block';
 import { SHA256 } from 'crypto-js';
+import { time } from 'console';
 
 @Component({
   selector: 'app-hash-list',
@@ -37,7 +38,9 @@ export class HashListComponent {
 
   async findBlock(): Promise<Block> {
     let overallHashRate = 0;
-    const template = `${this.user!.id}_${new Date().toLocaleDateString()}-${new Date().toLocaleTimeString()}'_`;
+    const id = this.user!.id.split('-')[0];
+    const timestamp = new Date().toLocaleDateString() + '-' + new Date().toLocaleTimeString();
+    const template = `${id}_${timestamp}_`;
     do {
       overallHashRate++;
       const text = template + overallHashRate;
