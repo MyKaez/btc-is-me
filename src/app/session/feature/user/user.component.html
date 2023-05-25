@@ -34,7 +34,6 @@
           [formControl]="hashRateControl"></ion-input>
         <ion-button fill="clear" slot="end" (click)="determine()">Determine Hashrate</ion-button>
       </ion-item>
-      <ion-button fill="clear" (click)="ready()">Ready for session!</ion-button>
       <app-hash-list [session]="session" [user]="user" #hashList></app-hash-list>
     </div>
     <div *ngSwitchCase="'started'">
