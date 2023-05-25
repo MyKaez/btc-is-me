@@ -5,10 +5,20 @@
   <span *ngIf="!isMe" class="loser">
     <ion-icon name="close-circle-outline"></ion-icon>
   </span>
-  <br>
-  Winner: {{winner}}<br />
-  Winner Text: {{winnerBlock.text}}<br />
-  Winner Hash: {{winnerBlock.hash}}<br />
+  <ion-list>
+    <ion-item>
+      <ion-label>Winner</ion-label>
+      <ion-text>{{winner}}</ion-text>
+    </ion-item>
+    <ion-item>
+      <ion-label>Text</ion-label>
+      <ion-text>{{winnerBlock.text}}</ion-text>
+    </ion-item>
+    <ion-item>
+      <ion-label>Hash</ion-label>
+      <ion-text>{{winnerBlock.hash}}</ion-text>
+    </ion-item>
+  </ion-list>
 </div>
 <ng-template #work>
   <ion-list *ngFor="let block of blocks">
