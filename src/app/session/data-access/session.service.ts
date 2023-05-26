@@ -39,13 +39,24 @@ export class SessionService {
     )
   }
 
-  executeAction(session: SessionControlInfo, action: SessionAction, configuration: any): Observable<SessionInfo> {
+  executeAction(session: SessionControlInfo, action: SessionAction, configuration?: any): Observable<SessionInfo> {
     const req = {
       controlId: session.controlId,
       action: action,
       configuration: configuration
     };
     return this.httpClient.post(`${this.url}/v1/sessions/${session.id}/actions`, req).pipe(
+      map(value => <SessionInfo>value)
+    )
+  }
+
+  update(session: SessionControlInfo, configuration?: any): Observable<SessionInfo> {
+    const req = {
+      controlId: session.controlId,
+      action: 'update',
+      configuration: configuration
+    };
+    return this.httpClient.put(`${this.url}/v1/sessions/${session.id}`, req).pipe(
       map(value => <SessionInfo>value)
     )
   }

@@ -1,4 +1,4 @@
-import { Component, Input, OnInit } from '@angular/core';
+import { Component, Input } from '@angular/core';
 import { SessionInfo } from '../../models/session';
 
 @Component({
@@ -16,5 +16,4 @@ export class SessionInfoComponent {
       return window.location.href;
     return window.location.href + '/' + sessionId;
   }
-
 }

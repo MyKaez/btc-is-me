@@ -17,6 +17,7 @@ import { MessageCenterComponent } from './feature/message-center/message-center.
 import { SessionListComponent } from './ui/session-list/session-list.component';
 import { QRCodeModule } from 'angularx-qrcode';
 import { HashListComponent } from './ui/hash-list/hash-list.component';
+import { ProofOfWorkComponent } from './ui/proof-of-work/proof-of-work.component';
 
 @NgModule({
   imports: [
@@ -37,7 +38,8 @@ import { HashListComponent } from './ui/hash-list/hash-list.component';
     UserInfoComponent,
     SendMessageComponent,
     SessionListComponent,
-    HashListComponent
+    HashListComponent,
+    ProofOfWorkComponent
   ]
 })
 export class SessionModule { }

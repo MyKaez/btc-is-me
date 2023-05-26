@@ -1,0 +1,16 @@
+<ion-item>
+  <ion-label>HashRate</ion-label>
+  <ion-label>{{session.configuration.totalHashRate}}</ion-label>
+</ion-item>
+<ion-item>
+  <ion-label>SecondsUntilBlock</ion-label>
+  <ion-input [formControl]="secondsUntilBlock" [readonly]="readonly"></ion-input>
+</ion-item>
+<ion-item>
+  <ion-label>Difficulty</ion-label>
+  <ion-label>{{session.configuration.difficulty}}</ion-label>
+</ion-item>
+<ion-item>
+  <ion-label>Threshold</ion-label>
+  <ion-label>{{session.configuration.threshold}}</ion-label>
+</ion-item>
