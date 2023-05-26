@@ -1,6 +1,7 @@
 <ion-item>
-  <ion-textarea label="Message" labelPlacement="stacked" placeholder="Enter message"
-    [formControl]="messageControl"></ion-textarea>
-  <ion-button fill="clear" slot="end" (click)="sendMessage()" [disabled]="messageControl.invalid">Send
-    Message</ion-button>
+  <ion-textarea label="Message" labelPlacement="stacked" placeholder="Enter message" [formControl]="messageControl"
+    (keyup.enter)="sendMessage()"></ion-textarea>
+  <ion-button fill="clear" slot="end" (click)="sendMessage()" [disabled]="messageControl.invalid">
+    <ion-icon name="send-outline"></ion-icon>
+  </ion-button>
 </ion-item>
