@@ -1,11 +1,12 @@
 <ion-header [translucent]="true">
-  <ion-toolbar>
-    <ion-title>Session</ion-title>
-    <ion-buttons slot="end" *ngIf="currentSession$ | async as session">
-      <ion-button ion-button color="royal" (click)="logOut()" *ngIf="isSessionHost(session)">
-        log out
+  <ion-toolbar *ngIf="currentSession$ | async as session">
+    <ion-title slot="start">Session</ion-title>
+    <ion-toolbar slot="primary">
+      <app-host slot="start" [session]="session" *ngIf="isSessionHost(session)"></app-host>
+      <ion-button fill="clear" slot="end" (click)="logOut()" *ngIf="isSessionHost(session)">
+        <ion-icon name="log-out-outline"></ion-icon>
       </ion-button>
-    </ion-buttons>
+    </ion-toolbar>
   </ion-toolbar>
 </ion-header>
 
@@ -34,7 +35,6 @@
 
       <div [ngSwitch]="type" *ngIf="hubConnection$ | async as hubConnection">
         <div *ngSwitchCase="'session-info'">
-          <app-host [session]="session" *ngIf="isSessionHost(session)"></app-host>
           <app-session-info [session]="session"></app-session-info>
           <app-user-info [session]="session"></app-user-info>
         </div>

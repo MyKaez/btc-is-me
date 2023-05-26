@@ -1,26 +1,14 @@
-<h2>Host Actions</h2>
-
-<div>
-  <ion-toolbar>
-    <ion-button fill="clear" (click)="prepare()" [disabled]="session.status !== 'notStarted'">
-      Prepare Session
-    </ion-button>
-    <ion-button fill="clear" (click)="start()" [disabled]="session.status !== 'preparing'">
-      Start Session
-    </ion-button>
-    <ion-button fill="clear" (click)="stop()" [disabled]="session.status !== 'started'">
-      Stop Session
-    </ion-button>
-    <ion-button fill="clear" (click)="clear()" [disabled]="session.status !== 'stopped'">
-      Clear Session
-    </ion-button>
-    <ion-badge slot="end">
-      <span *ngIf="sessionUpdates$ | async as status;else notUpdated">
-        Updated: {{status}}
-      </span>
-      <ng-template #notUpdated>
-        {{session.status}}
-      </ng-template>
-    </ion-badge>
-  </ion-toolbar>
-</div>
+<ion-buttons>
+  <ion-button fill="clear" (click)="prepare()" [disabled]="session.status !== 'notStarted'">
+    <ion-icon name="create-outline"></ion-icon>
+  </ion-button>
+  <ion-button fill="clear" (click)="start()" [disabled]="session.status !== 'preparing'">
+    <ion-icon name="play-outline"></ion-icon>
+  </ion-button>
+  <ion-button fill="clear" (click)="stop()" [disabled]="session.status !== 'started'">
+    <ion-icon name="stop-outline"></ion-icon>
+  </ion-button>
+  <ion-button fill="clear" (click)="clear()" [disabled]="session.status !== 'stopped'">
+    <ion-icon name="repeat-outline"></ion-icon>
+  </ion-button>
+</ion-buttons>

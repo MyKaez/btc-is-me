@@ -12,9 +12,6 @@ export class HostComponent {
 
   @Input("session") session!: SessionInfo;
 
-  private sessionStatus = new BehaviorSubject<{ action?: SessionAction, configuration: any }>({ configuration: {} });
-  private button = new BehaviorSubject<boolean>(false);
-
   constructor(private sessionService: SessionService) {
   }
 
@@ -22,46 +19,34 @@ export class HostComponent {
     return <SessionControlInfo>this.session;
   }
 
-  sessionUpdates$ = combineLatest([this.sessionStatus, this.button]).pipe(
-    filter(([_, button]) => button === true),
-    switchMap(([input, _]) => this.sessionService.executeAction(this.controlSession, input.action!, input.configuration)),
-    map((input) => input.status)
-  );
-
   prepare() {
-    const session = this.createUpdate('prepare', { simulationType: 'proofOfWork' });
-    this.button.next(true);
-    this.sessionStatus.next(session);
+    this.createUpdate('prepare', { simulationType: 'proofOfWork' });
   }
 
   start() {
-    const session = this.createUpdate('start');
-    this.button.next(true);
-    this.sessionStatus.next(session);
+    this.createUpdate('start');
   }
 
   stop() {
     const session = this.createUpdate('stop');
-    this.button.next(true);
-    this.sessionStatus.next(session);
   }
 
   clear() {
     const update = this.createUpdate('reset');
-    this.button.next(true);
-    this.sessionStatus.next(update);
   }
 
-  createUpdate(action: SessionAction, config?: any) {
+  createUpdate(action: SessionAction, config?: any): void {
     const update = {
-      ...this.sessionStatus.value, action: action,
+      ...this.session, action: action,
       configuration: {
         ...(this.session.configuration ?? {}),
-        ...this.sessionStatus.value.configuration,
+        ...this.session.configuration,
         ...(config ?? {})
       }
     };
     console.log(JSON.stringify(update));
-    return update;
+    const subscription = this.sessionService.executeAction(this.controlSession, action, config).subscribe(_ => {
+      subscription.unsubscribe();
+    });
   }
 }
