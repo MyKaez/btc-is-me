@@ -28,6 +28,8 @@ export class ProofOfWorkComponent implements OnInit, OnDestroy {
     distinctUntilChanged(),
     tap(value => {
       const config = this.session.configuration!;
+      // value if of type "number" here, but it will be converted to a string when sending the request for some reason
+      // in order to send a number, we need to say toString() and parse to int
       config.secondsUntilBlock = Number.parseInt(value?.toString() ?? '');
       const subscription = this.sessionService.update(<SessionControlInfo>this.session!, config).subscribe(_ => {
         subscription.unsubscribe();
