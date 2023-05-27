@@ -2,7 +2,7 @@
   <ion-toolbar *ngIf="currentSession$ | async as session">
     <ion-title slot="start">Session</ion-title>
     <ion-toolbar slot="primary">
-      <app-host slot="start" [session]="session" *ngIf="isSessionHost(session)"></app-host>
+      <app-host-actions slot="start" [session]="session" *ngIf="isSessionHost(session)"></app-host-actions>
       <ion-button fill="clear" slot="end" (click)="logOut()" *ngIf="isSessionHost(session)">
         <ion-icon name="log-out-outline"></ion-icon>
       </ion-button>

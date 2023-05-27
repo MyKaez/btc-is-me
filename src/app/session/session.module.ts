@@ -10,7 +10,7 @@ import { MainPage } from './feature/main/main.page';
 import { InputSessionComponent } from './ui/input-session/input-session.component';
 import { SessionInfoComponent } from './ui/session-info/session-info.component';
 import { UserInfoComponent } from './ui/user-info/user-info.component';
-import { HostComponent } from './feature/host/host.component';
+import { HostActionsComponent } from './ui/host-actions/host-actions.component';
 import { UserComponent } from './feature/user/user.component';
 import { SendMessageComponent } from './ui/send-message/send-message.component';
 import { MessageCenterComponent } from './feature/message-center/message-center.component';
@@ -30,7 +30,7 @@ import { ProofOfWorkComponent } from './ui/proof-of-work/proof-of-work.component
   ],
   declarations: [
     MainPage,
-    HostComponent,
+    HostActionsComponent,
     UserComponent,
     MessageCenterComponent,
     InputSessionComponent,

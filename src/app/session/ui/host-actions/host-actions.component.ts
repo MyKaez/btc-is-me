@@ -1,15 +1,14 @@
-import { AfterViewInit, ChangeDetectorRef, Component, Input, ViewChild, } from '@angular/core';
+import { AfterViewInit, Component, Input, ViewChild, } from '@angular/core';
 import { SessionControlInfo, SessionInfo, SessionAction, SessionStatus } from '../../models/session';
-import { BehaviorSubject, combineLatest, filter, map, switchMap, withLatestFrom } from 'rxjs';
 import { SessionService } from '../../data-access/session.service';
 import { IonButton } from '@ionic/angular';
 
 @Component({
-  selector: 'app-host',
-  templateUrl: './host.component.html',
-  styleUrls: ['./host.component.scss'],
+  selector: 'app-host-actions',
+  templateUrl: './host-actions.component.html',
+  styleUrls: ['./host-actions.component.scss'],
 })
-export class HostComponent implements AfterViewInit {
+export class HostActionsComponent implements AfterViewInit {
 
   @Input("session") session!: SessionInfo;
   @ViewChild("prepareButton") prepareButton!: IonButton;
