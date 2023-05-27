@@ -2,35 +2,30 @@
 
 <ion-list>
   <ion-item>
-    <ion-label>ID</ion-label>
-    <ion-label>{{session.id}}</ion-label>
+    <ion-input label="ID" labelPlacement="stacked" [value]="session.id" [readonly]="true"></ion-input>
   </ion-item>
   <ion-item>
-    <ion-label>Name</ion-label>
-    <ion-label>{{session.name}}</ion-label>
   </ion-item>
   <ion-item>
-    <ion-label>Status</ion-label>
-    <ion-label>
-      <ion-badge>{{session.status}}</ion-badge>
-    </ion-label>
+    <ion-input label="Status" labelPlacement="stacked" [value]="session.status" [readonly]="true"></ion-input>
   </ion-item>
   <ion-item>
-    <ion-label>Expiration Time</ion-label>
-    <ion-label>{{session.expirationTime}}</ion-label>
+    <ion-input label="Expiration Time" labelPlacement="stacked" [value]="session.expirationTime"
+      [readonly]="true"></ion-input>
   </ion-item>
   <ion-item *ngIf="session.configuration">
-    <ion-label>SimulationType</ion-label>
-    <ion-label>{{session.configuration.simulationType}}</ion-label>
+    <ion-input label="SimulationType" labelPlacement="stacked" [value]="session.configuration.simulationType"
+      [readonly]="true"></ion-input>
   </ion-item>
   <div *ngIf="session.configuration?.simulationType === 'proofOfWork'">
     <app-proof-of-work [session]="session"></app-proof-of-work>
   </div>
   <ion-item>
-    <ion-label>Link </ion-label>
-    <ion-label>
-      <a [href]="sessionLink" target="_blank">{{sessionLink}}</a>
-      <qrcode [qrdata]="sessionLink" [errorCorrectionLevel]="'L'"></qrcode>
-    </ion-label>
+    <ion-input label="Link" labelPlacement="stacked" [value]="sessionLink" [readonly]="true"></ion-input>
+    <ion-button fill="clear" (click)="openLink()"><ion-icon name="open-outline"></ion-icon></ion-button>
+    <ion-button fill="clear" (click)="copyLink()"><ion-icon name="copy-outline"></ion-icon></ion-button>
+  </ion-item>
+  <ion-item>
+    <qrcode [qrdata]="sessionLink" [width]="256" [errorCorrectionLevel]="'L'" (click)="openLink()"></qrcode>
   </ion-item>
 </ion-list>

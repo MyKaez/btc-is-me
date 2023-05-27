@@ -16,4 +16,18 @@ export class SessionInfoComponent {
       return window.location.href;
     return window.location.href + '/' + sessionId;
   }
+
+  openLink(): void {
+    window.open(this.sessionLink, '_blank');
+  }
+
+  copyLink(): void {
+    const listener = (e: ClipboardEvent) => {
+      e.clipboardData!.setData('text/plain', this.sessionLink);
+      e.preventDefault();
+      document.removeEventListener('copy', listener);
+    };
+    document.addEventListener('copy', listener);
+    document.execCommand('copy');
+  }
 }
