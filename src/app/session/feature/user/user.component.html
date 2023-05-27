@@ -30,9 +30,12 @@
       <h3>Preparing</h3>
 
       <ion-item>
+        <div *ngIf="hashRateControl.value === 0">Please determine your HashRate...</div>
         <ion-input label="Hashrate" labelPlacement="stacked" placeholder="Enter Hashrate" [disabled]="true"
           [formControl]="hashRateControl"></ion-input>
-        <ion-button fill="clear" slot="end" (click)="determine()">Determine Hashrate</ion-button>
+        <ion-button fill="clear" slot="end" (click)="determine()">
+          <ion-icon name="arrow-forward-circle-outline"></ion-icon>
+        </ion-button>
       </ion-item>
       <app-hash-list [session]="session" [user]="user" #hashList></app-hash-list>
     </div>
@@ -60,10 +63,11 @@
     Please register as user
 
     <ion-item>
-      <ion-input label="User Name" labelPlacement="stacked" placeholder="Enter user name"
+      <ion-input label="User Name" labelPlacement="stacked" placeholder="Enter user name" (keyup.enter)="registerUser()"
         [formControl]="userNameControl"></ion-input>
-      <ion-button fill="clear" slot="end" (click)="registerUser()"
-        [disabled]="userNameControl.invalid">Register</ion-button>
+      <ion-button fill="clear" slot="end" (click)="registerUser()" [disabled]="userNameControl.invalid">
+        <ion-icon name="log-in-outline"></ion-icon>
+      </ion-button>
     </ion-item>
 
   </ng-template>
