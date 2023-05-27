@@ -4,6 +4,8 @@
     <ion-label>{{session.name}}</ion-label>
     <ion-label>{{session.status}}</ion-label>
     <ion-label>{{session.expirationTime}}</ion-label>
-    <ion-button (click)="openSession(session.id)">Open</ion-button>
+    <ion-button fill="clear" (click)="openSession(session.id)">
+      <ion-icon name="open-outline"></ion-icon>
+    </ion-button>
   </ion-item>
 </ion-list>
