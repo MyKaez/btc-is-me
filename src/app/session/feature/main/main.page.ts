@@ -6,6 +6,7 @@ import { Session, SessionControlInfo, SessionInfo } from '../../models/session';
 import { UserControl } from '../../models/user';
 import { Message } from '../../models/message';
 import { ConnectionService } from '../../data-access/connection.service';
+import { ViewModel } from '../../models/view-model';
 
 @Component({
   selector: 'app-main',
@@ -84,7 +85,7 @@ export class MainPage {
     shareReplay(1)
   )
 
-  vm$ = combineLatest([this.currentSession$, this.hubConnection$]).pipe(map(([s, c]) => ({ session: s, connection: c })));
+  vm$ = combineLatest([this.currentSession$, this.hubConnection$]).pipe(map(([s, c]) => new ViewModel(s, c)));
 
   loading$ = this.load.pipe();
 
@@ -97,10 +98,6 @@ export class MainPage {
     this.load.next(true);
     const session = { name: sessionName };
     this.session.next(session);
-  }
-
-  isSessionHost(session: SessionControlInfo | SessionInfo): boolean {
-    return 'controlId' in session;
   }
 
   setUser(user: UserControl) {

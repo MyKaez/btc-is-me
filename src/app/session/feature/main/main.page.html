@@ -1,9 +1,9 @@
 <ion-header [translucent]="true">
-  <ion-toolbar *ngIf="currentSession$ | async as session">
+  <ion-toolbar *ngIf="vm$ | async as vm">
     <ion-title slot="start">Session</ion-title>
     <ion-toolbar slot="primary">
-      <app-host-actions slot="start" [session]="session" *ngIf="isSessionHost(session)"></app-host-actions>
-      <ion-button fill="clear" slot="end" (click)="logOut()" *ngIf="isSessionHost(session)">
+      <app-host-actions slot="start" [session]="vm.session" *ngIf="vm.isSessionHost"></app-host-actions>
+      <ion-button fill="clear" slot="end" (click)="logOut()" *ngIf="vm.isSessionHost">
         <ion-icon name="log-out-outline"></ion-icon>
       </ion-button>
     </ion-toolbar>
@@ -25,10 +25,10 @@
         <ion-segment-button value="session-info">
           <ion-label>Session</ion-label>
         </ion-segment-button>
-        <ion-segment-button value="user-action" *ngIf="!isSessionHost(vm.session)">
+        <ion-segment-button value="user-action" *ngIf="!vm.isSessionHost">
           <ion-label>User</ion-label>
         </ion-segment-button>
-        <ion-segment-button value="message-center" *ngIf="user || isSessionHost(vm.session)">
+        <ion-segment-button value="message-center" *ngIf="user || vm.isSessionHost">
           <ion-label>Message Center</ion-label>
         </ion-segment-button>
       </ion-segment>
