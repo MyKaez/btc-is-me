@@ -1,18 +1,14 @@
 <ion-buttons>
-  <ion-button fill="clear" [color]="getColor(prepareButton)" (click)="prepare()"
-    [disabled]="session.status !== 'notStarted'" #prepareButton>
+  <ion-button fill="clear" (click)="prepare()" #prepareButton>
     <ion-icon name="create-outline"></ion-icon>
   </ion-button>
-  <ion-button fill="clear" [color]="getColor(startButton)" (click)="start()" [disabled]="session.status !== 'preparing'"
-    #startButton>
+  <ion-button fill="clear" (click)="start()" #startButton>
     <ion-icon name="play-outline"></ion-icon>
   </ion-button>
-  <ion-button fill="clear" [color]="getColor(stopButton)" (click)="stop()" [disabled]="session.status !== 'started'"
-    #stopButton>
+  <ion-button fill="clear" (click)="stop()" #stopButton>
     <ion-icon name="stop-outline"></ion-icon>
   </ion-button>
-  <ion-button fill="clear" [color]="getColor(clearButton)" (click)="clear()" [disabled]="session.status !== 'stopped'"
-    #clearButton>
+  <ion-button fill="clear" (click)="clear()" #clearButton>
     <ion-icon name="repeat-outline"></ion-icon>
   </ion-button>
 </ion-buttons>
