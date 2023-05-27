@@ -56,7 +56,7 @@ export class SessionService {
       action: 'update',
       configuration: configuration
     };
-    return this.httpClient.put(`${this.url}/v1/sessions/${session.id}`, req).pipe(
+    return this.httpClient.post(`${this.url}/v1/sessions/${session.id}`, req).pipe(
       map(value => <SessionInfo>value)
     )
   }
