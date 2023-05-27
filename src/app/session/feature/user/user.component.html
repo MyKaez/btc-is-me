@@ -21,14 +21,9 @@
 
   <div [ngSwitch]="session.status">
     <div *ngSwitchCase="'notStarted'">
-
-      <h3>Not Started</h3>
-
+      Session hasn't started yet...
     </div>
     <div *ngSwitchCase="'preparing'">
-
-      <h3>Preparing</h3>
-
       <ion-item>
         <div *ngIf="hashRateControl.value === 0">Please determine your HashRate...</div>
         <ion-input label="Hashrate" labelPlacement="stacked" placeholder="Enter Hashrate" [disabled]="true"
@@ -40,17 +35,11 @@
       <app-hash-list [session]="session" [user]="user" #hashList></app-hash-list>
     </div>
     <div *ngSwitchCase="'started'">
-      <h3>Started</h3>
-
       <app-hash-list [session]="session" [user]="user" [go]="true" (blockFound)="blockFound($event)"
         #hashList></app-hash-list>
     </div>
     <div *ngSwitchCase="'stopped'">
-
-      <h3>Stopped</h3>
-
       <app-hash-list [session]="session" [user]="user" #hashList></app-hash-list>
-
     </div>
   </div>
 
