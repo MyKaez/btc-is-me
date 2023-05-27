@@ -1,7 +1,8 @@
-import { Component, Input, } from '@angular/core';
+import { AfterViewInit, ChangeDetectorRef, Component, Input, } from '@angular/core';
 import { SessionControlInfo, SessionInfo, SessionAction } from '../../models/session';
 import { BehaviorSubject, combineLatest, filter, map, switchMap, withLatestFrom } from 'rxjs';
 import { SessionService } from '../../data-access/session.service';
+import { IonButton } from '@ionic/angular';
 
 @Component({
   selector: 'app-host',
@@ -12,11 +13,20 @@ export class HostComponent {
 
   @Input("session") session!: SessionInfo;
 
-  constructor(private sessionService: SessionService) {
+  constructor(private sessionService: SessionService, private cdRef: ChangeDetectorRef) {
   }
 
   get controlSession(): SessionControlInfo {
     return <SessionControlInfo>this.session;
+  }
+
+  getColor(button: IonButton) {
+    const color = button.color;
+    const newColor = button.disabled ? 'secondary' : 'primary';
+    if (color === newColor)
+      return;
+    button.color = newColor
+    this.cdRef.detectChanges();
   }
 
   prepare() {
