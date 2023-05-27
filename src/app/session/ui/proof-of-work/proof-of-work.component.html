@@ -1,16 +1,16 @@
 <ion-item>
-  <ion-label>HashRate</ion-label>
-  <ion-label>{{session.configuration.totalHashRate}}</ion-label>
+  <ion-input label="HashRate" labelPlacement="stacked" [value]="session.configuration.totalHashRate"
+    [readonly]="true"></ion-input>
 </ion-item>
 <ion-item>
-  <ion-label>SecondsUntilBlock</ion-label>
-  <ion-input [formControl]="secondsUntilBlock" [readonly]="readonly"></ion-input>
+  <ion-input label="Seconds until Block" labelPlacement="stacked" [formControl]="secondsUntilBlock"
+    [readonly]="readonly"></ion-input>
 </ion-item>
 <ion-item>
-  <ion-label>Difficulty</ion-label>
-  <ion-label>{{session.configuration.difficulty}}</ion-label>
+  <ion-input label="Difficulty" labelPlacement="stacked" [value]="session.configuration.difficulty"
+    [readonly]="true"></ion-input>
 </ion-item>
 <ion-item>
-  <ion-label>Threshold</ion-label>
-  <ion-label>{{session.configuration.threshold}}</ion-label>
+  <ion-input label="Threshold" labelPlacement="stacked" [value]="session.configuration.threshold"
+    [readonly]="true"></ion-input>
 </ion-item>
