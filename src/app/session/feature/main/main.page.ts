@@ -2,8 +2,7 @@ import { Component } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { SessionService } from '../../data-access/session.service';
 import { Subject, catchError, combineLatest, delay, filter, map, merge, of, shareReplay, switchMap, take, tap } from 'rxjs';
-import { Session, SessionControlInfo, SessionInfo } from '../../models/session';
-import { UserControl } from '../../models/user';
+import { Session, SessionControlInfo } from '../../models/session';
 import { Message } from '../../models/message';
 import { ConnectionService } from '../../data-access/connection.service';
 import { ViewModel } from '../../models/view-model';
@@ -25,7 +24,6 @@ export class MainPage {
     private sessionService: SessionService, private connectionService: ConnectionService) {
   }
 
-  user?: UserControl;
   type: 'session-info' | 'message-center' | 'user-action' = 'session-info';
   messages: Message[] = [];
   getSessionById$ = this.route.params.pipe(
@@ -98,9 +96,5 @@ export class MainPage {
     this.load.next(true);
     const session = { name: sessionName };
     this.session.next(session);
-  }
-
-  setUser(user: UserControl) {
-    this.user = user;
   }
 }
