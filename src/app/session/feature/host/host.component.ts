@@ -59,24 +59,21 @@ export class HostComponent implements AfterViewInit {
   }
 
   createUpdate(action: SessionAction, config?: any): void {
-    const update = {
-      ...this.session, action: action,
-      configuration: {
-        ...(this.session.configuration ?? {}),
-        ...this.session.configuration,
-        ...(config ?? {})
-      }
+    const configuration = {
+      ...(this.session.configuration ?? {}),
+      ...this.session.configuration,
+      ...(config ?? {})
     };
-    const currentButtonIndex = this.context.findIndex(b => b.action === action)!;
-    const currentButton = this.context[currentButtonIndex];
-    currentButton.button.disabled = true;
-    currentButton.button.color = 'secondary';
-    const nextButton = this.context.length - 1 == currentButtonIndex
-      ? this.context[0].button : this.context[currentButtonIndex + 1].button;
-    nextButton.disabled = false;
-    nextButton.color = 'primary';
-    console.log(JSON.stringify(update));
-    const subscription = this.sessionService.executeAction(this.controlSession, action, config).subscribe(_ => {
+    console.log(JSON.stringify(configuration));
+    const subscription = this.sessionService.executeAction(this.controlSession, action, configuration).subscribe(_ => {
+      const currentButtonIndex = this.context.findIndex(b => b.action === action)!;
+      const currentButton = this.context[currentButtonIndex];
+      currentButton.button.disabled = true;
+      currentButton.button.color = 'secondary';
+      const nextButton = this.context.length - 1 == currentButtonIndex
+        ? this.context[0].button : this.context[currentButtonIndex + 1].button;
+      nextButton.disabled = false;
+      nextButton.color = 'primary';
       subscription.unsubscribe();
     });
   }
