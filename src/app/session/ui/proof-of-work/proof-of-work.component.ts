@@ -1,9 +1,8 @@
 import { Component, Input, OnDestroy, OnInit } from '@angular/core';
 import { SessionControlInfo, SessionInfo } from '../../models/session';
 import { FormControl } from '@angular/forms';
-import { Observable, Unsubscribable, debounceTime, distinctUntilChanged, tap } from 'rxjs';
+import { Unsubscribable, debounceTime, distinctUntilChanged, tap } from 'rxjs';
 import { SessionService } from '../../data-access/session.service';
-import { Session } from 'inspector';
 
 @Component({
   selector: 'app-proof-of-work',
