@@ -1,7 +1,7 @@
 import { Component } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { SessionService } from '../../data-access/session.service';
-import { Subject, catchError, delay, filter, map, merge, of, shareReplay, switchMap, take, tap } from 'rxjs';
+import { Subject, catchError, combineLatest, delay, filter, map, merge, of, shareReplay, switchMap, take, tap } from 'rxjs';
 import { Session, SessionControlInfo, SessionInfo } from '../../models/session';
 import { UserControl } from '../../models/user';
 import { Message } from '../../models/message';
@@ -27,7 +27,6 @@ export class MainPage {
   user?: UserControl;
   type: 'session-info' | 'message-center' | 'user-action' = 'session-info';
   messages: Message[] = [];
-
   getSessionById$ = this.route.params.pipe(
     map(p => p['id']),
     filter(sessionId => sessionId !== undefined && sessionId !== null),
@@ -84,6 +83,8 @@ export class MainPage {
     ),
     shareReplay(1)
   )
+
+  vm$ = combineLatest([this.currentSession$, this.hubConnection$]).pipe(map(([s, c]) => ({ session: s, connection: c })));
 
   loading$ = this.load.pipe();
 
