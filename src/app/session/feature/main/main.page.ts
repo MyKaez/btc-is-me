@@ -75,15 +75,13 @@ export class MainPage {
     shareReplay(1)
   );
 
-  hubConnection$ = this.currentSession$.pipe(
-    map(session => this.sessionService.connect(
-      con => this.connectionService.connect(con, session, messages => this.messages = [...messages, ...this.messages]),
-      con => con.invoke('RegisterSession', session.id))
-    ),
-    shareReplay(1)
-  )
+  hubConnection$ = of(this.connectionService.createConnection());
 
-  vm$ = combineLatest([this.currentSession$, this.hubConnection$]).pipe(map(([s, c]) => new ViewModel(s, c)));
+  vm$ = combineLatest([this.currentSession$, this.hubConnection$]).pipe(
+    map(([session, connection]) => new ViewModel(session, connection)),
+    tap(vm => this.connectionService.connect(vm, messages => this.messages = [...messages, ...this.messages])),
+    shareReplay(1)
+  );
 
   loading$ = this.load.pipe();
 
