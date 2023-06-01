@@ -47,9 +47,11 @@ export class ConnectionService {
       console.log('UserUpdate');
       const user = session.users.find(u => u.id == update.id);
       if (user) {
-        user.status = update.status;
-        user.configuration = update.configuration;
         messageUpdate([{ senderId: user.id, text: `user update: ${user.status}` }]);
+        const subscription = this.userService.getUsers(session.id).subscribe(users => {
+          session.users = users;
+          subscription.unsubscribe();
+        });
       } else {
         messageUpdate([{ senderId: '???', text: 'cannot handle UserUpdate: ' + JSON.stringify(update) }]);
       }
