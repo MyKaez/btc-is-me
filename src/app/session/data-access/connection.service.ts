@@ -11,7 +11,7 @@ import { ViewModel } from '../models/view-model';
 })
 export class ConnectionService {
 
-  constructor(@Inject('BTCIS.ME-API') private url: string, private sessionService: SessionService, private userService: UserService) { }
+  constructor(@Inject('BTCIS.ME-API') private url: string, private userService: UserService) { }
 
   createConnection(): HubConnection {
     const connection = new HubConnectionBuilder()
