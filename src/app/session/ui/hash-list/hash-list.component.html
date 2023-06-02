@@ -27,9 +27,6 @@
 </div>
 <ng-template #work>
   <ion-list *ngFor="let block of blocks">
-    <ion-item>
-      <ion-label>{{block.text}}</ion-label>
-      <ion-label>{{block.hash}}</ion-label>
-    </ion-item>
+    <ion-input [label]="block.text" labelPlacement="stacked" [value]="block.hash" [readonly]="true"></ion-input>
   </ion-list>
 </ng-template>
