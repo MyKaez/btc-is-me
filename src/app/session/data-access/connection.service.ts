@@ -26,6 +26,7 @@ export class ConnectionService {
       console.log('updating users');
       const subscription = this.userService.getUsers(session.id).subscribe(users => {
         session.users = users;
+        vm.onUsersUpdate();
         subscription.unsubscribe();
       });
     };

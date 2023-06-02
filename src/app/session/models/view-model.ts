@@ -7,8 +7,14 @@ export class ViewModel {
     constructor(public session: SessionInfo, public connection: HubConnection) { }
 
     user?: UserControl;
+    userUpdates: (() => void)[] = [];
 
     get isSessionHost(): boolean {
         return 'controlId' in this.session;
+    }
+
+    onUsersUpdate() {
+        console.log(`running ${this.userUpdates.length} updates`);
+        this.userUpdates.forEach(u => u());
     }
 }
