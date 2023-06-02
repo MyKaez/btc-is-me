@@ -1,7 +1,8 @@
 import { AfterViewInit, Component, Input, ViewChild, } from '@angular/core';
-import { SessionControlInfo, SessionInfo, SessionAction, SessionStatus } from '../../models/session';
+import { SessionControlInfo, SessionAction, SessionStatus, SessionInfo } from '../../models/session';
 import { SessionService } from '../../data-access/session.service';
 import { IonButton } from '@ionic/angular';
+import { ViewModel } from '../../models/view-model';
 
 @Component({
   selector: 'app-host-actions',
@@ -10,7 +11,8 @@ import { IonButton } from '@ionic/angular';
 })
 export class HostActionsComponent implements AfterViewInit {
 
-  @Input("session") session!: SessionInfo;
+  @Input("vm") vm!: ViewModel;
+
   @ViewChild("prepareButton") prepareButton!: IonButton;
   @ViewChild("startButton") startButton!: IonButton;
   @ViewChild("stopButton") stopButton!: IonButton;
@@ -21,14 +23,18 @@ export class HostActionsComponent implements AfterViewInit {
   constructor(private sessionService: SessionService) {
   }
 
+  get controlSession(): SessionControlInfo {
+    return <SessionControlInfo>this.vm.session;
+  }
+
   ngAfterViewInit(): void {
+    this.vm.userUpdates.push(() => this.onUserUpdate());
     this.context.push({ button: this.prepareButton, action: 'prepare', status: 'notStarted' });
     this.context.push({ button: this.startButton, action: 'start', status: 'preparing' });
     this.context.push({ button: this.stopButton, action: 'stop', status: 'started' });
     this.context.push({ button: this.clearButton, action: 'reset', status: 'stopped' });
-
     this.context.forEach(button => {
-      if (button.status === this.session.status) {
+      if (button.status === this.controlSession.status) {
         button.button.color = 'primary';
       } else {
         button.button.color = 'secondary';
@@ -37,8 +43,13 @@ export class HostActionsComponent implements AfterViewInit {
     });
   }
 
-  get controlSession(): SessionControlInfo {
-    return <SessionControlInfo>this.session;
+  onUserUpdate() {
+    console.log('host-action')
+    if (this.controlSession.status != 'preparing')
+      return;
+    const users = this.controlSession.users.filter(u => u.status === 'ready');
+    const currentButton = this.context.find(b => b.action === 'start')!;
+    currentButton.button.disabled = users.length === 0;
   }
 
   prepare() {
@@ -59,8 +70,8 @@ export class HostActionsComponent implements AfterViewInit {
 
   createUpdate(action: SessionAction, config?: any): void {
     const configuration = {
-      ...(this.session.configuration ?? {}),
-      ...this.session.configuration,
+      ...(this.controlSession.configuration ?? {}),
+      ...this.controlSession.configuration,
       ...(config ?? {})
     };
     console.log(JSON.stringify(configuration));
