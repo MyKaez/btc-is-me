@@ -57,6 +57,9 @@ export class ConnectionService {
 
       con.on(`${session.id}:DeleteUser`, userId => {
         console.log('DeleteUser');
+        if (vm.user?.id == userId) {
+          vm.user = undefined;
+        }
         if (session.users.find(user => user.id === userId)) {
           updateUsers();
         } else {
@@ -68,6 +71,9 @@ export class ConnectionService {
         console.log('UserUpdate');
         const user = session.users.find(u => u.id == update.id);
         if (user) {
+          if (vm.user?.id == user?.id) {
+            vm.user = { ...vm.user, ...user };
+          }
           updateUsers();
           messageUpdate([{ senderId: user.id, text: `user update: ${user.status}` }]);
         } else {
