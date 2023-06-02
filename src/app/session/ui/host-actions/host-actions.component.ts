@@ -1,5 +1,5 @@
 import { AfterViewInit, Component, Input, ViewChild, } from '@angular/core';
-import { SessionControlInfo, SessionAction, SessionStatus, SessionInfo } from '../../models/session';
+import { SessionControlInfo, SessionAction, SessionStatus } from '../../models/session';
 import { SessionService } from '../../data-access/session.service';
 import { IonButton } from '@ionic/angular';
 import { ViewModel } from '../../models/view-model';
@@ -45,11 +45,15 @@ export class HostActionsComponent implements AfterViewInit {
 
   onUserUpdate() {
     console.log('host-action')
-    if (this.controlSession.status != 'preparing')
-      return;
-    const users = this.controlSession.users.filter(u => u.status === 'ready');
-    const currentButton = this.context.find(b => b.action === 'start')!;
-    currentButton.button.disabled = users.length === 0;
+    if (this.controlSession.status === 'preparing') {
+      const users = this.controlSession.users.filter(u => u.status === 'ready');
+      const currentButton = this.context.find(b => b.action === 'start')!;
+      currentButton.button.disabled = users.length === 0;
+    } else if (this.controlSession.status === 'started') {
+      if (this.controlSession.users.find(u => u.status === 'done')) {
+        this.updateButtons('stop');
+      }
+    }
   }
 
   prepare() {
@@ -76,15 +80,19 @@ export class HostActionsComponent implements AfterViewInit {
     };
     console.log(JSON.stringify(configuration));
     const subscription = this.sessionService.executeAction(this.controlSession, action, configuration).subscribe(_ => {
-      const currentButtonIndex = this.context.findIndex(b => b.action === action)!;
-      const currentButton = this.context[currentButtonIndex];
-      currentButton.button.disabled = true;
-      currentButton.button.color = 'secondary';
-      const nextButton = this.context.length - 1 == currentButtonIndex
-        ? this.context[0].button : this.context[currentButtonIndex + 1].button;
-      nextButton.disabled = false;
-      nextButton.color = 'primary';
+      this.updateButtons(action);
       subscription.unsubscribe();
     });
+  }
+
+  updateButtons(action: SessionAction) {
+    const currentButtonIndex = this.context.findIndex(b => b.action === action)!;
+    const currentButton = this.context[currentButtonIndex];
+    currentButton.button.disabled = true;
+    currentButton.button.color = 'secondary';
+    const nextButton = this.context.length - 1 == currentButtonIndex
+      ? this.context[0].button : this.context[currentButtonIndex + 1].button;
+    nextButton.disabled = false;
+    nextButton.color = 'primary';
   }
 }
