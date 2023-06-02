@@ -1,9 +1,7 @@
 import { Inject, Injectable } from '@angular/core';
 import { HubConnection, HubConnectionBuilder } from '@microsoft/signalr';
-import { SessionControlInfo } from '../models/session';
 import { UserService } from './user.service';
 import { Message } from '../models/message';
-import { SessionService } from './session.service';
 import { ViewModel } from '../models/view-model';
 
 @Injectable({
