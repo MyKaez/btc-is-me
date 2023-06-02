@@ -22,7 +22,7 @@ export class HashListComponent {
   }
 
   get winnerBlock(): Block {
-    return <Block>this.session!.configuration;
+    return <Block>this.session!.configuration.result;
   }
 
   get isMe(): boolean {
