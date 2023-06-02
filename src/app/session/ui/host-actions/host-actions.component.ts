@@ -49,7 +49,7 @@ export class HostActionsComponent implements AfterViewInit {
       const users = this.controlSession.users.filter(u => u.status === 'ready');
       const currentButton = this.context.find(b => b.action === 'start')!;
       currentButton.button.disabled = users.length === 0;
-    } else if (this.controlSession.status === 'started') {
+    } else if (this.controlSession.status === 'stopped') {
       if (this.controlSession.users.find(u => u.status === 'done')) {
         this.updateButtons('stop');
       }
@@ -73,10 +73,9 @@ export class HostActionsComponent implements AfterViewInit {
   }
 
   createUpdate(action: SessionAction, config?: any): void {
-    const configuration = {
+    const configuration = config ?? {
       ...(this.controlSession.configuration ?? {}),
-      ...this.controlSession.configuration,
-      ...(config ?? {})
+      ...this.controlSession.configuration
     };
     console.log(JSON.stringify(configuration));
     const subscription = this.sessionService.executeAction(this.controlSession, action, configuration).subscribe(_ => {
