@@ -25,9 +25,8 @@
     </div>
     <div *ngSwitchCase="'preparing'">
       <ion-item>
-        <div *ngIf="hashRateControl.value === 0">Please determine your HashRate...</div>
-        <ion-input label="Hashrate" labelPlacement="stacked" placeholder="Enter Hashrate" [disabled]="true"
-          [formControl]="hashRateControl"></ion-input>
+        <ion-input label="Hashrate" labelPlacement="stacked" placeholder="Please determine your HashRate..."
+          [readonly]="true" [formControl]="hashRateControl"></ion-input>
         <ion-button fill="clear" slot="end" (click)="determine()">
           <ion-icon name="arrow-forward-circle-outline"></ion-icon>
         </ion-button>
