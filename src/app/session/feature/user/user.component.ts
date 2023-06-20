@@ -43,7 +43,8 @@ export class UserComponent {
     map(user => { return { ...<UserControl>this.user, ...user } })
   );
   user$ = merge(this.registerUser$, this.getUser$).pipe(
-    tap(user => this.userChange.emit(user))
+    tap(user => this.userChange.emit(user)),
+    tap(user => this.hubConnection.invoke('RegisterUser', user.id))
   );
 
   loading$ = this.loading.pipe();
