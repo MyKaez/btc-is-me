@@ -49,8 +49,7 @@ export class ConnectionService {
       });
 
       con.on(`${session.id}:CreateUser`, user => {
-        console.log('CreateUser');
-        con.invoke('RegisterUser', user.id);
+        console.log('CreateUser: ' + user.id);
         updateUsers();
       });
 
