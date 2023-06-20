@@ -1,4 +1,4 @@
-import { Component, EventEmitter, Input, Output, ViewChild } from '@angular/core';
+import { AfterViewInit, Component, EventEmitter, Input, Output, ViewChild } from '@angular/core';
 import { Subject, map, merge, shareReplay, switchMap, tap } from 'rxjs';
 import { SessionInfo } from '../../models/session';
 import { UserService } from '../../data-access/user.service';
@@ -14,7 +14,7 @@ import { HubConnection } from '@microsoft/signalr';
   templateUrl: './user.component.html',
   styleUrls: ['./user.component.scss'],
 })
-export class UserComponent {
+export class UserComponent implements AfterViewInit {
 
   @Input("session") session!: SessionInfo;
   @Input("hubConnection") hubConnection!: HubConnection;
