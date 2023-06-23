@@ -20,10 +20,6 @@ const routes: Routes = [
     path: 'log-out/:page',
     component: LogOutComponent
   },
-  {
-    path: 'folder/:id',
-    loadChildren: () => import('./folder/folder.module').then(m => m.FolderPageModule)
-  },
 ];
 
 @NgModule({

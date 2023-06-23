@@ -7,7 +7,7 @@ import { Component } from '@angular/core';
 export class AppComponent {
   public appPages = [
     { title: 'Sessions', url: '/session', icon: 'code-working' },
-    { title: 'Help...', url: '/folder/inbox', icon: 'mail' }
+    { title: 'Donate', url: 'https://nodeless.io/donate/btcis-me', icon: 'cash' }
   ];
   public labels = ['Sessions', 'Users'];
   constructor() { }

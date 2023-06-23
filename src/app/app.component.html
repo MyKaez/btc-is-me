@@ -7,11 +7,21 @@
           <ion-note>home of things Kenny tests</ion-note>
 
           <ion-menu-toggle auto-hide="false" *ngFor="let p of appPages; let i = index">
-            <ion-item routerDirection="root" [routerLink]="[p.url]" lines="none" detail="false"
-              routerLinkActive="selected">
-              <ion-icon aria-hidden="true" slot="start" [ios]="p.icon + '-outline'" [md]="p.icon + '-sharp'"></ion-icon>
-              <ion-label>{{ p.title }}</ion-label>
-            </ion-item>
+            <span *ngIf="p.url.startsWith('https://');else router">
+              <ion-item lines="none" detail="false" [href]="p.url" target="_blank">
+                <ion-icon aria-hidden="true" slot="start" [ios]="p.icon + '-outline'"
+                  [md]="p.icon + '-sharp'"></ion-icon>
+                <ion-label>{{ p.title }}</ion-label>
+              </ion-item>
+            </span>
+            <ng-template #router>
+              <ion-item #router routerDirection="root" [routerLink]="[p.url]" lines="none" detail="false"
+                routerLinkActive="selected">
+                <ion-icon aria-hidden="true" slot="start" [ios]="p.icon + '-outline'"
+                  [md]="p.icon + '-sharp'"></ion-icon>
+                <ion-label>{{ p.title }}</ion-label>
+              </ion-item>
+            </ng-template>
           </ion-menu-toggle>
         </ion-list>
 
