@@ -5,11 +5,11 @@ import { Component } from '@angular/core';
   styleUrls: ['app.component.scss'],
 })
 export class AppComponent {
-  public appPages = [
+  appPages = [
     { title: 'Sessions', url: '/session', icon: 'code-working' },
     { title: 'Donate', url: 'https://nodeless.io/donate/btcis-me', icon: 'cash' },
     { title: 'FixesTh.is', url: 'https://fixesth.is', icon: 'desktop' }
   ];
-  public labels = ['Sessions', 'Users'];
+
   constructor() { }
 }
