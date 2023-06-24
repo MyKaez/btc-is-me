@@ -14,7 +14,8 @@ export class LogOutComponent implements OnInit {
     setTimeout(() => {
       this.route.params.subscribe(params => {
         const page = params['page'];
-        this.router.navigate([page]);
+        const url = window.location.href.replace('/log-out', '/' + page);
+        window.open(url, "_self");
       });
     }, 1_000);
   }
